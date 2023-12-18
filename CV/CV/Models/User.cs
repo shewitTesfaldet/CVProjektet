@@ -7,7 +7,7 @@ namespace CV.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int AID { get; set; }
+        public int UID { get; set; }
 
         [StringLength(150)]
         [Required(ErrorMessage = "Du måste ange ett användarnamn!")]
@@ -37,7 +37,7 @@ namespace CV.Models
         public int CID { get; set; }
 
         [ForeignKey(nameof(CID))]
-        public virtual global::CV? Cv { get; set; }
+        public virtual CV_? Cv { get; set; }
 
     }
 }

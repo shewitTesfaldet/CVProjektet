@@ -6,6 +6,7 @@ namespace CV.Models
 {
     public class Chat
     {
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MID { get; set; }
         [StringLength(250)]

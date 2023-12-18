@@ -3,16 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CV.Models
 {
-   public class Project
+    public class Education
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
-        public int PID { get; set; }
-        public string Title { get; set; }
-
+        [Key] 
+        public int EdID { get; set; }
         public string Description { get; set; }
+
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public int CID { get; set; }    
+
+        [ForeignKey(nameof(CID))]
+
+        public virtual CV_? CV { get; set; }
     }
 }
