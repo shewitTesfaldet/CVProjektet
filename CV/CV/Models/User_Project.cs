@@ -4,11 +4,14 @@ namespace CV.Models
 {
     public class User_Project
     {
+        public int UID { get; set; }
 
-        [ForeignKey(nameof(AID))]
-        public int AID { get; set; }
+        public int PID { get; set; }
+
+        [ForeignKey(nameof(UID))]
+        public virtual User? user { get; set; }
 
         [ForeignKey(nameof(PID))]
-        public int PID { get; set; }
+        public virtual Project? project { get; set; }
     }
 }
