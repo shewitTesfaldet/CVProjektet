@@ -20,6 +20,7 @@ namespace CV.Controllers
 
         public IActionResult Privacy()
         {
+            ViewBag.Meddelande = "HEJAAA"; 
             return View();
         }
 
