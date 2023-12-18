@@ -37,7 +37,7 @@ namespace CV.Models
         public int CID { get; set; }
 
         [ForeignKey(nameof(CID))]
-        public virtual CV? Cv { get; set; }
+        public virtual global::CV? Cv { get; set; }
 
     }
 }
