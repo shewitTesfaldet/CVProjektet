@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CV_Projektet_sln8")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6739228e447a156e923a28ad0fef10e57b80c781")]
 [assembly: System.Reflection.AssemblyProductAttribute("CV_Projektet_sln8")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CV_Projektet_sln8")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
