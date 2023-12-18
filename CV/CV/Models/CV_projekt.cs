@@ -5,15 +5,15 @@ namespace CV.Models
 {
     public class CV_projekt
     {
-      /*  [Key]
+        [Key]
         public int CID { get; set; }
-*/
+
         [Key]
         public int PID { get; set; }
 
 
-        /*  [ForeignKey(nameof(CID))]
-          public virtual CV? cv { get; set; }*/
+        [ForeignKey(nameof(CID))]
+        public virtual CV? cv { get; set; }
 
 
 

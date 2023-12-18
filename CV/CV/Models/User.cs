@@ -5,7 +5,7 @@ namespace CV.Models
 {
     public class User
     {
-
+        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AID { get; set; }
 
@@ -34,10 +34,10 @@ namespace CV.Models
         public string Adress { get; set; }
         public bool Privat { get; set; }
 
-        public int CID { get; set; }    
+        public int CID { get; set; }
 
-/*        [ForeignKey(nameof(CID))]
-*//*        public virtual CV? Cv { get; set; }
-*/
+        [ForeignKey(nameof(CID))]
+        public virtual CV? Cv { get; set; }
+
     }
 }
