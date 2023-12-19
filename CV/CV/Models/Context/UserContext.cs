@@ -38,7 +38,7 @@ namespace CV.Models.Context
             modelBuilder.Entity<User_Project>().HasKey(u => new { u.PID, u.UID });
 
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CV_Competence>().HasKey(u => new { u.CID, u.COID });
+            modelBuilder.Entity<CV_Competence>().HasKey(u => new { u.CID, u.CompID });
 
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CV_Education>().HasKey(u => new { u.CID, u.EID });

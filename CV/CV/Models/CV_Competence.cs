@@ -6,12 +6,14 @@ namespace CV.Models
     {
         public int CID { get; set; }
 
-        public int COID { get; set; }
+        public int CompID { get; set; }
 
         [ForeignKey(nameof(CID))]
+      
         public virtual CV_? CV { get; set; }
 
-        [ForeignKey(nameof(COID))]
+        [ForeignKey(nameof(CompID))]
+ 
         public virtual Competence? Competence { get; set; }
     }
 }

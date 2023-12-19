@@ -10,10 +10,6 @@ namespace CV.Models
         public string Description { get; set; }
         public int CID { get; set; }    
 
-        [ForeignKey(nameof(CID))]
-
-        public virtual CV_? CV {  get; set; }
-
 
     }
 }

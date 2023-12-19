@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CV.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class InitialMIgration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,17 +47,17 @@ namespace CV.Migrations
                     CompID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CID = table.Column<int>(type: "int", nullable: false)
+                    CID = table.Column<int>(type: "int", nullable: false),
+                    CV_CID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Competence", x => x.CompID);
                     table.ForeignKey(
-                        name: "FK_Competence_CV_s_CID",
-                        column: x => x.CID,
+                        name: "FK_Competence_CV_s_CV_CID",
+                        column: x => x.CV_CID,
                         principalTable: "CV_s",
-                        principalColumn: "CID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CID");
                 });
 
             migrationBuilder.CreateTable(
@@ -69,17 +69,16 @@ namespace CV.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CID = table.Column<int>(type: "int", nullable: false)
+                    CV_CID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Education", x => x.EdID);
                     table.ForeignKey(
-                        name: "FK_Education_CV_s_CID",
-                        column: x => x.CID,
+                        name: "FK_Education_CV_s_CV_CID",
+                        column: x => x.CV_CID,
                         principalTable: "CV_s",
-                        principalColumn: "CID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CID");
                 });
 
             migrationBuilder.CreateTable(
@@ -134,11 +133,11 @@ namespace CV.Migrations
                 columns: table => new
                 {
                     CID = table.Column<int>(type: "int", nullable: false),
-                    COID = table.Column<int>(type: "int", nullable: false)
+                    CompID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CV_Competences", x => new { x.CID, x.COID });
+                    table.PrimaryKey("PK_CV_Competences", x => new { x.CID, x.CompID });
                     table.ForeignKey(
                         name: "FK_CV_Competences_CV_s_CID",
                         column: x => x.CID,
@@ -146,8 +145,8 @@ namespace CV.Migrations
                         principalColumn: "CID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CV_Competences_Competence_COID",
-                        column: x => x.COID,
+                        name: "FK_CV_Competences_Competence_CompID",
+                        column: x => x.CompID,
                         principalTable: "Competence",
                         principalColumn: "CompID",
                         onDelete: ReferentialAction.Cascade);
@@ -229,14 +228,14 @@ namespace CV.Migrations
                 column: "AID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Competence_CID",
+                name: "IX_Competence_CV_CID",
                 table: "Competence",
-                column: "CID");
+                column: "CV_CID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CV_Competences_COID",
+                name: "IX_CV_Competences_CompID",
                 table: "CV_Competences",
-                column: "COID");
+                column: "CompID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CV_Educations_EID",
@@ -244,9 +243,9 @@ namespace CV.Migrations
                 column: "EID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Education_CID",
+                name: "IX_Education_CV_CID",
                 table: "Education",
-                column: "CID");
+                column: "CV_CID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Experience_CID",
