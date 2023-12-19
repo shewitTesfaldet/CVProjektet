@@ -7,12 +7,12 @@ namespace CV.Models
         
             public int CID { get; set; }
 
-            public int EID { get; set; }
+            public int EdID { get; set; }
 
             [ForeignKey(nameof(CID))]
             public virtual CV_? CV { get; set; }
 
-            [ForeignKey(nameof(EID))]
+            [ForeignKey(nameof(EdID))]
             public virtual Education? Education { get; set; }
       
 

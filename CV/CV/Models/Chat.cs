@@ -14,9 +14,9 @@ namespace CV.Models
         public DateTime? Date { get; set; }
         public bool? Read { get; set; }
 
-        public int AID { get; set; }
+        public int UID { get; set; }
 
-        [ForeignKey(nameof(AID))]
+        [ForeignKey(nameof(UID))]
         public virtual User? user { get; set; }
 
     }
