@@ -30,6 +30,13 @@ namespace CV.Models.Context
         
         public DbSet<CV_Education> CV_Educations { get; set; }
 
+        //Ska tas bort sen, används för test data 
+        public virtual IEnumerable<Experience> Ex { get; set; } = new List<Experience>();
+
+        public virtual IEnumerable<Education> Ed { get; set; } = new List<Education>();
+
+        public virtual IEnumerable<Competence> Co { get; set; } = new List<Competence>();
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,8 +48,313 @@ namespace CV.Models.Context
             modelBuilder.Entity<CV_Competence>().HasKey(u => new { u.CID, u.CompID });
 
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CV_Education>().HasKey(u => new { u.CID, u.EID });
-        }
+            modelBuilder.Entity<CV_Education>().HasKey(u => new { u.CID, u.EdID });
+
+            //Exempeldata
+
+
+
+            #region Project
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Project>().HasData(
+            new Project
+            {
+                PID = 1,
+                Title = "Web Development Project",
+                Description = "Developing a responsive web application.",
+                BeginDate = new DateTime(2022, 1, 1),
+                EndDate = new DateTime(2022, 6, 30)
+            },
+                new Project
+                {
+                    PID = 2,
+                    Title = "Mobile App Development",
+                    Description = "Creating a cross-platform mobile application.",
+                    BeginDate = new DateTime(2022, 3, 15),
+                    EndDate = new DateTime(2022, 9, 15)
+                },
+                new Project
+                {
+                    PID = 3,
+                    Title = "Database Management System",
+                    Description = "Designing and implementing a relational database.",
+                    BeginDate = new DateTime(2022, 5, 1),
+                    EndDate = new DateTime(2022, 11, 30)
+                },
+                new Project
+                {
+                    PID = 4,
+                    Title = "Machine Learning Project",
+                    Description = "Applying machine learning algorithms to solve a specific problem.",
+                    BeginDate = new DateTime(2022, 7, 1),
+                    EndDate = new DateTime(2023, 1, 31)
+                },
+                new Project
+                {
+                    PID = 5,
+                    Title = "Agile Software Development",
+                    Description = "Working on a software project using agile methodologies.",
+                    BeginDate = new DateTime(2022, 9, 15),
+                    EndDate = new DateTime(2023, 3, 15)
+                }
+            );
+            #endregion
+            #region Competence
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Competence>().HasData(
+                 new Competence
+                 {
+                     CompID = 1,
+                     Description = "C# Programming",
+                     CID = 1 // CV-ID
+                 },
+                    new Competence
+                    {
+                        CompID = 2,
+                        Description = "Web Development",
+                        CID = 1 // CV-ID
+                    },
+                    new Competence
+                    {
+                        CompID = 3,
+                        Description = "Data Analysis",
+                        CID = 2 // CV-ID
+                    },
+                    new Competence
+                    {
+                        CompID = 4,
+                        Description = "Project Management",
+                        CID = 3 // CV-ID
+                    },
+                    new Competence
+                    {
+                        CompID = 5,
+                        Description = "Communication Skills",
+                        CID = 4 // CV-ID
+                    }
+                    );
+            #endregion
+            #region Experience
+                base.OnModelCreating(modelBuilder);
+                modelBuilder.Entity<Experience>().HasData(
+                 new Experience
+                 {
+                     EID = 1,
+                     Description = "Software Developer at ABC Tech",
+                     CID = 1 // CV-ID
+                 },
+                new Experience
+                {
+                    EID = 2,
+                    Description = "Data Analyst at XYZ Analytics",
+                    CID = 1 // CV-ID
+                },
+                new Experience
+                {
+                    EID = 3,
+                    Description = "Project Manager at Acme Projects",
+                    CID = 2 // CV-ID
+                },
+                new Experience
+                {
+                    EID = 4,
+                    Description = "Internship at DEF Corporation",
+                    CID = 3 // CV-ID
+                },
+                new Experience
+                {
+                    EID = 5,
+                    Description = "Marketing Coordinator at LMN Marketing",
+                    CID = 4 // CV-ID
+                }
+                );
+            #endregion
+            #region Education
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Education>().HasData(
+                    new Education { EdID = 1, Description = "Master's in Computer Science", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) },
+                    new Education { EdID = 2, Description = "Bachelor's in Information Technology", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) },
+                    new Education { EdID = 3, Description = "High School Diploma", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) },
+                    new Education { EdID = 4, Description = "Certification in Web Development", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) },
+                    new Education { EdID = 5, Description = "Online Course in Data Science", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) }
+                );
+
+            #endregion
+
+            #region User
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {
+                    UID = 1,
+                    Username = "user1",
+                    Firstname = "Alice",
+                    Lastname = "Johnson",
+                    Password = "password1",
+                    ConfirmPassword = "password1",
+                    Epost = "alice.johnson@example.com",
+                    Adress = "456 Oak Street",
+                    Privat = true,
+                    CID = 1,
+                    Cv = new CV_()
+                },
+                new User
+                {
+                    UID = 2,
+                    Username = "user2",
+                    Firstname = "Bob",
+                    Lastname = "Smith",
+                    Password = "password2",
+                    ConfirmPassword = "password2",
+                    Epost = "bob.smith@example.com",
+                    Adress = "789 Pine Avenue",
+                    Privat = false,
+                    CID = 2,
+                    Cv = new CV_()
+                },
+                new User
+                {
+                    UID = 3,
+                    Username = "user3",
+                    Firstname = "Charlie",
+                    Lastname = "Brown",
+                    Password = "password3",
+                    ConfirmPassword = "password3",
+                    Epost = "charlie.brown@example.com",
+                    Adress = "101 Elm Lane",
+                    Privat = true,
+                    CID = 3,
+                    Cv = new CV_()
+                },
+                new User
+                {
+                    UID = 4,
+                    Username = "user4",
+                    Firstname = "David",
+                    Lastname = "Lee",
+                    Password = "password4",
+                    ConfirmPassword = "password4",
+                    Epost = "david.lee@example.com",
+                    Adress = "202 Maple Road",
+                    Privat = false,
+                    CID = 4,
+                    Cv = new CV_()
+                },
+                new User
+                {
+                    UID = 5,
+                    Username = "user5",
+                    Firstname = "Eva",
+                    Lastname = "Miller",
+                    Password = "password5",
+                    ConfirmPassword = "password5",
+                    Epost = "eva.miller@example.com",
+                    Adress = "303 Cedar Street",
+                    Privat = true,
+                    CID = 5,
+                    Cv = new CV_()
+                }
+                ); 
+            #endregion
+
+            #region Chat
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Chat>().HasData(
+                 new Chat
+                 {
+                     MID = 1,
+                     Text = "Hej, hur mår du?",
+                     Date = new DateTime(2022, 1, 10, 12, 30, 0),
+                     Read = true,
+                     UID = 1, // Användarens ID
+                     user = new User()
+                 },
+                new Chat
+                {
+                    MID = 2,
+                    Text = "Jag mår bra, tack!",
+                    Date = new DateTime(2022, 1, 10, 12, 35, 0),
+                    Read = true,
+                    UID = 2, // Användarens ID
+                    user = new User()
+                },
+                new Chat
+                {
+                    MID = 3,
+                    Text = "Vad har du gjort idag?",
+                    Date = new DateTime(2022, 1, 10, 13, 0, 0),
+                    Read = false,
+                    UID = 1, // Användarens ID
+                    user = new User()
+                },
+                new Chat
+                {
+                    MID = 4,
+                    Text = "Jobbat och tränat lite.",
+                    Date = new DateTime(2022, 1, 10, 13, 15, 0),
+                    Read = false,
+                    UID = 2, // Användarens ID
+                    user = new User()
+                },
+                new Chat
+                {
+                    MID = 5,
+                    Text = "Låter bra! Vad har du för planer resten av dagen?",
+                    Date = new DateTime(2022, 1, 10, 14, 0, 0),
+                    Read = false,
+                    UID = 1, // Användarens ID
+                    user = new User()
+                }
+                );
+            #endregion
+
+            #region CV_
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<CV_>().HasData(
+            new CV_
+            {
+                CID = 1,
+                Experience = Ex,
+                Education = Ed,
+                Competence = Co,
+                Picture = "profile_picture1.jpg"
+            },
+                new CV_
+                {
+                    CID = 2,
+                    Experience = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture2.jpg"
+                },
+                new CV_
+                {
+                    CID = 3,
+                    Experience = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture3.jpg"
+                },
+                new CV_
+                {
+                    CID = 4,
+                    Experience = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture4.jpg"
+                },
+                new CV_
+                {
+                    CID = 5,
+                    Experience = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture5.jpg"
+                }
+                );
+            #endregion
+        
+    }
     }
 }
 
