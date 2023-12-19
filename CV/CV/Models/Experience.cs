@@ -11,7 +11,7 @@ namespace CV.Models
         public int CID { get; set; }
 
         [ForeignKey(nameof(CID))]
-        public virtual CV_? user { get; set; }
+        public virtual CV_? cv { get; set; }
 
     }
 }
