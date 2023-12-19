@@ -18,19 +18,30 @@ namespace CV.Models.Context
 
         public DbSet<Project> Projects { get; set; }
 
-        public DbSet<User_Project> UserProjects { get; set; }
 
         public DbSet<Education> Education { get; set; }
         public DbSet<Experience> Experience { get; set; }
 
         public DbSet<Competence> Competence { get; set; }
 
+        public DbSet<User_Project> UserProjects { get; set; }
+
+        public DbSet<CV_Competence> CV_Competences { get; set; }
+        
+        public DbSet<CV_Education> CV_Educations { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
              base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User_Project>().HasKey(u => new { u.PID, u.UID });
-              
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<CV_Competence>().HasKey(u => new { u.CID, u.COID });
+
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<CV_Education>().HasKey(u => new { u.CID, u.EID });
         }
     }
 }

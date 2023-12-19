@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CV.Migrations
 {
     /// <inheritdoc />
-    public partial class initialMigration : Migration
+    public partial class initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -130,6 +130,54 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CV_Competences",
+                columns: table => new
+                {
+                    CID = table.Column<int>(type: "int", nullable: false),
+                    COID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CV_Competences", x => new { x.CID, x.COID });
+                    table.ForeignKey(
+                        name: "FK_CV_Competences_CV_s_CID",
+                        column: x => x.CID,
+                        principalTable: "CV_s",
+                        principalColumn: "CID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CV_Competences_Competence_COID",
+                        column: x => x.COID,
+                        principalTable: "Competence",
+                        principalColumn: "CompID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CV_Educations",
+                columns: table => new
+                {
+                    CID = table.Column<int>(type: "int", nullable: false),
+                    EID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CV_Educations", x => new { x.CID, x.EID });
+                    table.ForeignKey(
+                        name: "FK_CV_Educations_CV_s_CID",
+                        column: x => x.CID,
+                        principalTable: "CV_s",
+                        principalColumn: "CID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CV_Educations_Education_EID",
+                        column: x => x.EID,
+                        principalTable: "Education",
+                        principalColumn: "EdID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Chats",
                 columns: table => new
                 {
@@ -186,6 +234,16 @@ namespace CV.Migrations
                 column: "CID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CV_Competences_COID",
+                table: "CV_Competences",
+                column: "COID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CV_Educations_EID",
+                table: "CV_Educations",
+                column: "EID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Education_CID",
                 table: "Education",
                 column: "CID");
@@ -213,16 +271,22 @@ namespace CV.Migrations
                 name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "Competence");
+                name: "CV_Competences");
 
             migrationBuilder.DropTable(
-                name: "Education");
+                name: "CV_Educations");
 
             migrationBuilder.DropTable(
                 name: "Experience");
 
             migrationBuilder.DropTable(
                 name: "UserProjects");
+
+            migrationBuilder.DropTable(
+                name: "Competence");
+
+            migrationBuilder.DropTable(
+                name: "Education");
 
             migrationBuilder.DropTable(
                 name: "Projects");

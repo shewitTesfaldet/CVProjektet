@@ -42,6 +42,36 @@ namespace CV.Migrations
                     b.ToTable("CV_s");
                 });
 
+            modelBuilder.Entity("CV.Models.CV_Competence", b =>
+                {
+                    b.Property<int>("CID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("COID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CID", "COID");
+
+                    b.HasIndex("COID");
+
+                    b.ToTable("CV_Competences");
+                });
+
+            modelBuilder.Entity("CV.Models.CV_Education", b =>
+                {
+                    b.Property<int>("CID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CID", "EID");
+
+                    b.HasIndex("EID");
+
+                    b.ToTable("CV_Educations");
+                });
+
             modelBuilder.Entity("CV.Models.Chat", b =>
                 {
                     b.Property<int>("MID")
@@ -232,6 +262,44 @@ namespace CV.Migrations
                     b.HasIndex("UID");
 
                     b.ToTable("UserProjects");
+                });
+
+            modelBuilder.Entity("CV.Models.CV_Competence", b =>
+                {
+                    b.HasOne("CV.Models.CV_", "CV")
+                        .WithMany()
+                        .HasForeignKey("CID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CV.Models.Competence", "Competence")
+                        .WithMany()
+                        .HasForeignKey("COID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CV");
+
+                    b.Navigation("Competence");
+                });
+
+            modelBuilder.Entity("CV.Models.CV_Education", b =>
+                {
+                    b.HasOne("CV.Models.CV_", "CV")
+                        .WithMany()
+                        .HasForeignKey("CID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CV.Models.Education", "Education")
+                        .WithMany()
+                        .HasForeignKey("EID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CV");
+
+                    b.Navigation("Education");
                 });
 
             modelBuilder.Entity("CV.Models.Chat", b =>
