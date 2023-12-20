@@ -39,5 +39,9 @@ namespace CV.Models
         [ForeignKey(nameof(CID))]
         public virtual CV_? Cv { get; set; }
 
+        public virtual IEnumerable<Chat> Chats { get; set; } = new List<Chat>();
+        public virtual IEnumerable<User_Project> User_Projects { get; set; } = new List<User_Project>();
+
+
     }
 }
