@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CV.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20231218155813_initialMigration")]
-    partial class initialMigration
+    [Migration("20231219111330_InitialMIgration")]
+    partial class InitialMIgration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,36 @@ namespace CV.Migrations
                     b.HasKey("CID");
 
                     b.ToTable("CV_s");
+                });
+
+            modelBuilder.Entity("CV.Models.CV_Competence", b =>
+                {
+                    b.Property<int>("CID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CompID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CID", "CompID");
+
+                    b.HasIndex("CompID");
+
+                    b.ToTable("CV_Competences");
+                });
+
+            modelBuilder.Entity("CV.Models.CV_Education", b =>
+                {
+                    b.Property<int>("CID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EID")
+                        .HasColumnType("int");
+
+                    b.HasKey("CID", "EID");
+
+                    b.HasIndex("EID");
+
+                    b.ToTable("CV_Educations");
                 });
 
             modelBuilder.Entity("CV.Models.Chat", b =>
@@ -84,13 +114,16 @@ namespace CV.Migrations
                     b.Property<int>("CID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CV_CID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CompID");
 
-                    b.HasIndex("CID");
+                    b.HasIndex("CV_CID");
 
                     b.ToTable("Competence");
                 });
@@ -106,7 +139,7 @@ namespace CV.Migrations
                     b.Property<DateTime>("BeginDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("CID")
+                    b.Property<int?>("CV_CID")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -118,7 +151,7 @@ namespace CV.Migrations
 
                     b.HasKey("EdID");
 
-                    b.HasIndex("CID");
+                    b.HasIndex("CV_CID");
 
                     b.ToTable("Education");
                 });
@@ -237,6 +270,44 @@ namespace CV.Migrations
                     b.ToTable("UserProjects");
                 });
 
+            modelBuilder.Entity("CV.Models.CV_Competence", b =>
+                {
+                    b.HasOne("CV.Models.CV_", "CV")
+                        .WithMany()
+                        .HasForeignKey("CID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CV.Models.Competence", "Competence")
+                        .WithMany()
+                        .HasForeignKey("CompID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CV");
+
+                    b.Navigation("Competence");
+                });
+
+            modelBuilder.Entity("CV.Models.CV_Education", b =>
+                {
+                    b.HasOne("CV.Models.CV_", "CV")
+                        .WithMany()
+                        .HasForeignKey("CID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CV.Models.Education", "Education")
+                        .WithMany()
+                        .HasForeignKey("EID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CV");
+
+                    b.Navigation("Education");
+                });
+
             modelBuilder.Entity("CV.Models.Chat", b =>
                 {
                     b.HasOne("CV.Models.User", "user")
@@ -250,35 +321,27 @@ namespace CV.Migrations
 
             modelBuilder.Entity("CV.Models.Competence", b =>
                 {
-                    b.HasOne("CV.Models.CV_", "CV")
+                    b.HasOne("CV.Models.CV_", null)
                         .WithMany("Competence")
-                        .HasForeignKey("CID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CV_CID");
                 });
 
             modelBuilder.Entity("CV.Models.Education", b =>
                 {
-                    b.HasOne("CV.Models.CV_", "CV")
+                    b.HasOne("CV.Models.CV_", null)
                         .WithMany("Education")
-                        .HasForeignKey("CID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CV_CID");
                 });
 
             modelBuilder.Entity("CV.Models.Experience", b =>
                 {
-                    b.HasOne("CV.Models.CV_", "user")
+                    b.HasOne("CV.Models.CV_", "cv")
                         .WithMany("Experience")
                         .HasForeignKey("CID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("cv");
                 });
 
             modelBuilder.Entity("CV.Models.User", b =>
