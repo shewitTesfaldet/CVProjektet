@@ -22,7 +22,7 @@ namespace CV.Models
         [Required(ErrorMessage = "Du måste ange ett lösenord!")]
 
         [DataType(DataType.Password)]
-        [Compare("BekraftaLosenord")]
+        [Compare("ConfirmPassword")]
 
         public string Password { get; set; }
 
