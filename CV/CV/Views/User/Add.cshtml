@@ -1,0 +1,85 @@
+﻿@model User
+
+<form asp-action="Add" method="post">
+    <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+        
+        <tr>
+            <td>
+                <label asp-for="Username">Username:</label>
+            </td>
+            <td>
+                <input asp-for="Username" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Password">Password:</label>
+            </td>
+            <td>
+                <input asp-for="Password" type="password" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="ConfirmPassword">Confirm Password:</label>
+            </td>
+            <td>
+                <input asp-for="ConfirmPassword" type="password" class="form-control" />
+            </td>
+        </tr>
+        
+        
+        <tr>
+            <td>
+                <label asp-for="Firstname">First Name:</label>
+            </td>
+            <td>
+                <input asp-for="Firstname" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Lastname">Last Name:</label>
+            </td>
+            <td>
+                <input asp-for="Lastname" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Epost">Email:</label>
+            </td>
+            <td>
+                <input asp-for="Epost" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Adress">Address:</label>
+            </td>
+            <td>
+                <input asp-for="Adress" type="text" class="form-control" />
+            </td>
+        </tr>
+     
+                <label>Select Mode:</label>
+                <div class="form-check form-switch" >
+                    <input asp-for="Privat" class="form-check-input" type="checkbox" />
+                    <label class="form-check-label" asp-for="Privat">Private</label>
+                </div>
+         
+    
+        <tr>
+            <td colspan="2" style="text-align: center;">
+                <input type="submit" value="Submit" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+    @if (ViewBag.Message != null)
+    {
+        <p>@ViewBag.Message</p>
+    }
+
+
+
+</form>
