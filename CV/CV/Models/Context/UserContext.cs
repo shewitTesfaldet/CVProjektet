@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace CV.Models.Context
 {
@@ -27,7 +28,7 @@ namespace CV.Models.Context
         public DbSet<User_Project> UserProjects { get; set; }
 
         public DbSet<CV_Competence> CV_Competences { get; set; }
-        
+
         public DbSet<CV_Education> CV_Educations { get; set; }
 
         //Ska tas bort sen, används för test data 
@@ -41,21 +42,16 @@ namespace CV.Models.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-             base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User_Project>().HasKey(u => new { u.PID, u.UID });
 
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CV_Competence>().HasKey(u => new { u.CID, u.CompID });
 
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CV_Education>().HasKey(u => new { u.CID, u.EdID });
 
             //Exempeldata
 
-
-
             #region Project
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Project>().HasData(
             new Project
             {
@@ -99,78 +95,114 @@ namespace CV.Models.Context
                 }
             );
             #endregion
+            #region CV_
+            modelBuilder.Entity<CV_>().HasData(
+            new CV_
+            {
+                CID = 1,
+                Experiences = Ex,
+                Education = Ed,
+                Competence = Co,
+                Picture = "profile_picture1.jpg"
+            },
+                new CV_
+                {
+                    CID = 2,
+                    Experiences = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture2.jpg"
+                },
+                new CV_
+                {
+                    CID = 3,
+                    Experiences = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture3.jpg"
+                },
+                new CV_
+                {
+                    CID = 4,
+                    Experiences = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture4.jpg"
+                },
+                new CV_
+                {
+                    CID = 5,
+                    Experiences = Ex,
+                    Education = Ed,
+                    Competence = Co,
+                    Picture = "profile_picture5.jpg"
+                }
+               );
+            #endregion
             #region Competence
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Competence>().HasData(
                  new Competence
                  {
                      CompID = 1,
-                     Description = "C# Programming",
-                     CID = 1 // CV-ID
+                     Description = "C# Programming"
                  },
                     new Competence
                     {
                         CompID = 2,
-                        Description = "Web Development",
-                        CID = 1 // CV-ID
+                        Description = "Web Development"
                     },
                     new Competence
                     {
                         CompID = 3,
-                        Description = "Data Analysis",
-                        CID = 2 // CV-ID
+                        Description = "Data Analysis"
                     },
                     new Competence
                     {
                         CompID = 4,
-                        Description = "Project Management",
-                        CID = 3 // CV-ID
+                        Description = "Project Management"
                     },
                     new Competence
                     {
                         CompID = 5,
-                        Description = "Communication Skills",
-                        CID = 4 // CV-ID
+                        Description = "Communication Skills"
                     }
                     );
             #endregion
             #region Experience
-                base.OnModelCreating(modelBuilder);
-                modelBuilder.Entity<Experience>().HasData(
-                 new Experience
-                 {
-                     EID = 1,
-                     Description = "Software Developer at ABC Tech",
-                     CID = 1 // CV-ID
-                 },
-                new Experience
-                {
-                    EID = 2,
-                    Description = "Data Analyst at XYZ Analytics",
-                    CID = 1 // CV-ID
-                },
-                new Experience
-                {
-                    EID = 3,
-                    Description = "Project Manager at Acme Projects",
-                    CID = 2 // CV-ID
-                },
-                new Experience
-                {
-                    EID = 4,
-                    Description = "Internship at DEF Corporation",
-                    CID = 3 // CV-ID
-                },
-                new Experience
-                {
-                    EID = 5,
-                    Description = "Marketing Coordinator at LMN Marketing",
-                    CID = 4 // CV-ID
-                }
-                );
+            modelBuilder.Entity<Experience>().HasData(
+             new Experience
+             {
+                 EID = 1,
+                 Description = "Software Developer at ABC Tech",
+                 CID = 1 // CV-ID
+             },
+            new Experience
+            {
+                EID = 2,
+                Description = "Data Analyst at XYZ Analytics",
+                CID = 2 // CV-ID
+            },
+            new Experience
+            {
+                EID = 3,
+                Description = "Project Manager at Acme Projects",
+                CID = 3 // CV-ID
+            },
+            new Experience
+            {
+                EID = 4,
+                Description = "Internship at DEF Corporation",
+                CID = 4 // CV-ID
+            },
+            new Experience
+            {
+                EID = 5,
+                Description = "Marketing Coordinator at LMN Marketing",
+                CID = 5 // CV-ID
+            }
+            );
             #endregion
             #region Education
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Education>().HasData(
                     new Education { EdID = 1, Description = "Master's in Computer Science", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) },
                     new Education { EdID = 2, Description = "Bachelor's in Information Technology", BeginDate = new DateTime(2020, 1, 1), EndDate = new DateTime(2023, 1, 1) },
@@ -182,7 +214,6 @@ namespace CV.Models.Context
             #endregion
 
             #region User
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -195,8 +226,7 @@ namespace CV.Models.Context
                     Epost = "alice.johnson@example.com",
                     Adress = "456 Oak Street",
                     Privat = true,
-                    CID = 1,
-                    Cv = new CV_()
+                    CID = 1
                 },
                 new User
                 {
@@ -209,8 +239,7 @@ namespace CV.Models.Context
                     Epost = "bob.smith@example.com",
                     Adress = "789 Pine Avenue",
                     Privat = false,
-                    CID = 2,
-                    Cv = new CV_()
+                    CID = 2
                 },
                 new User
                 {
@@ -223,8 +252,7 @@ namespace CV.Models.Context
                     Epost = "charlie.brown@example.com",
                     Adress = "101 Elm Lane",
                     Privat = true,
-                    CID = 3,
-                    Cv = new CV_()
+                    CID = 3
                 },
                 new User
                 {
@@ -237,8 +265,7 @@ namespace CV.Models.Context
                     Epost = "david.lee@example.com",
                     Adress = "202 Maple Road",
                     Privat = false,
-                    CID = 4,
-                    Cv = new CV_()
+                    CID = 4
                 },
                 new User
                 {
@@ -251,14 +278,12 @@ namespace CV.Models.Context
                     Epost = "eva.miller@example.com",
                     Adress = "303 Cedar Street",
                     Privat = true,
-                    CID = 5,
-                    Cv = new CV_()
+                    CID = 5
                 }
-                ); 
+                );
             #endregion
 
             #region Chat
-            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Chat>().HasData(
                  new Chat
                  {
@@ -266,8 +291,7 @@ namespace CV.Models.Context
                      Text = "Hej, hur mår du?",
                      Date = new DateTime(2022, 1, 10, 12, 30, 0),
                      Read = true,
-                     UID = 1, // Användarens ID
-                     user = new User()
+                     UID = 1 // Användarens ID
                  },
                 new Chat
                 {
@@ -275,8 +299,7 @@ namespace CV.Models.Context
                     Text = "Jag mår bra, tack!",
                     Date = new DateTime(2022, 1, 10, 12, 35, 0),
                     Read = true,
-                    UID = 2, // Användarens ID
-                    user = new User()
+                    UID = 2 // Användarens ID
                 },
                 new Chat
                 {
@@ -284,8 +307,7 @@ namespace CV.Models.Context
                     Text = "Vad har du gjort idag?",
                     Date = new DateTime(2022, 1, 10, 13, 0, 0),
                     Read = false,
-                    UID = 1, // Användarens ID
-                    user = new User()
+                    UID = 3 // Användarens ID
                 },
                 new Chat
                 {
@@ -293,8 +315,7 @@ namespace CV.Models.Context
                     Text = "Jobbat och tränat lite.",
                     Date = new DateTime(2022, 1, 10, 13, 15, 0),
                     Read = false,
-                    UID = 2, // Användarens ID
-                    user = new User()
+                    UID = 4 // Användarens ID
                 },
                 new Chat
                 {
@@ -302,59 +323,103 @@ namespace CV.Models.Context
                     Text = "Låter bra! Vad har du för planer resten av dagen?",
                     Date = new DateTime(2022, 1, 10, 14, 0, 0),
                     Read = false,
-                    UID = 1, // Användarens ID
-                    user = new User()
+                    UID = 5 // Användarens ID
                 }
                 );
             #endregion
 
-            #region CV_
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<CV_>().HasData(
-            new CV_
+            #region CV_Competence
+            modelBuilder.Entity<CV_Competence>().HasData(
+            new CV_Competence
+                {
+                    CID = 1,
+                    CompID = 2
+
+                },
+             new CV_Competence
+             {
+                 CID = 2,
+                 CompID = 3
+
+             }, new CV_Competence
+             {
+                 CID = 4,
+                 CompID = 5
+
+             }, new CV_Competence
+             {
+                 CID = 1,
+                 CompID = 4
+
+             }, new CV_Competence
+             {
+                 CID = 4,
+                 CompID = 2
+
+             }
+            );
+            #endregion
+            #region CV_Education
+            modelBuilder.Entity<CV_Education>().HasData(
+            new CV_Education
             {
                 CID = 1,
-                Experience = Ex,
-                Education = Ed,
-                Competence = Co,
-                Picture = "profile_picture1.jpg"
+                EdID = 2,
+
             },
-                new CV_
-                {
-                    CID = 2,
-                    Experience = Ex,
-                    Education = Ed,
-                    Competence = Co,
-                    Picture = "profile_picture2.jpg"
-                },
-                new CV_
-                {
-                    CID = 3,
-                    Experience = Ex,
-                    Education = Ed,
-                    Competence = Co,
-                    Picture = "profile_picture3.jpg"
-                },
-                new CV_
-                {
-                    CID = 4,
-                    Experience = Ex,
-                    Education = Ed,
-                    Competence = Co,
-                    Picture = "profile_picture4.jpg"
-                },
-                new CV_
-                {
-                    CID = 5,
-                    Experience = Ex,
-                    Education = Ed,
-                    Competence = Co,
-                    Picture = "profile_picture5.jpg"
-                }
-                );
+             new CV_Education
+             {
+                 CID = 2,                
+                 EdID = 3,
+
+             }, new CV_Education
+             {
+                 CID = 4,
+                 EdID = 5,
+
+             }, new CV_Education
+             {
+                 CID = 1,
+                 EdID = 4,
+
+             }, new CV_Education
+             {
+                 CID = 4,
+                 EdID = 2,
+                 
+             }
+            );
             #endregion
-        
-    }
+            #region User_ProjectUser_Project
+            modelBuilder.Entity<User_Project>().HasData(
+            new User_Project
+            {                
+                UID = 1,
+                PID = 2
+            }, 
+             new User_Project
+             {
+                 UID = 2,
+                 PID = 3
+
+             }, new User_Project
+             {
+                 UID = 4,
+                 PID = 5
+
+             }, new User_Project
+             {
+                 UID = 1,
+                 PID = 4
+
+             }, new User_Project
+             {
+                 UID = 4,
+                 PID = 2
+             }
+            );
+            #endregion
+        }
     }
 }
 

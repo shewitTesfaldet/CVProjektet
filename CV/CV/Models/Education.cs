@@ -11,6 +11,7 @@ namespace CV.Models
 
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
-        
+        public virtual IEnumerable<CV_Education> CV_Education { get; set; } = new List<CV_Education>();
+
     }
 }

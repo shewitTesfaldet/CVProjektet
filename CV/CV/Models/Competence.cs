@@ -8,7 +8,7 @@ namespace CV.Models
         [Key]
         public int CompID { get; set; }   
         public string Description { get; set; }
-        public int CID { get; set; }    
+        public virtual IEnumerable<CV_Competence> CV_Competences { get; set; } = new List<CV_Competence>();
 
 
     }

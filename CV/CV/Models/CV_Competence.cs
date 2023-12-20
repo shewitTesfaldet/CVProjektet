@@ -8,6 +8,7 @@ namespace CV.Models
 
         public int CompID { get; set; }
 
+
         [ForeignKey(nameof(CID))]
       
         public virtual CV_? CV { get; set; }
