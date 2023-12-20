@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CV.Models
 {
     public class CV_
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CID { get; set; }
         //Ta bort senare detta är för exempeldata
         public virtual IEnumerable <Education> Education { get; set; }

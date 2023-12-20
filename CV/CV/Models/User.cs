@@ -6,7 +6,7 @@ namespace CV.Models
     public class User
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UID { get; set; }
 
         [StringLength(150)]
