@@ -15,17 +15,12 @@ namespace CV.Controllers
 
         }
 
-        public IActionResult Index()
-        {
-            ViewBag.Meddelande = _userContext.Users.Select(x => x.Username);
-            return View();
-        }
 
         public IActionResult Privacy()
         {
             return View();
         }
-
+        
         //För sökrutan ska flyttas till UserContext
         public IActionResult Index(string söksträng) {
 
