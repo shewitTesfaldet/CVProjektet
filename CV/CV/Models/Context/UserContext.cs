@@ -225,8 +225,7 @@ namespace CV.Models.Context
                     ConfirmPassword = "password1",
                     Epost = "alice.johnson@example.com",
                     Adress = "456 Oak Street",
-                    Privat = true,
-                    CID = 1
+                    Privat = true
                 },
                 new User
                 {
@@ -238,8 +237,7 @@ namespace CV.Models.Context
                     ConfirmPassword = "password2",
                     Epost = "bob.smith@example.com",
                     Adress = "789 Pine Avenue",
-                    Privat = false,
-                    CID = 2
+                    Privat = false
                 },
                 new User
                 {
@@ -251,8 +249,7 @@ namespace CV.Models.Context
                     ConfirmPassword = "password3",
                     Epost = "charlie.brown@example.com",
                     Adress = "101 Elm Lane",
-                    Privat = true,
-                    CID = 3
+                    Privat = true
                 },
                 new User
                 {
@@ -264,8 +261,7 @@ namespace CV.Models.Context
                     ConfirmPassword = "password4",
                     Epost = "david.lee@example.com",
                     Adress = "202 Maple Road",
-                    Privat = false,
-                    CID = 4
+                    Privat = false
                 },
                 new User
                 {
@@ -277,8 +273,7 @@ namespace CV.Models.Context
                     ConfirmPassword = "password5",
                     Epost = "eva.miller@example.com",
                     Adress = "303 Cedar Street",
-                    Privat = true,
-                    CID = 5
+                    Privat = true
                 }
                 );
             #endregion

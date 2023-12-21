@@ -1,0 +1,30 @@
+﻿@model List<User>
+
+<table class="table table-borderless">
+
+    <h2>@ViewBag.Sök</h2>
+
+    <thead>
+        <tr>
+            <td>Användarnamn </td>
+            <td>Förnamn </td>
+            <td>Efternamn</td>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var prod in Model)
+        {
+
+            <tr>
+                <td>@prod.Username</td>
+                <td>@prod.Firstname</td>
+                <td>@prod.Lastname</td>
+            </tr>
+
+        }
+
+    </tbody>
+
+
+</table>

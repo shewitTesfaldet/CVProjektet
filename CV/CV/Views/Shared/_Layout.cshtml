@@ -14,7 +14,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="https:\\localhost:7237\Pictures\logo.png" alt="Bild på logga" style="width:72px;height:42px;" /></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="https:\\localhost:7237\Pictures\logo.png" alt="Bild på logga" style="width:142px;height:72px;" /></a>
                 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -27,23 +27,26 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Startsida</a>
                         </li>
                         <li class="nav-item">
-                            <a asp-controller="User" asp-action="Add"> Registrera ny användare</a>
+                            <a class="nav-link text-dark" asp-controller="User" asp-action="Add"> Registrera</a>
                         </li>
                     </ul>
                 </div>
                @*Sök container*@
                     <form class="d-flex" role="search">
                         <input class="form-control me-2" type="text" name="söksträng" placeholder="Sök" aria-label="Search">
-                   
-                         <button class="btn btn-outline-success" type="submit">Sök</button>
+
+                    <button class="btn btn-outline-success" type="submit" value="submit" asp-controller="Search" asp-action="Search">Sök</button>
+
                      </form>
                     
                @*Profilbild som ska leda till sin egna profil*@
                 <div class="dropdown">
 
                     <a class="navbar-brand" href="#" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://images.pexels.com/photos/9652566/pexels-photo-9652566.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load" alt="Profilbild" width="52" height="52" style="border-radius:50%; margin-left: 1em; margin-right:3em;">
-                </a>
+                        <svg xmlns="http://www.w3.org/2000/svg" style="margin-left:1em; margin-right:1em;"  width="52" height="52" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                        </svg>                    
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Profil</a></li>
                         <li><a class="dropdown-item" href="#">CV</a></li>

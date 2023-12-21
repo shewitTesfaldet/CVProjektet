@@ -5,7 +5,9 @@ namespace CV.Models
 {
     public class Education
     {
-        [Key] 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int EdID { get; set; }
         public string Description { get; set; }
 

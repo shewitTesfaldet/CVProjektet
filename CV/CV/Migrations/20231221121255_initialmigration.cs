@@ -14,19 +14,6 @@ namespace CV.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "CV_s",
-                columns: table => new
-                {
-                    CID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CV_s", x => x.CID);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -40,6 +27,91 @@ namespace CV.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Projects", x => x.PID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Epost = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Privat = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Chats",
+                columns: table => new
+                {
+                    MID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Read = table.Column<bool>(type: "bit", nullable: true),
+                    UID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Chats", x => x.MID);
+                    table.ForeignKey(
+                        name: "FK_Chats_Users_UID",
+                        column: x => x.UID,
+                        principalTable: "Users",
+                        principalColumn: "UID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CV_s",
+                columns: table => new
+                {
+                    CID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Picture = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CV_s", x => x.CID);
+                    table.ForeignKey(
+                        name: "FK_CV_s_Users_UID",
+                        column: x => x.UID,
+                        principalTable: "Users",
+                        principalColumn: "UID");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProjects",
+                columns: table => new
+                {
+                    UID = table.Column<int>(type: "int", nullable: false),
+                    PID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProjects", x => new { x.PID, x.UID });
+                    table.ForeignKey(
+                        name: "FK_UserProjects_Projects_PID",
+                        column: x => x.PID,
+                        principalTable: "Projects",
+                        principalColumn: "PID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserProjects_Users_UID",
+                        column: x => x.UID,
+                        principalTable: "Users",
+                        principalColumn: "UID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,33 +175,6 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Firstname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Lastname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Epost = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Privat = table.Column<bool>(type: "bit", nullable: false),
-                    CID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UID);
-                    table.ForeignKey(
-                        name: "FK_Users_CV_s_CID",
-                        column: x => x.CID,
-                        principalTable: "CV_s",
-                        principalColumn: "CID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "CV_Competences",
                 columns: table => new
                 {
@@ -177,62 +222,16 @@ namespace CV.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Chats",
-                columns: table => new
-                {
-                    MID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Text = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Read = table.Column<bool>(type: "bit", nullable: true),
-                    UID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Chats", x => x.MID);
-                    table.ForeignKey(
-                        name: "FK_Chats_Users_UID",
-                        column: x => x.UID,
-                        principalTable: "Users",
-                        principalColumn: "UID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserProjects",
-                columns: table => new
-                {
-                    UID = table.Column<int>(type: "int", nullable: false),
-                    PID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserProjects", x => new { x.PID, x.UID });
-                    table.ForeignKey(
-                        name: "FK_UserProjects_Projects_PID",
-                        column: x => x.PID,
-                        principalTable: "Projects",
-                        principalColumn: "PID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserProjects_Users_UID",
-                        column: x => x.UID,
-                        principalTable: "Users",
-                        principalColumn: "UID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "CV_s",
-                columns: new[] { "CID", "Picture" },
+                columns: new[] { "CID", "Picture", "UID" },
                 values: new object[,]
                 {
-                    { 1, "profile_picture1.jpg" },
-                    { 2, "profile_picture2.jpg" },
-                    { 3, "profile_picture3.jpg" },
-                    { 4, "profile_picture4.jpg" },
-                    { 5, "profile_picture5.jpg" }
+                    { 1, "profile_picture1.jpg", null },
+                    { 2, "profile_picture2.jpg", null },
+                    { 3, "profile_picture3.jpg", null },
+                    { 4, "profile_picture4.jpg", null },
+                    { 5, "profile_picture5.jpg", null }
                 });
 
             migrationBuilder.InsertData(
@@ -272,6 +271,18 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UID", "Adress", "ConfirmPassword", "Epost", "Firstname", "Lastname", "Password", "Privat", "Username" },
+                values: new object[,]
+                {
+                    { 1, "456 Oak Street", "password1", "alice.johnson@example.com", "Alice", "Johnson", "password1", true, "user1" },
+                    { 2, "789 Pine Avenue", "password2", "bob.smith@example.com", "Bob", "Smith", "password2", false, "user2" },
+                    { 3, "101 Elm Lane", "password3", "charlie.brown@example.com", "Charlie", "Brown", "password3", true, "user3" },
+                    { 4, "202 Maple Road", "password4", "david.lee@example.com", "David", "Lee", "password4", false, "user4" },
+                    { 5, "303 Cedar Street", "password5", "eva.miller@example.com", "Eva", "Miller", "password5", true, "user5" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "CV_Competences",
                 columns: new[] { "CID", "CompID" },
                 values: new object[,]
@@ -296,30 +307,6 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Experience",
-                columns: new[] { "EID", "CID", "Description" },
-                values: new object[,]
-                {
-                    { 1, 1, "Software Developer at ABC Tech" },
-                    { 2, 2, "Data Analyst at XYZ Analytics" },
-                    { 3, 3, "Project Manager at Acme Projects" },
-                    { 4, 4, "Internship at DEF Corporation" },
-                    { 5, 5, "Marketing Coordinator at LMN Marketing" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "UID", "Adress", "CID", "ConfirmPassword", "Epost", "Firstname", "Lastname", "Password", "Privat", "Username" },
-                values: new object[,]
-                {
-                    { 1, "456 Oak Street", 1, "password1", "alice.johnson@example.com", "Alice", "Johnson", "password1", true, "user1" },
-                    { 2, "789 Pine Avenue", 2, "password2", "bob.smith@example.com", "Bob", "Smith", "password2", false, "user2" },
-                    { 3, "101 Elm Lane", 3, "password3", "charlie.brown@example.com", "Charlie", "Brown", "password3", true, "user3" },
-                    { 4, "202 Maple Road", 4, "password4", "david.lee@example.com", "David", "Lee", "password4", false, "user4" },
-                    { 5, "303 Cedar Street", 5, "password5", "eva.miller@example.com", "Eva", "Miller", "password5", true, "user5" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Chats",
                 columns: new[] { "MID", "Date", "Read", "Text", "UID" },
                 values: new object[,]
@@ -329,6 +316,18 @@ namespace CV.Migrations
                     { 3, new DateTime(2022, 1, 10, 13, 0, 0, 0, DateTimeKind.Unspecified), false, "Vad har du gjort idag?", 3 },
                     { 4, new DateTime(2022, 1, 10, 13, 15, 0, 0, DateTimeKind.Unspecified), false, "Jobbat och tränat lite.", 4 },
                     { 5, new DateTime(2022, 1, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), false, "Låter bra! Vad har du för planer resten av dagen?", 5 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Experience",
+                columns: new[] { "EID", "CID", "Description" },
+                values: new object[,]
+                {
+                    { 1, 1, "Software Developer at ABC Tech" },
+                    { 2, 2, "Data Analyst at XYZ Analytics" },
+                    { 3, 3, "Project Manager at Acme Projects" },
+                    { 4, 4, "Internship at DEF Corporation" },
+                    { 5, 5, "Marketing Coordinator at LMN Marketing" }
                 });
 
             migrationBuilder.InsertData(
@@ -364,6 +363,13 @@ namespace CV.Migrations
                 column: "EdID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CV_s_UID",
+                table: "CV_s",
+                column: "UID",
+                unique: true,
+                filter: "[UID] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Education_CV_CID",
                 table: "Education",
                 column: "CV_CID");
@@ -377,12 +383,6 @@ namespace CV.Migrations
                 name: "IX_UserProjects_UID",
                 table: "UserProjects",
                 column: "UID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_CID",
-                table: "Users",
-                column: "CID",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -413,10 +413,10 @@ namespace CV.Migrations
                 name: "Projects");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "CV_s");
 
             migrationBuilder.DropTable(
-                name: "CV_s");
+                name: "Users");
         }
     }
 }
