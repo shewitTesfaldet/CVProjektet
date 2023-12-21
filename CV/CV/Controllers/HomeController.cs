@@ -21,20 +21,7 @@ namespace CV.Controllers
         {
             return View();
         }
-        
-        //För sökrutan ska flyttas till UserContext
-        //public IActionResult Index(string söksträng) {
 
-        //    List<User> users = new List<User>();
-        //    if (!string.IsNullOrEmpty(söksträng))
-        //    {
-        //        users = _userContext.Users
-        //                .Where( x => x.Username.Contains(söksträng))
-        //                .ToList();
-        //    }
-        //    return View(users); 
-
-        //}
 
         public IActionResult Index()
         {

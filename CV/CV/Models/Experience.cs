@@ -6,6 +6,8 @@ namespace CV.Models
     public class Experience
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int EID { get; set; }
         public string Description { get; set; }
         public int CID { get; set; }

@@ -30,14 +30,15 @@ namespace CV.Controllers
             {  
                 
                _userContext.Users.Add(newUser);
-                //_userContext.SaveChanges();
+                _userContext.SaveChanges();
                 ViewBag.Message = $"Registration successful! Welcome, {newUser.Firstname} {newUser.Lastname}.";
 
-                return View(newUser);
+                return RedirectToAction("Add", "User");
             }
 
             else
-            { return View(newUser); }
+            { 
+                return View(newUser); }
 
 
         }

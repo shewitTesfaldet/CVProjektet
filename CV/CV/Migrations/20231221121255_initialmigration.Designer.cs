@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CV.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20231220151352_initialmigration")]
+    [Migration("20231221121255_initialmigration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -40,7 +40,14 @@ namespace CV.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UID")
+                        .HasColumnType("int");
+
                     b.HasKey("CID");
+
+                    b.HasIndex("UID")
+                        .IsUnique()
+                        .HasFilter("[UID] IS NOT NULL");
 
                     b.ToTable("CV_s");
 
@@ -472,11 +479,7 @@ namespace CV.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UID"));
 
                     b.Property<string>("Adress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CID")
-                        .HasColumnType("int");
 
                     b.Property<string>("ConfirmPassword")
                         .IsRequired()
@@ -508,9 +511,6 @@ namespace CV.Migrations
 
                     b.HasKey("UID");
 
-                    b.HasIndex("CID")
-                        .IsUnique();
-
                     b.ToTable("Users");
 
                     b.HasData(
@@ -518,7 +518,6 @@ namespace CV.Migrations
                         {
                             UID = 1,
                             Adress = "456 Oak Street",
-                            CID = 1,
                             ConfirmPassword = "password1",
                             Epost = "alice.johnson@example.com",
                             Firstname = "Alice",
@@ -531,7 +530,6 @@ namespace CV.Migrations
                         {
                             UID = 2,
                             Adress = "789 Pine Avenue",
-                            CID = 2,
                             ConfirmPassword = "password2",
                             Epost = "bob.smith@example.com",
                             Firstname = "Bob",
@@ -544,7 +542,6 @@ namespace CV.Migrations
                         {
                             UID = 3,
                             Adress = "101 Elm Lane",
-                            CID = 3,
                             ConfirmPassword = "password3",
                             Epost = "charlie.brown@example.com",
                             Firstname = "Charlie",
@@ -557,7 +554,6 @@ namespace CV.Migrations
                         {
                             UID = 4,
                             Adress = "202 Maple Road",
-                            CID = 4,
                             ConfirmPassword = "password4",
                             Epost = "david.lee@example.com",
                             Firstname = "David",
@@ -570,7 +566,6 @@ namespace CV.Migrations
                         {
                             UID = 5,
                             Adress = "303 Cedar Street",
-                            CID = 5,
                             ConfirmPassword = "password5",
                             Epost = "eva.miller@example.com",
                             Firstname = "Eva",
@@ -621,6 +616,15 @@ namespace CV.Migrations
                             PID = 2,
                             UID = 4
                         });
+                });
+
+            modelBuilder.Entity("CV.Models.CV_", b =>
+                {
+                    b.HasOne("CV.Models.User", "User")
+                        .WithOne("CV_")
+                        .HasForeignKey("CV.Models.CV_", "UID");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CV.Models.CV_Competence", b =>
@@ -697,17 +701,6 @@ namespace CV.Migrations
                     b.Navigation("cv");
                 });
 
-            modelBuilder.Entity("CV.Models.User", b =>
-                {
-                    b.HasOne("CV.Models.CV_", "Cv")
-                        .WithOne("User")
-                        .HasForeignKey("CV.Models.User", "CID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cv");
-                });
-
             modelBuilder.Entity("CV.Models.User_Project", b =>
                 {
                     b.HasOne("CV.Models.Project", "project")
@@ -738,9 +731,6 @@ namespace CV.Migrations
                     b.Navigation("Education");
 
                     b.Navigation("Experiences");
-
-                    b.Navigation("User")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("CV.Models.Competence", b =>
@@ -760,6 +750,8 @@ namespace CV.Migrations
 
             modelBuilder.Entity("CV.Models.User", b =>
                 {
+                    b.Navigation("CV_");
+
                     b.Navigation("Chats");
 
                     b.Navigation("User_Projects");
