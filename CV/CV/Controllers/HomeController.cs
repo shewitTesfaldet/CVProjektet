@@ -1,6 +1,7 @@
 using CV.Models;
 using CV.Models.Context;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 
@@ -22,17 +23,30 @@ namespace CV.Controllers
         }
         
         //För sökrutan ska flyttas till UserContext
-        public IActionResult Index(string söksträng) {
+        //public IActionResult Index(string söksträng) {
 
-            List<User> users = new List<User>();
-            if (!string.IsNullOrEmpty(söksträng))
-            {
-                users = _userContext.Users
-                        .Where( x => x.Username.Contains(söksträng))
-                        .ToList();
-            }
-            return View(users); 
+        //    List<User> users = new List<User>();
+        //    if (!string.IsNullOrEmpty(söksträng))
+        //    {
+        //        users = _userContext.Users
+        //                .Where( x => x.Username.Contains(söksträng))
+        //                .ToList();
+        //    }
+        //    return View(users); 
+
+        //}
+
+        public IActionResult Index()
+        {
+
+            List<User> produktList = _userContext.Users.ToList();
+            Console.WriteLine($"Antal användare: {produktList.Count}");
+            ViewBag.Meddelande = "Antal i listan";
+            return View(produktList);
+
+
         }
-       
+
+
     }
 }
