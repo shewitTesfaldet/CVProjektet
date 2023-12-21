@@ -27,9 +27,10 @@ namespace CV.Controllers
         public IActionResult Add(User newUser)
         {
             if (ModelState.IsValid)
-            {
-                _userContext.Users.Add(newUser);
-                _userContext.SaveChanges();
+            {  
+                
+               _userContext.Users.Add(newUser);
+                //_userContext.SaveChanges();
                 ViewBag.Message = $"Registration successful! Welcome, {newUser.Firstname} {newUser.Lastname}.";
 
                 return View(newUser);

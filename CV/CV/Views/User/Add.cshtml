@@ -1,20 +1,17 @@
 ﻿@model User
-
+<div asp-validation-summary="All" class="text-danger"> </div>
 <form asp-action="Add" method="post">
+
     <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
         
         <tr>
-            <td>
-                <label asp-for="UID">ID:</label>
-            </td>
-            <td>
-                <input asp-for="UID" type="text" class="form-control" />
-            </td>
+
             <td>
                 <label asp-for="Username">Username:</label>
             </td>
             <td>
                 <input asp-for="Username" type="text" class="form-control" />
+              
             </td>
         </tr>
         <tr>
