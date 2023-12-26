@@ -78,7 +78,7 @@ namespace CV.Migrations
                     CID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Picture = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UID = table.Column<int>(type: "int", nullable: true)
+                    UID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,7 +87,8 @@ namespace CV.Migrations
                         name: "FK_CV_s_Users_UID",
                         column: x => x.UID,
                         principalTable: "Users",
-                        principalColumn: "UID");
+                        principalColumn: "UID",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,18 +224,6 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "CV_s",
-                columns: new[] { "CID", "Picture", "UID" },
-                values: new object[,]
-                {
-                    { 1, "profile_picture1.jpg", null },
-                    { 2, "profile_picture2.jpg", null },
-                    { 3, "profile_picture3.jpg", null },
-                    { 4, "profile_picture4.jpg", null },
-                    { 5, "profile_picture5.jpg", null }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Competence",
                 columns: new[] { "CompID", "CV_CID", "Description" },
                 values: new object[,]
@@ -283,6 +272,42 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "CV_s",
+                columns: new[] { "CID", "Picture", "UID" },
+                values: new object[,]
+                {
+                    { 1, "profile_picture1.jpg", 1 },
+                    { 2, "profile_picture2.jpg", 2 },
+                    { 3, "profile_picture3.jpg", 3 },
+                    { 4, "profile_picture4.jpg", 4 },
+                    { 5, "profile_picture5.jpg", 5 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Chats",
+                columns: new[] { "MID", "Date", "Read", "Text", "UID" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2022, 1, 10, 12, 30, 0, 0, DateTimeKind.Unspecified), true, "Hej, hur mår du?", 1 },
+                    { 2, new DateTime(2022, 1, 10, 12, 35, 0, 0, DateTimeKind.Unspecified), true, "Jag mår bra, tack!", 2 },
+                    { 3, new DateTime(2022, 1, 10, 13, 0, 0, 0, DateTimeKind.Unspecified), false, "Vad har du gjort idag?", 3 },
+                    { 4, new DateTime(2022, 1, 10, 13, 15, 0, 0, DateTimeKind.Unspecified), false, "Jobbat och tränat lite.", 4 },
+                    { 5, new DateTime(2022, 1, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), false, "Låter bra! Vad har du för planer resten av dagen?", 5 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserProjects",
+                columns: new[] { "PID", "UID" },
+                values: new object[,]
+                {
+                    { 2, 1 },
+                    { 2, 4 },
+                    { 3, 2 },
+                    { 4, 1 },
+                    { 5, 4 }
+                });
+
+            migrationBuilder.InsertData(
                 table: "CV_Competences",
                 columns: new[] { "CID", "CompID" },
                 values: new object[,]
@@ -307,18 +332,6 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Chats",
-                columns: new[] { "MID", "Date", "Read", "Text", "UID" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2022, 1, 10, 12, 30, 0, 0, DateTimeKind.Unspecified), true, "Hej, hur mår du?", 1 },
-                    { 2, new DateTime(2022, 1, 10, 12, 35, 0, 0, DateTimeKind.Unspecified), true, "Jag mår bra, tack!", 2 },
-                    { 3, new DateTime(2022, 1, 10, 13, 0, 0, 0, DateTimeKind.Unspecified), false, "Vad har du gjort idag?", 3 },
-                    { 4, new DateTime(2022, 1, 10, 13, 15, 0, 0, DateTimeKind.Unspecified), false, "Jobbat och tränat lite.", 4 },
-                    { 5, new DateTime(2022, 1, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), false, "Låter bra! Vad har du för planer resten av dagen?", 5 }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Experience",
                 columns: new[] { "EID", "CID", "Description" },
                 values: new object[,]
@@ -328,18 +341,6 @@ namespace CV.Migrations
                     { 3, 3, "Project Manager at Acme Projects" },
                     { 4, 4, "Internship at DEF Corporation" },
                     { 5, 5, "Marketing Coordinator at LMN Marketing" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "UserProjects",
-                columns: new[] { "PID", "UID" },
-                values: new object[,]
-                {
-                    { 2, 1 },
-                    { 2, 4 },
-                    { 3, 2 },
-                    { 4, 1 },
-                    { 5, 4 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -366,8 +367,7 @@ namespace CV.Migrations
                 name: "IX_CV_s_UID",
                 table: "CV_s",
                 column: "UID",
-                unique: true,
-                filter: "[UID] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Education_CV_CID",

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CV.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20231221121255_initialmigration")]
+    [Migration("20231221140909_initialmigration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -40,14 +40,13 @@ namespace CV.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UID")
+                    b.Property<int>("UID")
                         .HasColumnType("int");
 
                     b.HasKey("CID");
 
                     b.HasIndex("UID")
-                        .IsUnique()
-                        .HasFilter("[UID] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("CV_s");
 
@@ -55,27 +54,32 @@ namespace CV.Migrations
                         new
                         {
                             CID = 1,
-                            Picture = "profile_picture1.jpg"
+                            Picture = "profile_picture1.jpg",
+                            UID = 1
                         },
                         new
                         {
                             CID = 2,
-                            Picture = "profile_picture2.jpg"
+                            Picture = "profile_picture2.jpg",
+                            UID = 2
                         },
                         new
                         {
                             CID = 3,
-                            Picture = "profile_picture3.jpg"
+                            Picture = "profile_picture3.jpg",
+                            UID = 3
                         },
                         new
                         {
                             CID = 4,
-                            Picture = "profile_picture4.jpg"
+                            Picture = "profile_picture4.jpg",
+                            UID = 4
                         },
                         new
                         {
                             CID = 5,
-                            Picture = "profile_picture5.jpg"
+                            Picture = "profile_picture5.jpg",
+                            UID = 5
                         });
                 });
 
@@ -622,7 +626,9 @@ namespace CV.Migrations
                 {
                     b.HasOne("CV.Models.User", "User")
                         .WithOne("CV_")
-                        .HasForeignKey("CV.Models.CV_", "UID");
+                        .HasForeignKey("CV.Models.CV_", "UID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });

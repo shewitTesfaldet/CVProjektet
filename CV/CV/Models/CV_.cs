@@ -12,10 +12,10 @@ namespace CV.Models
         public string Picture { get; set; }
         public virtual IEnumerable<Experience> Experiences { get; set; } = new List<Experience>();
 
-        public int? UID { get; set; }
+        public int UID { get; set; }
 
         [ForeignKey(nameof(UID))]
-        public virtual User? User { get; set; }
+        public virtual User User { get; set; }
 
         public virtual IEnumerable<CV_Competence> CV_Competences { get; set; } = new List<CV_Competence>();
         public virtual IEnumerable<CV_Education> CV_Education { get; set; } = new List<CV_Education>();

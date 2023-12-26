@@ -1,47 +1,47 @@
 @model List<User>
-
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "JobConnect";
 }
+<h3 style="text-align:center; margin-top:1em;">Välkommen till JobConnect!</h3>
+<div style="display: flex; justify-content: space-between;">
+    <div style="width: 45%; margin-top:7em;">
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
-<h2>HEJ DET FUNKAR ÖNTLIGEN</h2>
-
-
-
-<table class="table-bordered">
-    <thead>
-        <tr>
-           
-            <td>Namn </td>
-            <td>Beskrivning </td>
-            <td>Pris</td>
-            <td>Kategori</td>
-            <td>Privat</td>
-
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var prod in Model)
+        @foreach (var user in ViewBag.Result)
         {
-            <tr>
-                <td>@prod.UID</td>
-                <td>@prod.Username</td>
-                <td>@prod.Firstname</td>
-                <td>@prod.Lastname</td>
-                <td>@prod.Privat</td>
-          
-              
 
+            <div class="card border-dark mb-3" style="max-width: 18rem; margin-bottom:3rem;">
+                <div class="card-body">
+                    <h4 class="card-title">@user.Firstname @user.Lastname</h4>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">@user.Username</h6>
+                    <p class="card-text">@user.Description</p>
+                    <a href="#" class="card-link">CV</a>
+                    <a href="#" class="card-link">Profil</a>
+                </div>
+            </div>
 
-            </tr>
         }
-    </tbody>
+    </div>
+
+    <div style="width: 45%; margin-top:7em;">
+
+        @foreach (var project in ViewBag.PResult)
+        {
+            <div class="card border-info mb-3" style="max-width: 18rem; margin-left:15rem;">
+                <div class="card-body">
+                    <h4>Projekt</h4>
+                    <h5 class="card-title">@project.Title</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">@project.Description</h6>
+                    <p class="card-text"> Skapad av @project.Username</p>
+                    <a href="#" class="card-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                        </svg><a>
+                    <a href="#" class="card-link">Projekt</a>
+                </div>
+            </div>
+        }
+    </div>
 
 
-</table>
+   
+</div>

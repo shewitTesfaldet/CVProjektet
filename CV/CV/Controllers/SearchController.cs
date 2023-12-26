@@ -26,11 +26,9 @@ namespace CV.Controllers
             if (!string.IsNullOrEmpty(söksträng))
             {
                 users = _context.Users
-                        .Where(x => x.Username.Contains(söksträng))
+                        .Where(x => x.Username.Contains(söksträng) || x.Firstname.Contains(söksträng) || x.Lastname.Contains(söksträng))                 
                         .ToList();
-            }
-           
-            
+            }                    
             return View(users);
 
         }
