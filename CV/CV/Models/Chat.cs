@@ -6,7 +6,9 @@ namespace CV.Models
 {
     public class Chat
     {
-        [Key]
+	
+
+		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int MID { get; set; }
         [StringLength(250)]
@@ -19,5 +21,7 @@ namespace CV.Models
         [ForeignKey(nameof(UID))]
         public virtual User? user { get; set; }
 
-    }
+		
+
+	}
 }

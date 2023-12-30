@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CV.Models.Context
 {
-    public class UserContext : DbContext
+    public class UserContext : IdentityDbContext<LogInUser>
     {
         public UserContext(DbContextOptions<UserContext> options) : base(options)
         {

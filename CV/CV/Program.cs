@@ -1,4 +1,6 @@
+using CV.Models;
 using CV.Models.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<UserContext>(options =>
     options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("UserContextConnectionString")));
+
+
+builder.Services.AddIdentity<LogInUser, IdentityRole>()
+    .AddEntityFrameworkStores<UserContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -23,7 +30,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",
