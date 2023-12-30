@@ -1,0 +1,55 @@
+﻿@model UserRegisterViewModel
+
+
+<section class="">
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" style="background-color: hsl(0, 0%, 96%)">
+        <div class="container">
+            <div class="row gx-lg-5 align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="my-5 display-3 fw-bold ls-tight" style="font-size:53px;">
+                        Välkommen till ditt <br />
+                        <span class="text-primary">professionella nätverk</span>
+                    </h1>
+                    <p style="color: hsl(217, 10%, 50.8%)">
+                      Registrera dig idag och mingla med 5000+ andra användare världen över. Skapa kontot nu och fyll i informationen i efterhand. Få även tillgång till CV-generatorn vid inskrivning av dina uppgifter.
+                    </p>
+                </div>
+
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="card">
+                        <div class="card-body py-5 px-md-5">
+                            <div asp-asp-validation-summary="All"></div>
+                            <form method="post"  asp-action="Register">
+                                
+                                <div class="row">
+                                    <div class="form-outline mb-4">
+                                        <div class="form-outline">
+                                            <input asp-for="UserName" type="text" id="form3Example1" class="form-control" />
+                                            <label class="form-label" for="form3Example1">Användarnamn</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-outline mb-4">
+                                        <div class="form-outline">
+                                            <input asp-for="Password" type="password" id="form3Example2" class="form-control" />
+                                            <label class="form-label" for="form3Example2">Lösenord</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-outline mb-4">
+                                    <input asp-for="ConfirmPassword" type="password" id="form3Example3" class="form-control" />
+                                    <label class="form-label" for="form3Example3">Bekräfta lösenord</label>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-block mb-4">
+                                    Registrera  
+                                </button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

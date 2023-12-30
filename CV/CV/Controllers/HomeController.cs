@@ -7,6 +7,7 @@ using System.Diagnostics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Cryptography;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CV.Controllers
 {
@@ -25,12 +26,12 @@ namespace CV.Controllers
             return View();
         }
 
-
-        public IActionResult Index()
+        [Authorize]
+        public  IActionResult Index()
         {
             //Hämtar alla användare med utbildning i en lista
 
-            var data = (from user in _userContext.Users
+            var data =  (from user in  _userContext.Users
                         join cv in _userContext.CV_s on user.UID equals cv.UID into cvGroup
                         from cv in cvGroup.DefaultIfEmpty()
                         join cvEdu in _userContext.CV_Educations on cv.CID equals cvEdu.CID into cvEduGroup
@@ -49,7 +50,7 @@ namespace CV.Controllers
 
             ViewBag.Result = result;
             //Hämtar projekt utifrån användare och sorterar de senaste
-            var Presult = (from user in _userContext.Users
+            var Presult =  (from user in _userContext.Users
                            join userProject in _userContext.UserProjects on user.UID equals userProject.UID
                            join project in _userContext.Projects on userProject.PID equals project.PID
                            orderby project.PID descending
