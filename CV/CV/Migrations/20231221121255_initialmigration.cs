@@ -88,7 +88,7 @@ namespace CV.Migrations
                         column: x => x.UID,
                         principalTable: "Users",
                         principalColumn: "UID");
-                });
+				});
 
             migrationBuilder.CreateTable(
                 name: "UserProjects",

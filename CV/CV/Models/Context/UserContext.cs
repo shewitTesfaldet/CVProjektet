@@ -103,7 +103,8 @@ namespace CV.Models.Context
                 Experiences = Ex,
                 Education = Ed,
                 Competence = Co,
-                Picture = "profile_picture1.jpg"
+                Picture = "profile_picture1.jpg",
+                UID = 1
             },
                 new CV_
                 {
@@ -111,33 +112,41 @@ namespace CV.Models.Context
                     Experiences = Ex,
                     Education = Ed,
                     Competence = Co,
-                    Picture = "profile_picture2.jpg"
-                },
+                    Picture = "profile_picture2.jpg",
+					UID = 2
+
+				},
                 new CV_
                 {
                     CID = 3,
                     Experiences = Ex,
                     Education = Ed,
                     Competence = Co,
-                    Picture = "profile_picture3.jpg"
-                },
+                    Picture = "profile_picture3.jpg",
+					UID = 3
+
+				},
                 new CV_
                 {
                     CID = 4,
                     Experiences = Ex,
                     Education = Ed,
                     Competence = Co,
-                    Picture = "profile_picture4.jpg"
-                },
+                    Picture = "profile_picture4.jpg",
+					UID = 4
+
+				},
                 new CV_
                 {
                     CID = 5,
                     Experiences = Ex,
                     Education = Ed,
                     Competence = Co,
-                    Picture = "profile_picture5.jpg"
-                }
-               );
+                    Picture = "profile_picture5.jpg",
+					UID = 5
+
+				}
+			   );
             #endregion
             #region Competence
             modelBuilder.Entity<Competence>().HasData(

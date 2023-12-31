@@ -28,5 +28,10 @@ namespace CV.Models
         public virtual IEnumerable<Education> Education { get; set; }
         //Ta bort senare detta är för exempeldata
         public virtual IEnumerable<Competence> Competence { get; set; }
+
+       /* public CV_( int cID, string picture, ) 
+        {
+        
+        }*/
     }
 }

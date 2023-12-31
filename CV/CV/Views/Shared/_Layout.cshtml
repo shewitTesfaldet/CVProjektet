@@ -29,6 +29,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="User" asp-action="Add"> Registrera</a>
                         </li>
+                       
                     </ul>
                 </div>
                @*Sök container*@
@@ -49,7 +50,7 @@
                         </svg>                    
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Profil</a></li>
-                        <li><a class="dropdown-item" href="#">CV</a></li>
+                            <li><a class="dropdown-item" asp-controller="CV_" asp-action="Edit">CV</a></li>
                         <li><a class="dropdown-item" href="#">Logga ut</a></li>
                     </ul>
                 </div>
