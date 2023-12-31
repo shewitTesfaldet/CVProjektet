@@ -1,0 +1,42 @@
+﻿@model Project
+
+<form asp-controller="Project" asp-action="EditProject" method="post">
+    <table class="table-bordered table" style="width: 70%; margin: auto; border-collapse: collapse; margin-top: 20px; border: 10px solid DarkSeaGreen;">
+
+        <tr>
+            <td>
+                <label asp-for="Title">Titel</label>
+                <input asp-for="Title" type="text" class="form-control" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label asp-for="Description">Beskrivning</label>
+                <input asp-for="Description" type="text" class="form-control" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label asp-for="BeginDate">Startdatum</label>
+                <input asp-for="BeginDate" type="date" class="form-control" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label asp-for="EndDate">Slutdatum</label>
+                <input asp-for="EndDate" type="date" class="form-control" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Uppdatera" class="btn-primary " />
+            </td>
+        </tr>
+
+    </table>
+    <button class="btn btn-outline-success" type="submit" value="submit" asp-controller="Project" asp-action="Projects">Tillbaka</button>
+</form>
