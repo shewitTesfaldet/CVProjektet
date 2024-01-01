@@ -1,0 +1,29 @@
+﻿@model CV_
+
+<!DOCTYPE html>
+<div asp-validation-summary="All" class="text-danger"> </div>
+<form asp-action="Edit" method="post">
+
+	<head>
+
+	</head>
+	<header>
+	</header>
+
+
+	<body>
+
+		<div class="grid-container">
+			<h1>
+
+				<label class="name">Username:</label>
+				<select id="test" asp-for="UID" asp-items="@ViewBag.Username"></select>
+
+				<input type="submit" value="Show" class="btn-primary" asp-controller="CV_" asp-action="AddResume" />
+
+
+			</h1>
+		</div>
+
+	</body>
+</form>
