@@ -1,10 +1,10 @@
 ﻿
 using CV.Models;
-using CV.Models.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using Models;
 
 namespace CV.Controllers
 {
@@ -55,7 +55,7 @@ namespace CV.Controllers
 
 			/*if (users[i].Equals(sendTo))
             {*/
-			Chat chat = new Chat();
+			    Chat chat = new Chat();
                 chat.Text = med;
                 chat.Date = DateTime.Now;
                 chat.Read = false;

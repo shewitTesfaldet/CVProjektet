@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.Identity;
+using CV.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace CV.Models.Context
+namespace Models
 {
     public class UserContext : IdentityDbContext<LogInUser>
     {

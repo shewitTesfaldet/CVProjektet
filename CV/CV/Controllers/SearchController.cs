@@ -1,5 +1,5 @@
 ﻿using CV.Models;
-using CV.Models.Context;
+using Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CV.Controllers
