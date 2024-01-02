@@ -1,4 +1,4 @@
-﻿using CV.Models.Context;
+﻿using Models;
 using CV.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
