@@ -326,11 +326,11 @@ namespace CV.Models.Context
             #region CV_Competence
             modelBuilder.Entity<CV_Competence>().HasData(
             new CV_Competence
-                {
-                    CID = 1,
-                    CompID = 2
+            {
+                CID = 1,
+                CompID = 2
 
-                },
+            },
              new CV_Competence
              {
                  CID = 2,
@@ -364,7 +364,7 @@ namespace CV.Models.Context
             },
              new CV_Education
              {
-                 CID = 2,                
+                 CID = 2,
                  EdID = 3,
 
              }, new CV_Education
@@ -381,17 +381,17 @@ namespace CV.Models.Context
              {
                  CID = 4,
                  EdID = 2,
-                 
+
              }
             );
             #endregion
             #region User_ProjectUser_Project
             modelBuilder.Entity<User_Project>().HasData(
             new User_Project
-            {                
+            {
                 UID = 1,
                 PID = 2
-            }, 
+            },
              new User_Project
              {
                  UID = 2,
@@ -417,4 +417,6 @@ namespace CV.Models.Context
         }
     }
 }
+
+        
 
