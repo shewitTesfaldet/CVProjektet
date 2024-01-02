@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CV.Controllers
 {
@@ -43,30 +44,36 @@ namespace CV.Controllers
 
         }
         [HttpGet]
-
-        public IActionResult Profile(int UID)
+        [Authorize]
+        public IActionResult Profile()
         {
-            UID = 3;
-            User user = _userContext.Users.Find(UID);
+            string loginUser = User.Identity.Name;
+
+            // Gör jämförelsen icke-casesensitiv direkt i databasfrågan
+            User user = _userContext.Users.FirstOrDefault(u => u.Username.ToUpper() == loginUser.ToUpper());
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
             ViewBag.Profile = user;
             return View(user);
         }
 
+
         [HttpPost]
-        public IActionResult Profile(User updatedUser)
+        public IActionResult Profile(User updatedUser, string loginUser)
         {
             if (ModelState.IsValid)
             {
-                // Hitta användaren med det specifika UID (t.ex. 3) i databasen
-                var existingUser = _userContext.Users.Find(3);
+                User existingUser = _userContext.Users.FirstOrDefault(x=> x.Equals(loginUser));
 
                 if (existingUser == null)
                 {
-                    // Om användaren inte finns, hantera detta scenario, t.ex. visa felmeddelande.
                     return NotFound();
                 }
 
-                // Uppdatera befintliga användarvärden med de nya värdena från updatedUser
                 existingUser.Password = updatedUser.Password;
                 existingUser.ConfirmPassword = updatedUser.ConfirmPassword;
                 existingUser.Firstname = updatedUser.Firstname;
