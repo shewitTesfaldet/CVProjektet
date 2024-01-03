@@ -1,4 +1,7 @@
 ﻿@model LoginViewModel
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
 <form method="post" asp-action="LogIn">
 
     <head>
@@ -6,7 +9,6 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Karla:wght@200;300;400;500&display=swap" rel="stylesheet">
     </head>
-    <div asp-validation-summary="All" class="text-danger"></div> @*Fungerar ej vrf?*@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-6 col-md-7 intro-section">
