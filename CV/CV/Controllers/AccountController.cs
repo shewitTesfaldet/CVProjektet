@@ -24,21 +24,26 @@ namespace CV.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogIn(LoginViewModel loginViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var result = await signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, isPersistent: loginViewModel.RememberMe, lockoutOnFailure: false);
+		public async Task<IActionResult> LogIn(LoginViewModel loginViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				var result = await signInManager.PasswordSignInAsync(loginViewModel.UserName, loginViewModel.Password, isPersistent: loginViewModel.RememberMe, lockoutOnFailure: false);
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            return View(loginViewModel);
-        }
+				if (result.Succeeded)
+				{
+					return RedirectToAction("Index", "Home");
+				}
+				else
+				{
+					ModelState.AddModelError(string.Empty, "Ogiltigt användarnamn eller lösenord.");
+				}
+			}
+			return View(loginViewModel);
+		}
 
-        [HttpGet]
+
+		[HttpGet]
         public IActionResult Register()
         {
             return View();
