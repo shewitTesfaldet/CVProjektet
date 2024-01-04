@@ -1,12 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Cryptography;
 
 namespace CV.Models
 {
     public class Chat
     {
-	
 
 		[Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,12 +14,13 @@ namespace CV.Models
         public DateTime? Date { get; set; }
         public bool? Read { get; set; }
 
-        public int UID { get; set; }
+        public int SenderID { get; set; }
 
-        [ForeignKey(nameof(UID))]
-        public virtual User? user { get; set; }
+        public virtual User? Sender { get; set; }
 
-		
+        public int ReceiverID { get; set; }
 
-	}
+        public virtual User? Receiver { get; set; }
+
+    }
 }

@@ -61,7 +61,8 @@ namespace Models
                 Title = "Web Development Project",
                 Description = "Developing a responsive web application.",
                 BeginDate = new DateTime(2022, 1, 1),
-                EndDate = new DateTime(2022, 6, 30)
+                EndDate = new DateTime(2022, 6, 30),
+                UserCreatedBy = 1
             },
                 new Project
                 {
@@ -69,7 +70,8 @@ namespace Models
                     Title = "Mobile App Development",
                     Description = "Creating a cross-platform mobile application.",
                     BeginDate = new DateTime(2022, 3, 15),
-                    EndDate = new DateTime(2022, 9, 15)
+                    EndDate = new DateTime(2022, 9, 15),
+                    UserCreatedBy = 2
                 },
                 new Project
                 {
@@ -77,7 +79,8 @@ namespace Models
                     Title = "Database Management System",
                     Description = "Designing and implementing a relational database.",
                     BeginDate = new DateTime(2022, 5, 1),
-                    EndDate = new DateTime(2022, 11, 30)
+                    EndDate = new DateTime(2022, 11, 30),
+                    UserCreatedBy = 3
                 },
                 new Project
                 {
@@ -85,7 +88,8 @@ namespace Models
                     Title = "Machine Learning Project",
                     Description = "Applying machine learning algorithms to solve a specific problem.",
                     BeginDate = new DateTime(2022, 7, 1),
-                    EndDate = new DateTime(2023, 1, 31)
+                    EndDate = new DateTime(2023, 1, 31),
+                    UserCreatedBy = 1
                 },
                 new Project
                 {
@@ -93,7 +97,8 @@ namespace Models
                     Title = "Agile Software Development",
                     Description = "Working on a software project using agile methodologies.",
                     BeginDate = new DateTime(2022, 9, 15),
-                    EndDate = new DateTime(2023, 3, 15)
+                    EndDate = new DateTime(2023, 3, 15),
+                    UserCreatedBy = 2
                 }
             );
             #endregion
@@ -233,6 +238,7 @@ namespace Models
                     Epost = "alice.johnson@example.com",
                     Adress = "456 Oak Street",
                     Privat = true
+
                 },
                 new User
                 {
@@ -286,6 +292,20 @@ namespace Models
             #endregion
 
             #region Chat
+            modelBuilder.Entity<Chat>()
+                        .HasOne(m => m.Sender)
+                        .WithMany(u => u.ChatsSent)
+                        .HasForeignKey(m => m.SenderID)
+                        .OnDelete(DeleteBehavior.NoAction); 
+
+
+            modelBuilder.Entity<Chat>()
+                        .HasOne(m => m.Receiver)
+                        .WithMany(u => u.ChatsReceived)
+                        .HasForeignKey(m => m.ReceiverID)
+                        .OnDelete(DeleteBehavior.NoAction); 
+
+
             modelBuilder.Entity<Chat>().HasData(
                  new Chat
                  {
@@ -293,7 +313,8 @@ namespace Models
                      Text = "Hej, hur mår du?",
                      Date = new DateTime(2022, 1, 10, 12, 30, 0),
                      Read = true,
-                     UID = 1 // Användarens ID
+                     SenderID = 1, // Användarens ID
+                     ReceiverID = 2
                  },
                 new Chat
                 {
@@ -301,7 +322,9 @@ namespace Models
                     Text = "Jag mår bra, tack!",
                     Date = new DateTime(2022, 1, 10, 12, 35, 0),
                     Read = true,
-                    UID = 2 // Användarens ID
+                    SenderID = 2,
+                    ReceiverID = 1
+                    // Användarens ID
                 },
                 new Chat
                 {
@@ -309,7 +332,9 @@ namespace Models
                     Text = "Vad har du gjort idag?",
                     Date = new DateTime(2022, 1, 10, 13, 0, 0),
                     Read = false,
-                    UID = 3 // Användarens ID
+                    SenderID = 3,
+                    ReceiverID = 4
+                    // Användarens ID
                 },
                 new Chat
                 {
@@ -317,7 +342,9 @@ namespace Models
                     Text = "Jobbat och tränat lite.",
                     Date = new DateTime(2022, 1, 10, 13, 15, 0),
                     Read = false,
-                    UID = 4 // Användarens ID
+                    SenderID = 4,
+                    ReceiverID = 3
+                    // Användarens ID
                 },
                 new Chat
                 {
@@ -325,7 +352,9 @@ namespace Models
                     Text = "Låter bra! Vad har du för planer resten av dagen?",
                     Date = new DateTime(2022, 1, 10, 14, 0, 0),
                     Read = false,
-                    UID = 5 // Användarens ID
+                    SenderID = 1,
+                    ReceiverID = 2
+                    // Användarens ID
                 }
                 );
             #endregion

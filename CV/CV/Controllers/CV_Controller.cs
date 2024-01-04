@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
-using CV.Migrations;
 using Microsoft.IdentityModel.Tokens;
 
 namespace CV.Controllers
