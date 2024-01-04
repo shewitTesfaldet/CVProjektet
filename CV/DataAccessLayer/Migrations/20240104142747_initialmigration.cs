@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace CV.Migrations
+namespace DataAccessLayer.Migrations
 {
     /// <inheritdoc />
     public partial class initialmigration : Migration
@@ -50,22 +50,6 @@ namespace CV.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Projects",
-                columns: table => new
-                {
-                    PID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Projects", x => x.PID);
                 });
 
             migrationBuilder.CreateTable(
@@ -203,17 +187,22 @@ namespace CV.Migrations
                     Text = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Read = table.Column<bool>(type: "bit", nullable: true),
-                    UID = table.Column<int>(type: "int", nullable: false)
+                    SenderID = table.Column<int>(type: "int", nullable: false),
+                    ReceiverID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Chats", x => x.MID);
                     table.ForeignKey(
-                        name: "FK_Chats_Users_UID",
-                        column: x => x.UID,
+                        name: "FK_Chats_Users_ReceiverID",
+                        column: x => x.ReceiverID,
                         principalTable: "Users",
-                        principalColumn: "UID",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "UID");
+                    table.ForeignKey(
+                        name: "FK_Chats_Users_SenderID",
+                        column: x => x.SenderID,
+                        principalTable: "Users",
+                        principalColumn: "UID");
                 });
 
             migrationBuilder.CreateTable(
@@ -237,24 +226,23 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserProjects",
+                name: "Projects",
                 columns: table => new
                 {
-                    UID = table.Column<int>(type: "int", nullable: false),
                     PID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BeginDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserCreatedBy = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserProjects", x => new { x.PID, x.UID });
+                    table.PrimaryKey("PK_Projects", x => x.PID);
                     table.ForeignKey(
-                        name: "FK_UserProjects_Projects_PID",
-                        column: x => x.PID,
-                        principalTable: "Projects",
-                        principalColumn: "PID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_UserProjects_Users_UID",
-                        column: x => x.UID,
+                        name: "FK_Projects_Users_UserCreatedBy",
+                        column: x => x.UserCreatedBy,
                         principalTable: "Users",
                         principalColumn: "UID",
                         onDelete: ReferentialAction.Cascade);
@@ -317,6 +305,30 @@ namespace CV.Migrations
                         column: x => x.CID,
                         principalTable: "CV_s",
                         principalColumn: "CID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserProjects",
+                columns: table => new
+                {
+                    UID = table.Column<int>(type: "int", nullable: false),
+                    PID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserProjects", x => new { x.PID, x.UID });
+                    table.ForeignKey(
+                        name: "FK_UserProjects_Projects_PID",
+                        column: x => x.PID,
+                        principalTable: "Projects",
+                        principalColumn: "PID",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserProjects_Users_UID",
+                        column: x => x.UID,
+                        principalTable: "Users",
+                        principalColumn: "UID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -393,18 +405,6 @@ namespace CV.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Projects",
-                columns: new[] { "PID", "BeginDate", "Description", "EndDate", "Title" },
-                values: new object[,]
-                {
-                    { 1, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Developing a responsive web application.", new DateTime(2022, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Web Development Project" },
-                    { 2, new DateTime(2022, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Creating a cross-platform mobile application.", new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mobile App Development" },
-                    { 3, new DateTime(2022, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Designing and implementing a relational database.", new DateTime(2022, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Database Management System" },
-                    { 4, new DateTime(2022, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Applying machine learning algorithms to solve a specific problem.", new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Machine Learning Project" },
-                    { 5, new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Working on a software project using agile methodologies.", new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Agile Software Development" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UID", "Adress", "ConfirmPassword", "Epost", "Firstname", "Lastname", "Password", "Privat", "Username" },
                 values: new object[,]
@@ -430,26 +430,26 @@ namespace CV.Migrations
 
             migrationBuilder.InsertData(
                 table: "Chats",
-                columns: new[] { "MID", "Date", "Read", "Text", "UID" },
+                columns: new[] { "MID", "Date", "Read", "ReceiverID", "SenderID", "Text" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2022, 1, 10, 12, 30, 0, 0, DateTimeKind.Unspecified), true, "Hej, hur mår du?", 1 },
-                    { 2, new DateTime(2022, 1, 10, 12, 35, 0, 0, DateTimeKind.Unspecified), true, "Jag mår bra, tack!", 2 },
-                    { 3, new DateTime(2022, 1, 10, 13, 0, 0, 0, DateTimeKind.Unspecified), false, "Vad har du gjort idag?", 3 },
-                    { 4, new DateTime(2022, 1, 10, 13, 15, 0, 0, DateTimeKind.Unspecified), false, "Jobbat och tränat lite.", 4 },
-                    { 5, new DateTime(2022, 1, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), false, "Låter bra! Vad har du för planer resten av dagen?", 5 }
+                    { 1, new DateTime(2022, 1, 10, 12, 30, 0, 0, DateTimeKind.Unspecified), true, 2, 1, "Hej, hur mår du?" },
+                    { 2, new DateTime(2022, 1, 10, 12, 35, 0, 0, DateTimeKind.Unspecified), true, 1, 2, "Jag mår bra, tack!" },
+                    { 3, new DateTime(2022, 1, 10, 13, 0, 0, 0, DateTimeKind.Unspecified), false, 4, 3, "Vad har du gjort idag?" },
+                    { 4, new DateTime(2022, 1, 10, 13, 15, 0, 0, DateTimeKind.Unspecified), false, 3, 4, "Jobbat och tränat lite." },
+                    { 5, new DateTime(2022, 1, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), false, 2, 1, "Låter bra! Vad har du för planer resten av dagen?" }
                 });
 
             migrationBuilder.InsertData(
-                table: "UserProjects",
-                columns: new[] { "PID", "UID" },
+                table: "Projects",
+                columns: new[] { "PID", "BeginDate", "Description", "EndDate", "Title", "UserCreatedBy" },
                 values: new object[,]
                 {
-                    { 2, 1 },
-                    { 2, 4 },
-                    { 3, 2 },
-                    { 4, 1 },
-                    { 5, 4 }
+                    { 1, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Developing a responsive web application.", new DateTime(2022, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Web Development Project", 1 },
+                    { 2, new DateTime(2022, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Creating a cross-platform mobile application.", new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mobile App Development", 2 },
+                    { 3, new DateTime(2022, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Designing and implementing a relational database.", new DateTime(2022, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Database Management System", 3 },
+                    { 4, new DateTime(2022, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Applying machine learning algorithms to solve a specific problem.", new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Machine Learning Project", 1 },
+                    { 5, new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Working on a software project using agile methodologies.", new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Agile Software Development", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -486,6 +486,18 @@ namespace CV.Migrations
                     { 3, 3, "Project Manager at Acme Projects" },
                     { 4, 4, "Internship at DEF Corporation" },
                     { 5, 5, "Marketing Coordinator at LMN Marketing" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserProjects",
+                columns: new[] { "PID", "UID" },
+                values: new object[,]
+                {
+                    { 2, 1 },
+                    { 2, 4 },
+                    { 3, 2 },
+                    { 4, 1 },
+                    { 5, 4 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -528,9 +540,14 @@ namespace CV.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Chats_UID",
+                name: "IX_Chats_ReceiverID",
                 table: "Chats",
-                column: "UID");
+                column: "ReceiverID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Chats_SenderID",
+                table: "Chats",
+                column: "SenderID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Competence_CV_CID",
@@ -562,6 +579,12 @@ namespace CV.Migrations
                 name: "IX_Experience_CID",
                 table: "Experience",
                 column: "CID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Projects_UserCreatedBy",
+                table: "Projects",
+                column: "UserCreatedBy",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProjects_UID",

@@ -14,6 +14,11 @@ namespace CV.Models
         public string Description { get; set; }
         public DateTime BeginDate { get; set; }
         public DateTime EndDate { get; set; }
+
+        public int UserCreatedBy { get; set; }
+       
+        [ForeignKey(nameof(UserCreatedBy))]
+        public virtual User? User { get; set; }
         public virtual IEnumerable<User_Project> User_Projects { get; set; } = new List<User_Project>();
 
     }
