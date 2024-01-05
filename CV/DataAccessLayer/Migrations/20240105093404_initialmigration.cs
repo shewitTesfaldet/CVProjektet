@@ -583,8 +583,8 @@ namespace DataAccessLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Projects_UserCreatedBy",
                 table: "Projects",
-                column: "UserCreatedBy",
-                unique: true);
+                column: "UserCreatedBy"
+               );
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProjects_UID",
