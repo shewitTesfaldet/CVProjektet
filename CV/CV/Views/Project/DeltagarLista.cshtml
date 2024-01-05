@@ -1,0 +1,39 @@
+﻿@model List<Models.DeltagarListaViewModel>
+
+
+
+<div style="text-align: center; margin-top:20px">
+
+    <h3>Deltagarlista</h3>
+        
+        @foreach (var item in Model)
+        {
+    
+            <table class="table" style="width: 58%; margin: auto; border-collapse: collapse; margin-top: 20px; border: 10px ;">
+                <thead>
+                    <tr>
+                       
+                        <th scope="col">Förnamn</th>
+                        <th scope="col">Efternamn</th>
+                       
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                       
+                        <td>@item.Firstname</td>
+                    <td>@item.Lastname</td>
+                       
+                     
+                    </tr>
+              
+                </tbody>
+            </table>
+        }
+    <div style="text-align: left;">
+        <form>
+            <button class="btn btn-outline-success" type="submit" asp-controller="Project" asp-action="Projects">Tillbaka</button>
+        </form>
+    </div>
+    
+</div>
