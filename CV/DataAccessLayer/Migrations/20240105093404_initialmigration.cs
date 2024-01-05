@@ -323,13 +323,13 @@ namespace DataAccessLayer.Migrations
                         column: x => x.PID,
                         principalTable: "Projects",
                         principalColumn: "PID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_UserProjects_Users_UID",
                         column: x => x.UID,
                         principalTable: "Users",
                         principalColumn: "UID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -448,8 +448,8 @@ namespace DataAccessLayer.Migrations
                     { 1, new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Developing a responsive web application.", new DateTime(2022, 6, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Web Development Project", 1 },
                     { 2, new DateTime(2022, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Creating a cross-platform mobile application.", new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Mobile App Development", 2 },
                     { 3, new DateTime(2022, 5, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Designing and implementing a relational database.", new DateTime(2022, 11, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Database Management System", 3 },
-                    { 4, new DateTime(2022, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Applying machine learning algorithms to solve a specific problem.", new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Machine Learning Project", 1 },
-                    { 5, new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Working on a software project using agile methodologies.", new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Agile Software Development", 2 }
+                    { 4, new DateTime(2022, 7, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Applying machine learning algorithms to solve a specific problem.", new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), "Machine Learning Project", 4 },
+                    { 5, new DateTime(2022, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Working on a software project using agile methodologies.", new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Agile Software Development", 5 }
                 });
 
             migrationBuilder.InsertData(

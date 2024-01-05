@@ -54,6 +54,22 @@ namespace Models
             //Exempeldata
 
             #region Project
+
+            //In this code, DeleteBehavior.Restrict disables the cascade delete. Now, when a User or Project is deleted, the related User_Project will not be deleted automatically, preventing the multiple cascade paths issue. You’ll need to handle the deletion of User_Project manually in your code when a User or Project is deleted.
+
+
+            modelBuilder.Entity<User_Project>()
+                .HasOne(up => up.user)
+                .WithMany(u => u.User_Projects)
+                .HasForeignKey(up => up.UID)
+                .OnDelete(DeleteBehavior.Restrict); 
+
+            modelBuilder.Entity<User_Project>()
+                .HasOne(up => up.project)
+                .WithMany(p => p.User_Projects)
+                .HasForeignKey(up => up.PID)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<Project>().HasData(
             new Project
             {
@@ -89,7 +105,7 @@ namespace Models
                     Description = "Applying machine learning algorithms to solve a specific problem.",
                     BeginDate = new DateTime(2022, 7, 1),
                     EndDate = new DateTime(2023, 1, 31),
-                    UserCreatedBy = 1
+                    UserCreatedBy = 4
                 },
                 new Project
                 {
@@ -98,7 +114,7 @@ namespace Models
                     Description = "Working on a software project using agile methodologies.",
                     BeginDate = new DateTime(2022, 9, 15),
                     EndDate = new DateTime(2023, 3, 15),
-                    UserCreatedBy = 2
+                    UserCreatedBy = 5
                 }
             );
             #endregion
@@ -224,7 +240,6 @@ namespace Models
                 );
 
             #endregion
-
             #region User
             modelBuilder.Entity<User>().HasData(
                 new User
@@ -290,8 +305,8 @@ namespace Models
                 }
                 );
             #endregion
-
             #region Chat
+            //Tar inte bort meddelande om en användare raderas.
             modelBuilder.Entity<Chat>()
                         .HasOne(m => m.Sender)
                         .WithMany(u => u.ChatsSent)
@@ -358,7 +373,6 @@ namespace Models
                 }
                 );
             #endregion
-
             #region CV_Competence
             modelBuilder.Entity<CV_Competence>().HasData(
             new CV_Competence
@@ -421,7 +435,7 @@ namespace Models
              }
             );
             #endregion
-            #region User_ProjectUser_Project
+            #region User_Project
             modelBuilder.Entity<User_Project>().HasData(
             new User_Project
             {                

@@ -8,23 +8,22 @@ using Models;
 
 namespace CV.Controllers
 {
-    // ChatController.cs
 
     public class ChatController : Controller
     {
         private UserContext _userContext;
 
         private int LoggedInID;
-        private int ClickedUID;
 
         public ChatController(UserContext context)
         {
             _userContext = context;
         }
 
-		[HttpGet]
-		public IActionResult MessageBox(string message, int clickID, string getLogedOnUser)
-		{
+        [HttpGet]
+        public IActionResult MessageBox(string message, int clickID, string getLogedOnUser)
+        {
+            List<Chat> AllMessages = new List<Chat>();
             //kod för att få ut vem man sökt på
             List<User> users = new List<User>();
             if (!string.IsNullOrEmpty(message))
@@ -34,12 +33,18 @@ namespace CV.Controllers
                         .ToList();
             }
             ViewBag.users = users;
+            if (clickID != 0)
+            {
+                AllMessages = GetMessages(clickID, getLogedOnUser);
+                ViewBag.ClickedName = getClickedName(clickID);
 
-            return View(GetMessages(clickID, getLogedOnUser));
-		}
+            }
+            return View(AllMessages);
+
+        }
 
         [HttpGet]
-        public List<Chat> GetMessages(int UID, string getLogedOnUser) 
+        public List<Chat> GetMessages(int clickID, string getLogedOnUser)
         {
             List<Chat> AllMessages = new List<Chat>();
 
@@ -58,54 +63,68 @@ namespace CV.Controllers
 
                 //Hämtar alla meddelande där den inloggade har sender och receiver id samt där den man tryckt på har sender och receiver id 
                 AllMessages = _userContext.Chats
-                                  .Where(x => (x.SenderID.Equals(LoggedInID) && x.ReceiverID.Equals(UID)) || (x.SenderID.Equals(UID) && x.ReceiverID.Equals(LoggedInID)))
+                                  .Where(x => (x.SenderID.Equals(LoggedInID) && x.ReceiverID.Equals(clickID)) || (x.SenderID.Equals(clickID) && x.ReceiverID.Equals(LoggedInID)))
                                   .OrderBy(x => x.Date)
                                   .ToList();
 
-/*                ViewBag.AllMessages = AllMessages;
-*/
+
             }
 
-            return AllMessages;
+            return (AllMessages);
         }
 
-
-        [HttpPost]
-        public IActionResult MessageBox( int UID, string med, string getLogedOnUser)
+        public string getClickedName(int clickedUID)
         {
-            ClickedUID = UID;
-            //HÅRDKODNING FÖR TESTNING
-            getLogedOnUser = "user1";
-       
-            if (ClickedUID != 0)
-            {
-                string? ClickedUser =    _userContext.Users
-                                       .Where(x => x.UID.Equals(ClickedUID))
+            string? ClickedName = _userContext.Users
+                                       .Where(x => x.UID.Equals(clickedUID))
                                        .Select(x => x.Username)
                                        .FirstOrDefault();
-               
-                ViewBag.ClickedName = ClickedUser;
-                ViewBag.ClickedID = UID;
+
+            return ClickedName;
+        }
+            
+        [HttpPost]
+        public IActionResult MessageBox(string clickedName, string med, string getLogedOnUser)
+        {
+            //HÅRDKODNING FÖR TESTNING
+            getLogedOnUser = "user1";
+            
+            int ClickedUID = 0;
+            if (clickedName != null)
+            {
+                ClickedUID = _userContext.Users
+                     .Where(x => x.Username.Equals(clickedName))
+                     .Select(x => x.UID)
+                     .FirstOrDefault();
+
             }
-           
+
             if (!string.IsNullOrEmpty(med))
             {
                 SendMessageTo(ClickedUID, med, getLogedOnUser);
             }
-          
-            return View();
+            List <Chat> AllMessages = new List <Chat>();
+            if (ClickedUID != 0)
+            {
+                AllMessages = GetMessages(ClickedUID, getLogedOnUser);
+               ViewBag.ClickedName = getClickedName(ClickedUID);
+
+            }
+            return View(AllMessages);
         }
 
         public void SendMessageTo(int ClickedUID, string med, string getLogedOnUser) {
 
             if(getLogedOnUser != null)
             {
-                //Kod för att hämta meddelanden mellan inloggad och den man tryckt på 
                        LoggedInID = _userContext.Users
                       .Where(x => x.Username.Equals(getLogedOnUser))
                       .Select(x => x.UID)
                       .FirstOrDefault();
+
+                
             }
+         
 
             //Transaction för att säkerställa att inget läggs in om det inte går igenom helt
             using (var dbContextTransaction = _userContext.Database.BeginTransaction())
