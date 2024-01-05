@@ -1,0 +1,41 @@
+﻿
+
+
+.cv-container {
+    width: 70%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
+    border: 5px solid aliceblue;
+    border-style: double;
+    background: #4B6A78;
+    border-radius: 0.5%;
+    box-shadow: 10px 10px 10px #AEC7CF;
+}
+
+.info{
+    margin-left: 20px;
+    margin-top: 10px;
+    color:aliceblue;
+}
+
+
+.btn-primary {
+    margin-left: 85%;
+    margin-bottom: 10px;
+    background-color: #2e4049;
+    border-radius: 10%;
+    border: 5px solid #4B6A78;
+    color: aliceblue;
+}
+
+    .btn-primary:hover {
+        margin-left: 85%;
+        margin-bottom: 10px;
+        background-color: white;
+        border-radius: 10%;
+        border: 5px solid #4B6A78;
+        transition: 0.5s;
+        color: darkslategrey;
+    }
+
