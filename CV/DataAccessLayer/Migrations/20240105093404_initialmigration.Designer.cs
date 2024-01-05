@@ -12,7 +12,7 @@ using Models;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20240104142747_initialmigration")]
+    [Migration("20240105093404_initialmigration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -547,7 +547,7 @@ namespace DataAccessLayer.Migrations
                             Description = "Applying machine learning algorithms to solve a specific problem.",
                             EndDate = new DateTime(2023, 1, 31, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Machine Learning Project",
-                            UserCreatedBy = 1
+                            UserCreatedBy = 4
                         },
                         new
                         {
@@ -556,7 +556,7 @@ namespace DataAccessLayer.Migrations
                             Description = "Working on a software project using agile methodologies.",
                             EndDate = new DateTime(2023, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Title = "Agile Software Development",
-                            UserCreatedBy = 2
+                            UserCreatedBy = 5
                         });
                 });
 
@@ -950,13 +950,13 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("CV.Models.Project", "project")
                         .WithMany("User_Projects")
                         .HasForeignKey("PID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("CV.Models.User", "user")
                         .WithMany("User_Projects")
                         .HasForeignKey("UID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("project");

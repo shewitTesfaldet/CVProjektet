@@ -30,7 +30,10 @@
                         @foreach (User user in ViewBag.users)
                         {
                             <li class="contact">
-                                <button asp-route-UID="user.UID" name="clickID" type="submit" style="width: 100%; height: 100%; border: none; background: none;">
+                        <form asp-action="MessageBox" asp-controller="Chat" method="get">
+                                    <input type="hidden" name="clickID" value="@user.UID" />
+                                    <input type="hidden" name="getLogedOnUser" value="@User.Identity.Name" />
+                                    <button type="submit" style="width: 100%; height: 100%; border: none; background: none;">
 
                                     <div class="wrap">
                                         <span class="contact-status online"></span>
@@ -40,8 +43,9 @@
                                             <p class="name">@user.Username</p>
                                         </div>
                                     </div>
-                                </button>
-                                <input type="hidden" name="getLogedOnUser" value="@User.Identity.Name" />
+
+                                    </button>
+                                </form>
                             </li>
                         }
                     </ul>
@@ -89,7 +93,7 @@
         <form asp-controller="Chat" asp-action="MessageBox" method="post">
             <div class="message-input">
                 <div class="wrap">
-                    <input type="hidden" name="UID" value="@ViewBag.ClickedID" />
+                    <input type="hidden" name="ClickedName" value="@ViewBag.Clickedname" />
                     <input type="text" name="med" placeholder="Skicka ett meddelande..." style="margin-left:1em;" />
                     <button class="submit" type="submit" value="Skicka"><i class="fa fa-paper-plane" aria-hidden="true">Skicka</i></button>
                 </div>
@@ -110,15 +114,15 @@
         });
 
         //Med hjälp av ajax uppdatteras sidan när man trycker submit
-        $.ajax({
-            url: '/Chat/MessageBox',
-            type: 'POST',
-            data: { 'med': message },
-            success: function (data) {
-                // Uppdatera vyn med det nya meddelandet
-                $('.messages ul').append('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>');
-            }
-        });
+        // $.ajax({
+        //     url: '/Chat/MessageBox',
+        //     type: 'POST',
+        //     data: { 'med': message },
+        //     success: function (data) {
+        //         // Uppdatera vyn med det nya meddelandet
+        //         $('.messages ul').append('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>');
+        //     }
+        // });
 
         // function newMessage() {
         //     message = $(".message-input input").val();
