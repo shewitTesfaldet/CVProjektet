@@ -1,9 +1,20 @@
 ﻿@model User
 
+<style>
+    .profile-picture {
+        max-width: 150px;
+        max-height: 150;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: block;
+        border: 2px solid black; /* Justera färgen efter behov */
+    }
+</style>
+
+<img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
+
 <form asp-action="Profile" method="post">
-
     <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
-
         <tr>
             <td>
                 <label asp-for="Username">Username:</label>
@@ -12,7 +23,7 @@
                 <span>@Model.Username</span>
             </td>
         </tr>
-      
+
         <tr>
             <td>
                 <label asp-for="Firstname">First Name:</label>
@@ -47,10 +58,9 @@
         </tr>
 
         <tr>
-            <td colspan="4" style="text-align: center;">
+            <td colspan="2" style="text-align: center;">
                 <a asp-action="Update" class="btn btn-primary">Redigera Profil</a>
             </td>
         </tr>
     </table>
-
 </form>
