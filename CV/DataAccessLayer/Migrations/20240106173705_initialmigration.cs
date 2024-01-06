@@ -187,7 +187,7 @@ namespace DataAccessLayer.Migrations
                     Text = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Read = table.Column<bool>(type: "bit", nullable: true),
-                    SenderID = table.Column<int>(type: "int", nullable: false),
+                    SenderID = table.Column<int>(type: "int", nullable: true),
                     ReceiverID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

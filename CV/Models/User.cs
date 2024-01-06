@@ -15,8 +15,6 @@ namespace CV.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett förnamn!")]
-
-
         public string Firstname { get; set; }
 
         [Required(ErrorMessage = "Du måste ange ett efternamn!")]

@@ -20,11 +20,7 @@ namespace CV.Controllers
         }
 
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
+      
         [Authorize]
         public  IActionResult Index()
         {

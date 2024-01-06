@@ -44,9 +44,8 @@ namespace CV.Controllers
 
 
 		public IActionResult AddResume(int UID)
-		{
-
-
+	{
+			ViewBag.UID = UID;
 			/*            ProfilBild
 			*/
 			var pictureList = (from id in _userContext.CV_s
@@ -80,9 +79,7 @@ namespace CV.Controllers
 						{
 							ViewBag.noProfilePicture = "no_profile_picture.jpg";
 						}
-					
-
-					
+										
 
 				}
 				
