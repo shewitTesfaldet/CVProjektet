@@ -55,7 +55,8 @@ namespace Models
 
             #region Project
 
-            //In this code, DeleteBehavior.Restrict disables the cascade delete. Now, when a User or Project is deleted, the related User_Project will not be deleted automatically, preventing the multiple cascade paths issue. You’ll need to handle the deletion of User_Project manually in your code when a User or Project is deleted.
+            //In this code, DeleteBehavior.Restrict disables the cascade delete. Now, when a User or Project is deleted, the related User_Project will not be deleted automatically,
+            //preventing the multiple cascade paths issue. You’ll need to handle the deletion of User_Project manually in your code when a User or Project is deleted.
 
 
             modelBuilder.Entity<User_Project>()

@@ -14,7 +14,7 @@ namespace CV.Models
         public DateTime? Date { get; set; }
         public bool? Read { get; set; }
 
-        public int SenderID { get; set; }
+        public int? SenderID { get; set; }
 
         public virtual User? Sender { get; set; }
 

@@ -181,7 +181,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("ReceiverID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SenderID")
+                    b.Property<int?>("SenderID")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -898,8 +898,7 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("CV.Models.User", "Sender")
                         .WithMany("ChatsSent")
                         .HasForeignKey("SenderID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Receiver");
 

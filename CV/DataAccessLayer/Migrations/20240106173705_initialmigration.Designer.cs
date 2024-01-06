@@ -12,7 +12,7 @@ using Models;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(UserContext))]
-    [Migration("20240105093404_initialmigration")]
+    [Migration("20240106173705_initialmigration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -184,7 +184,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("ReceiverID")
                         .HasColumnType("int");
 
-                    b.Property<int>("SenderID")
+                    b.Property<int?>("SenderID")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -901,8 +901,7 @@ namespace DataAccessLayer.Migrations
                     b.HasOne("CV.Models.User", "Sender")
                         .WithMany("ChatsSent")
                         .HasForeignKey("SenderID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("Receiver");
 

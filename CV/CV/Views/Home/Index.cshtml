@@ -43,13 +43,4 @@
     </div>
 </div>
 
-<form method="post" asp-controller="Account" asp-action="LogOut">
-    <AuthorizeView>
-        <Authorized>
-            <h2> Du är inloggad som @User.Identity.Name</h2>
-            <input type="submit" value="Logga ut" class="btn-link"></input>
-        </Authorized>
-    </AuthorizeView>
-</form>
-
                  

@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using Models;
+using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace CV.Controllers
 {
-
     public class ChatController : Controller
     {
         private UserContext _userContext;
@@ -21,8 +22,36 @@ namespace CV.Controllers
         }
 
         [HttpGet]
-        public IActionResult MessageBox(string message, int clickID, string getLogedOnUser)
+        public IActionResult MessageBox(int clickID, string message, string getLogedOnUser, string anonym)
         {
+            Response.Cookies.Append("clickID", clickID.ToString(), new CookieOptions { HttpOnly = true });
+
+            
+             getLogedOnUser = User.Identity.Name;
+            if (getLogedOnUser != null)
+            {
+                ViewBag.getLogedOnUser = getLogedOnUser;
+            }
+            else 
+            {
+                ViewBag.getLogedOnUser = anonym;
+            }
+
+            if (anonym != null)            
+            {
+                ViewBag.anonym = anonym;
+                User anonymUser = new User();
+                anonymUser.Username = anonym;
+                anonymUser.Firstname = "Anonym";
+                anonymUser.Lastname = "Anonym";
+                anonymUser.Epost = anonym + "@hotmail.com";
+                anonymUser.Password = anonym + "@hotmail.com";
+                anonymUser.ConfirmPassword = anonym + "H24!";
+                _userContext.Users.Add(anonymUser);
+                _userContext.SaveChanges();
+
+            }
+
             List<Chat> AllMessages = new List<Chat>();
             //kod för att få ut vem man sökt på
             List<User> users = new List<User>();
@@ -33,12 +62,18 @@ namespace CV.Controllers
                         .ToList();
             }
             ViewBag.users = users;
+            if (clickID == 0)
+            {
+                clickID = int.Parse(Request.Cookies["clickID"]);
+            }
+         
             if (clickID != 0)
             {
+
                 AllMessages = GetMessages(clickID, getLogedOnUser);
                 ViewBag.ClickedName = getClickedName(clickID);
-
             }
+
             return View(AllMessages);
 
         }
@@ -47,12 +82,15 @@ namespace CV.Controllers
         public List<Chat> GetMessages(int clickID, string getLogedOnUser)
         {
             List<Chat> AllMessages = new List<Chat>();
+            if (getLogedOnUser == null) 
+            {
+                getLogedOnUser = User.Identity.Name;
+
+            }
 
             if (getLogedOnUser != null)
             {
-                //HÅRDKODNING FÖR TESTNING
-                getLogedOnUser = "user1";
-
+                
                 //Kod för att hämta meddelanden mellan inloggad och den man tryckt på 
                 int? LoggedInID = _userContext.Users
                       .Where(x => x.Username.Equals(getLogedOnUser))
@@ -66,10 +104,7 @@ namespace CV.Controllers
                                   .Where(x => (x.SenderID.Equals(LoggedInID) && x.ReceiverID.Equals(clickID)) || (x.SenderID.Equals(clickID) && x.ReceiverID.Equals(LoggedInID)))
                                   .OrderBy(x => x.Date)
                                   .ToList();
-
-
             }
-
             return (AllMessages);
         }
 
@@ -79,16 +114,20 @@ namespace CV.Controllers
                                        .Where(x => x.UID.Equals(clickedUID))
                                        .Select(x => x.Username)
                                        .FirstOrDefault();
-
             return ClickedName;
         }
             
         [HttpPost]
         public IActionResult MessageBox(string clickedName, string med, string getLogedOnUser)
         {
-            //HÅRDKODNING FÖR TESTNING
-            getLogedOnUser = "user1";
-            
+
+            if (string.IsNullOrEmpty(getLogedOnUser))
+            {
+                getLogedOnUser = User.Identity.Name;
+                ViewBag.getLogedOnUser = getLogedOnUser;
+
+            }
+
             int ClickedUID = 0;
             if (clickedName != null)
             {
@@ -96,7 +135,6 @@ namespace CV.Controllers
                      .Where(x => x.Username.Equals(clickedName))
                      .Select(x => x.UID)
                      .FirstOrDefault();
-
             }
 
             if (!string.IsNullOrEmpty(med))
@@ -108,6 +146,7 @@ namespace CV.Controllers
             {
                 AllMessages = GetMessages(ClickedUID, getLogedOnUser);
                ViewBag.ClickedName = getClickedName(ClickedUID);
+                ViewBag.anonym = getLogedOnUser;
 
             }
             return View(AllMessages);
@@ -116,16 +155,14 @@ namespace CV.Controllers
         public void SendMessageTo(int ClickedUID, string med, string getLogedOnUser) {
 
             if(getLogedOnUser != null)
-            {
+            {               
                        LoggedInID = _userContext.Users
                       .Where(x => x.Username.Equals(getLogedOnUser))
                       .Select(x => x.UID)
-                      .FirstOrDefault();
-
-                
+                      .FirstOrDefault();                           
             }
-         
 
+           
             //Transaction för att säkerställa att inget läggs in om det inte går igenom helt
             using (var dbContextTransaction = _userContext.Database.BeginTransaction())
             {
@@ -135,9 +172,8 @@ namespace CV.Controllers
                     chat.Text = med;
                     chat.Date = DateTime.Now;
                     chat.Read = false;
-                    chat.SenderID = LoggedInID; /*OBS HÅRDKODAT BÖR ÄNDRAS*/
-                    chat.ReceiverID = ClickedUID;
-
+                    chat.ReceiverID = ClickedUID;                 
+                    chat.SenderID = LoggedInID;                  
                     _userContext.Chats.Add(chat);
                     _userContext.SaveChanges();
                     dbContextTransaction.Commit();
