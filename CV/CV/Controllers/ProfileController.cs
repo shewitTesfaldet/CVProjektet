@@ -17,59 +17,57 @@ namespace CV.Controllers
             _userContext = userContext;
         }
 
-    [Authorize]
-    [HttpGet]
-    public IActionResult Profile()
-    {
-        User user = new User();
-        /*            *//*            string Name = User.Identity.Name;
-        */
-        string Name = "user1";
-        if (Name != null)
+        [Authorize]
+        [HttpGet]
+        public IActionResult Profile()
         {
-            user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
-        }
-        if (user.Username == null)
-        {
-            return NotFound();
-        }
+            User user = new User();
+            string Name = User.Identity.Name;
+
+            if (Name != null)
+            {
+                user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
+            }
+            if (user.Username == null)
+            {
+                return NotFound();
+            }
 
 
-        return View(user);
-    }
-
-
-
-    [Authorize]
-    [HttpGet]
-    public IActionResult UpdateProfile()
-    {
-        User user = new User();
-        /*            *//*            string Name = User.Identity.Name;
-        */
-        string Name = "user1";
-        if (Name != null)
-        {
-            user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
-        }
-        if (user.Username == null)
-        {
-
-            return NotFound();
+            return View(user);
         }
 
 
-        return View(user);
-    }
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult UpdateProfile()
+        {
+            User user = new User();
+            string Name = User.Identity.Name;
+
+            if (Name != null)
+            {
+                user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
+            }
+            if (user.Username == null)
+            {
+
+                return NotFound();
+            }
+
+
+            return View(user);
+        }
 
 
         [HttpPost]
         public IActionResult UpdateProfile(User updatedUser)
         {
+            string Name = User.Identity.Name;
+
             if (ModelState.IsValid)
             {
-                string Name = "user1";
-
                 var userToUpdate = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
 
                 if (userToUpdate != null)
@@ -95,5 +93,26 @@ namespace CV.Controllers
             return View("Profile", updatedUser);
         }
 
+
+
+        [HttpGet]
+        public IActionResult ViewProfile()
+        {
+            User user = new User();
+            string Name = User.Identity.Name;
+
+            if (Name != null)
+            {
+                user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
+            }
+            if (user.Username == null)
+            {
+
+                return NotFound();
+            }
+
+
+            return View(user);
+        }
     }
 }
