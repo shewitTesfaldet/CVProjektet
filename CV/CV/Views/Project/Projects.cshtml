@@ -1,6 +1,13 @@
 ﻿@model List<Project>
 
 
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
 <div class="container" style="margin-top: 25px;">
     <h4>@ViewBag.Sök</h4>
     <form class="d-flex justify-content-end" role="search">
@@ -27,8 +34,14 @@
                             <label>Slut-Datum</label>
                             <p>@project.EndDate</p>
 
-                            <a class="btn btn-outline-success" asp-controller="Project" asp-action="EditProject" asp-route-PID="@project.PID">Uppdatera</a>
-                            <a class="btn btn-outline-success" href="#" onclick="confirmDelete(@project.PID)">Radera</a>
+                            <div style="text-align:right">
+                                <a class="btn btn-outline-success" asp-controller="Project" asp-action="EditProject" asp-route-PID="@project.PID">Uppdatera</a>
+                                <a class="btn btn-outline-success" href="#" onclick="confirmDelete(@project.PID)">Radera</a>
+                                <a class="btn btn-outline-success" asp-controller="Project" asp-action="DeltagarLista" asp-route-PID="@project.PID">Deltagare</a>
+
+
+                            </div>
+                           
 
 
 

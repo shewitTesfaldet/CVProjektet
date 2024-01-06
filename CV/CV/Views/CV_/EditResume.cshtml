@@ -1,0 +1,89 @@
+﻿@model List<CV_>
+<!DOCTYPE html>
+<div asp-validation-summary="All" class="text-danger"> </div>
+<form asp-action="ResumeHistory" method="post"> </form>
+
+<html lang="eng">
+<head>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" href="EditResume.cshtml.css">
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/CV.styles.css" asp-append-version="true" />
+
+</head>
+<header>
+	<form class="d-flex justify-content-end" role="search">
+		<div class="input-group">
+			<input class="form-control me-2" type="text" name="söksträng" placeholder="CV" aria-label="Search">
+			<button class="btn btn-outline-success" type="submit" asp-controller="CV_" asp-action="SearchCV">Sök</button>
+			<button class="btn btn-outline-success" type="submit" asp-controller="CV_" asp-action="ResumeHistory">Alla</button>
+		</div>
+	</form>
+
+</header>
+<body>
+	<br />
+	@if (User.Identity.IsAuthenticated)
+	{
+		@foreach (var cv in Model)
+		{
+			<tr>
+				<div class="cv-container">
+					<div class="cv info">
+						<p>CV</p>
+						<h2>@cv.User.Firstname</h2> <h2>@cv.User.Lastname</h2>
+						<h4>@cv.User.Epost</h4>
+						<h4>Privat: @cv.User.Privat</h4>
+
+						<div class="container button">
+							<form method="post" asp-controller="CV_" asp-action="AddResume">
+								<input type="hidden" name="UID" value="@cv.UID" />
+								<button type="submit" class="btn-primary"><a>VISA</a></button>
+							</form>
+						</div>
+
+					</div>
+
+				</div>
+			</tr>
+			<td>
+			</td>
+		}
+	}
+	else
+	{
+		@foreach (var cv in Model)
+		{
+			if (cv.User.Privat == false)
+			{
+				<tr>
+					<div class="cv-container">
+						<div class="cv info">
+							<p>CV</p>
+							<h2>@cv.User.Firstname</h2> <h2>@cv.User.Lastname</h2>
+							<h4>@cv.User.Epost</h4>
+							<h4>Privat: @cv.User.Privat</h4>
+
+							<div class="container button">
+								<form method="post" asp-controller="CV_" asp-action="AddResume">
+									<input type="hidden" name="UID" value="@cv.UID" />
+									<button type="submit" class="btn-primary">VISA</button>
+								</form>
+							</div>
+
+						</div>
+
+					</div>
+				</tr>
+				<td>
+				</td>
+			}
+
+		}
+
+	}
+
+
+
+
+</body>
