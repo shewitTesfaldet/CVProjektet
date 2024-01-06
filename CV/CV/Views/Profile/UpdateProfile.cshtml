@@ -1,0 +1,88 @@
+﻿@model User
+
+<style>
+    .profile-picture {
+        max-width: 150px;
+        max-height: 150;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: block;
+        border: 2px solid black; /* Justera färgen efter behov */
+    }
+</style>
+<img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
+
+
+<form asp-action="UpdateProfile" method="post">
+
+    <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+
+        <tr>
+            <td>
+                <label asp-for="Username">Username:</label>
+            </td>
+            <td>
+                <input asp-for="Username" type="text" class="form-control" value="@Model.Username" />
+
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Password">Password:</label>
+            </td>
+            <td>
+                <input asp-for="Password" type="text" class="form-control" value="@Model.Password" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="ConfirmPassword">Confirm new password:</label>
+            </td>
+            <td>
+                <input asp-for="ConfirmPassword" type="text" class="form-control" value="@Model.ConfirmPassword" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Firstname">First Name:</label>
+            </td>
+            <td>
+                <input asp-for="Firstname" type="text" class="form-control" value="@Model.Firstname" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Lastname">Last Name:</label>
+            </td>
+            <td>
+                <input asp-for="Lastname" type="text" class="form-control" value="@Model.Lastname" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Epost">Email:</label>
+            </td>
+            <td>
+                <input asp-for="Epost" type="text" class="form-control" value="@Model.Epost" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Adress">Address:</label>
+            </td>
+            <td>
+                <input asp-for="Adress" type="text" class="form-control" value="@Model.Adress" />
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="4" style="text-align: center;">
+                <input type="submit" value="Bekräfta ändringar" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+
+
+
+
+</form>
