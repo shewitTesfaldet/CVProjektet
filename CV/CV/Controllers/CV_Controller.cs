@@ -66,52 +66,22 @@ namespace CV.Controllers
             return View("EditResume", cv);
         }
 
-      public IActionResult Index(int UID)
-        {
-
-			
-			var user = (from id in _userContext.Users
-							   select id.UID).ToList();
-
-            for (int u= 0; u < user.Count(); u++)
-            {
-				UID = @User.Identity.Name.ElementAt(u);
-				return RedirectToAction("AddResume", UID);
-
-			}
-			return View("_Layout");
-		}
-
-		/*		-----------------------------------------------------*/
-
-
-		[HttpGet]
-        public IActionResult Edit(int id)
-        {
-            ViewBag.Username = _userContext.Users.Select(x => new SelectListItem { Text = x.Firstname, Value = x.UID.ToString() });
-            CV_ cv = _userContext.CV_s.FirstOrDefault(x => x.UID.Equals(id));
-
-
-            return View(cv);
-
-        }
-
-        [HttpPost]
-        public IActionResult Edit(CV_ cv)
-        {
-            _userContext.CV_s.Update(cv);
-            _userContext.SaveChanges();
-            return RedirectToAction("AddResume", "CV_");
-        }
+		
 
 
         public IActionResult AddResume(int UID)
         {
+			if (UID == 0)
+			{
+				var currentUser = (from u in _userContext.Users
+								   where u.Firstname == User.Identity.Name
+								   select u.UID);
+				UID = currentUser.First();
+			}
 
-           
-            /*            ProfilBild
+			/*            ProfilBild
 			*/
-            var pictureList = (from id in _userContext.CV_s
+			var pictureList = (from id in _userContext.CV_s
                                select id.CID).ToList();
 
 
