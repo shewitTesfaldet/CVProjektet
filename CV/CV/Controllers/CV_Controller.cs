@@ -79,8 +79,9 @@ namespace CV.Controllers
 				UID = currentUser.First();
 			}
 
-			/*            ProfilBild
+            /*            ProfilBild
 			*/
+            ViewBag.UID = UID;
 			var pictureList = (from id in _userContext.CV_s
                                select id.CID).ToList();
 
