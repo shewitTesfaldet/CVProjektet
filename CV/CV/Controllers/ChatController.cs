@@ -185,9 +185,23 @@ namespace CV.Controllers
                 }
             }
 
-            
-            
         }
+
+        [HttpPost]
+        public IActionResult MarkMessageAsRead(int messageId)
+        {
+            
+            var message = _userContext.Chats.FirstOrDefault(m => m.MID == messageId);
+
+            if (message != null && !message.Read.HasValue || !message.Read.Value)
+            {
+                message.Read = true;
+                _userContext.SaveChanges();
+            }
+
+            return RedirectToAction("MessageBox");
+        }
+
     }
 }
 
