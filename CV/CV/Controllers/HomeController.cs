@@ -49,7 +49,7 @@ namespace CV.Controllers
                            join userProject in _userContext.UserProjects on user.UID equals userProject.UID
                            join project in _userContext.Projects on userProject.PID equals project.PID
                            orderby project.PID descending
-                           select new { user.Username, project.Title, project.Description })
+                           select new { user.Username, project.PID, project.Title, project.Description })
              .Take(5)
              .ToList();
 
