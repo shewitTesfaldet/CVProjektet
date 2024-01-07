@@ -77,10 +77,8 @@
 							@if (User.Identity.IsAuthenticated)
 							{
 								<li>
-									<form method="post" asp-controller="CV_" asp-action="Index">
 										<input type="hidden" name="UID" />
-										<a class="dropdown-item" href="/CV_/Index">CV</a>
-									</form>
+										<a class="dropdown-item" asp-controller="CV_" asp-action="AddResume">CV</a>
 								</li>
 
 

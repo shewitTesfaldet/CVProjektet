@@ -66,21 +66,20 @@ namespace CV.Controllers
             return View("EditResume", cv);
         }
 
-      public IActionResult Index(int UID)
+      /*public IActionResult Index(int UID)
         {
 
+
+            var currentUser = (from u in _userContext.Users
+                               where u.Firstname == User.Identity.Name
+                               select u.UID);
+            UID = currentUser.First();
+
+            AddResume(UID);
+			return RedirectToAction("AddResume", "CV_");
+
 			
-			var user = (from id in _userContext.Users
-							   select id.UID).ToList();
-
-            for (int u= 0; u < user.Count(); u++)
-            {
-				UID = @User.Identity.Name.ElementAt(u);
-				return RedirectToAction("AddResume", UID);
-
-			}
-			return View("_Layout");
-		}
+		}*/
 
 		/*		-----------------------------------------------------*/
 
@@ -107,6 +106,13 @@ namespace CV.Controllers
 
         public IActionResult AddResume(int UID)
         {
+            if(UID == 0)
+            {
+				var currentUser = (from u in _userContext.Users
+								   where u.Firstname == User.Identity.Name
+								   select u.UID);
+				UID = currentUser.First();
+			}
 
            
             /*            ProfilBild
@@ -164,7 +170,7 @@ namespace CV.Controllers
 
                     ViewBag.Fullname = fullname;
                 }
-                else
+                if(fullnameElement.Equals(null))
                 {
                     ViewBag.noName = "Saknar Namn";
                 }
