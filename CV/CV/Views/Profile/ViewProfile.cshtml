@@ -11,6 +11,18 @@
     }
 </style>
 
+<h2>@Model.Firstname @Model.Lastname's Profile</h2>
+
+@if (Model.Privat)
+{
+    <div class="alert alert-danger" role="alert">
+This profile is private.
+</div>
+
+}
+else
+{
+
 <img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
 
 <form asp-action="ViewProfile" method="post">
@@ -56,7 +68,16 @@
                 <span>@Model.Adress</span>
             </td>
         </tr>
+        <p>
+            Status: @(Model.Privat ? "Privat" : "Offentlig")
+        </p>
+            <div>
+                <form asp-controller="CV_" asp-action="AddResume" method="get">
+                    <input type="hidden" name="UID" value="@ViewBag.UID" />
 
-       
+                    <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
+                </form>
+            </div>
     </table>
 </form>
+}

@@ -22,21 +22,7 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
-				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Startsida</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-controller="Account" asp-action="Register"> Registrera</a>
-						</li>
-
-						<li class="nav-item">
-							<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
-						</li>
-
-					</ul>
-				</div>
+				
 				@*Sök container*@
 
 				<form class="d-flex">
@@ -77,10 +63,8 @@
 							@if (User.Identity.IsAuthenticated)
 							{
 								<li>
-									<form method="post" asp-controller="CV_" asp-action="Index">
-										<input type="hidden" name="UID" />
-										<a class="dropdown-item" href="/CV_/Index">CV</a>
-									</form>
+									<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
+
 								</li>
 
 

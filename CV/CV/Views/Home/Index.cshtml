@@ -5,20 +5,20 @@
 <h3 style="text-align:center; margin-top:1em;">Välkommen till JobConnect!</h3>
 <div style="display: flex; justify-content: space-between;">
     <div style="width: 45%; margin-top:7em;">
-
         @foreach (var user in ViewBag.Result)
         {
-
             <div class="card border-dark mb-3" style="max-width: 18rem; margin-bottom:3rem;">
                 <div class="card-body">
                     <h4 class="card-title">@user.Firstname @user.Lastname</h4>
                     <h6 class="card-subtitle mb-2 text-body-secondary">@user.Username</h6>
                     <p class="card-text">@user.Description</p>
-                    <a href="#" class="card-link">CV</a>
-                    <a href="ViewProfile" class="card-link">Profil</a>
+                    <form asp-controller="CV_" asp-action="AddResume" method="get">
+                        <input type="hidden" name="UID" value="@user.UID" />
+
+                        <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
+                    </form>                    <a asp-controller="Profile" asp-action="ViewProfile" asp-route-username="@user.Username" class="card-link">Profil</a>
                 </div>
             </div>
-
         }
     </div>
 

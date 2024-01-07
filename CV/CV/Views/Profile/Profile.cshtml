@@ -1,18 +1,9 @@
 ﻿@model User
 
-<style>
-    .profile-picture {
-        max-width: 150px;
-        max-height: 150;
-        border-radius: 50%;
-        margin: 0 auto;
-        display: block;
-        border: 2px solid black; /* Justera färgen efter behov */
-    }
-</style>
+<h2>Your profile</h2>
 
-<img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
-
+@* <img src="@CV_.Picture" alt="Profile Picture" class="profile-picture" />
+ *@
 <form asp-action="Profile" method="post">
     <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
         <tr>
@@ -56,11 +47,27 @@
                 <span>@Model.Adress</span>
             </td>
         </tr>
+        <p>
+            Status: @(Model.Privat ? "Privat" : "Offentlig")
+        </p>
+        <div>
+            <a asp-controller="Profile" asp-action="UpdateProfile" class="btn btn-primary">Redigera Profil</a>
+            <form asp-controller="CV_" asp-action="AddResume" method="get">
+                <input type="hidden" name="UID" value="@Model.UID" />
 
-        <tr>
-            <td colspan="2" style="text-align: center;">
-                <a asp-action="UpdateProfile" class="btn btn-primary">Redigera Profil</a>
-            </td>
-        </tr>
+                <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
+            </form>
+        </div>
     </table>
 </form>
+
+<style>
+    .profile-picture {
+        max-width: 150px;
+        max-height: 150;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: block;
+        border: 2px solid black; /* Justera färgen efter behov */
+    }
+</style>
