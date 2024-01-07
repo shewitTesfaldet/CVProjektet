@@ -34,10 +34,14 @@ namespace CV.Controllers
                         join edu in _userContext.Education on cvEdu.EdID equals edu.EdID into eduGroup
                         from edu in eduGroup.DefaultIfEmpty()
                         select new { user.UID, user.Firstname, user.Lastname, user.Username, user.Privat, Description = (edu == null ? null : edu.Description) }).ToList();
-            //sorterar listan utofrån de senaste inlaggda och de 5 första.
+
+            //Sorterar bort alla anonyma användare
+			data = data.Where(user => user.Firstname != "Anonym").ToList();
+
+			//sorterar listan utofrån de senaste inlaggda och de 5 första.
 
 
-            var result = data.GroupBy(x => x.UID)
+			var result = data.GroupBy(x => x.UID)
                              .Select(g => g.First())
                              .OrderByDescending(x => x.UID)
                              .Take(5)

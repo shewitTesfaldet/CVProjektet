@@ -53,7 +53,5 @@ namespace CV.Models
 		public virtual IEnumerable<Chat> ChatsReceived { get; set; } = new List<Chat>();
 
 		public virtual IEnumerable<User_Project> User_Projects { get; set; } = new List<User_Project>();
-
-
-	}
+    }
 }

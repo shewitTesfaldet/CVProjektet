@@ -1,0 +1,73 @@
+﻿@model User
+
+<h2>Your profile</h2>
+
+@* <img src="@CV_.Picture" alt="Profile Picture" class="profile-picture" />
+ *@
+<form asp-action="Profile" method="post">
+    <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+        <tr>
+            <td>
+                <label asp-for="Username">Username:</label>
+            </td>
+            <td>
+                <span>@Model.Username</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label asp-for="Firstname">First Name:</label>
+            </td>
+            <td>
+                <span>@Model.Firstname</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Lastname">Last Name:</label>
+            </td>
+            <td>
+                <span>@Model.Lastname</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Epost">Email:</label>
+            </td>
+            <td>
+                <span>@Model.Epost</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Adress">Address:</label>
+            </td>
+            <td>
+                <span>@Model.Adress</span>
+            </td>
+        </tr>
+        <p>
+            Status: @(Model.Privat ? "Privat" : "Offentlig")
+        </p>
+        <div>
+            <a asp-controller="Profile" asp-action="UpdateProfile" class="btn btn-primary">Redigera Profil</a>
+            <form asp-controller="CV_" asp-action="AddResume" method="get">
+                <input type="hidden" name="UID" value="@Model.UID" />
+
+                <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
+            </form>
+        </div>
+    </table>
+</form>
+
+<style>
+    .profile-picture {
+        max-width: 150px;
+        max-height: 150;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: block;
+        border: 2px solid black; /* Justera färgen efter behov */
+    }
+</style>
