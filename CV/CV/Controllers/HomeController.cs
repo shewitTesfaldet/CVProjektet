@@ -65,6 +65,51 @@ namespace CV.Controllers
 
         }
 
-        
+
+        [Authorize]
+        public IActionResult JoinProject(int PID)
+        {
+            // Get the current user's UID
+            var currentUsername = User.Identity.Name;
+            var currentUser = _userContext.Users.SingleOrDefault(u => u.Username == currentUsername);
+
+            if (currentUser != null)
+            {
+                // Check if the user is already part of the project
+                var existingUserProject = _userContext.UserProjects
+                    .SingleOrDefault(up => up.UID == currentUser.UID && up.PID == PID);
+
+                if (existingUserProject == null)
+                {
+                    // User is not part of the project, add them to UserProjects
+                    var newUserProject = new User_Project
+                    {
+                        UID = currentUser.UID,
+                        PID = PID
+                    };
+
+                    _userContext.UserProjects.Add(newUserProject);
+                    _userContext.SaveChanges();
+
+                    TempData["Message"] = "Du har gått med i projektet!";
+                    TempData["ErrorMessage"] = null;
+                }
+                else
+                {
+                    TempData["Message"] = null; 
+                    TempData["ErrorMessage"] = "Du är redan med i projektet!";
+                }
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
+
+            // Redirect back to the project details or wherever you want
+            return RedirectToAction("Index", new { PID = PID });
+        }
+
+
+
     }
 }

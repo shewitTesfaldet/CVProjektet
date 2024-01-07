@@ -1,4 +1,19 @@
 @model List<User>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @Html.Raw(TempData["Message"])
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @Html.Raw(TempData["ErrorMessage"])
+    </div>
+}
+
 @{
 	ViewData["Title"] = "JobConnect";
 }
@@ -24,20 +39,25 @@
 
 	<div style="width: 45%; margin-top:7em;">
 
-		@foreach (var project in ViewBag.PResult)
-		{
-			<div class="card border-info mb-3" style="max-width: 18rem; margin-left:15rem;">
-				<div class="card-body">
-					<h4>Projekt</h4>
-					<h5 class="card-title">@project.Title</h5>
-					<h6 class="card-subtitle mb-2 text-body-secondary">@project.Description</h6>
-					<p class="card-text"> Skapad av @project.Username</p>
-					<a href="#" class="card-link">
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
-							<path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
-						</svg>
-					</a>
-					<a asp-controller="Project" asp-action="EditProject" asp-route-PID="@project.PID" class="card-link">Projekt</a>
+
+        @foreach (var project in ViewBag.PResult)
+        {
+            <div class="card border-info mb-3" style="max-width: 18rem; margin-left:15rem;">
+                <div class="card-body">
+                    <h4>Projekt</h4>
+                    <h5 class="card-title">@project.Title</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">@project.Description</h6>
+                    <p class="card-text"> Skapad av @project.Username</p>
+                    <a href="#" class="card-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2" />
+                        </svg>
+                    </a>
+
+
+                    <a asp-controller="Home" asp-action="JoinProject" asp-route-PID="@project.PID">Delta</a>
+
+
 
 				</div>
 			</div>
