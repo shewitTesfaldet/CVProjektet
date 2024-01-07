@@ -2,9 +2,8 @@
 
 
 <!DOCTYPE html>
-<div asp-validation-summary="All" class="text-danger"> </div>
-<form asp-action="AddResume" method="post">
-	<html lang="eng">
+
+ 	<html lang="eng">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="stylesheet" href="AddResume.cshtml.css">
@@ -12,10 +11,6 @@
 		<link rel="stylesheet" href="~/CV.styles.css" asp-append-version="true" />
 
 	</head>
-
-
-	<header>
-	</header>
 
 	<body>
 
@@ -46,14 +41,22 @@
 						}
 					</div>
 					<div class="contact-container container-block">
-						
-						@* För- och Efternamn*@
-						@foreach (var name in ViewBag.Fullname)
-						{
-							<h4>@name.Firstname</h4>
-							<h4>@name.Lastname</h4>
-						}
+						@* 						För- och Efternamn*@
 
+						@if (ViewBag.Fullname != null){
+							@foreach (var name in ViewBag.Fullname)
+							{
+								<h4>@name.Firstname</h4>
+								<h4>@name.Lastname</h4>
+							}
+						}
+						<form asp-controller="Chat" asp-action="MessageBox" method="get">
+						<input type="hidden" name="clickID" value="@ViewBag.UID" />
+						
+						<button class="btn btn-outline-light" type="submit" style="font-size:0.8em;"> Skicka meddelande</button>
+						</form>
+
+						
 					</div>
 
 				</div>
@@ -153,8 +156,7 @@
 						}
 						else
 						{
-							@ViewBag.EducationMessage
-							;
+							@ViewBag.EducationMessage;
 						}
 
 
@@ -200,14 +202,7 @@
 			<!--//main-body-->
 		</div>
 
-		<footer class="footer">
-			<div class="text-center">
-				<!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
-				<small class="copyright">Designed with <i class="fa-solid fa-heart"></i> by <a href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a> for developers</small>
-			</div><!--//container-->
-		</footer>
-
-		<!--//footer-->
+		
 
 	</body>
 </html>
@@ -215,12 +210,4 @@
 
 
 
-
-		</div>
-
-
-	 </html>
-
-
-</form>
 

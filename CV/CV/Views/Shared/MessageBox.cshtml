@@ -13,7 +13,49 @@
             </div>
         </div>
 
+        
         <form asp-action="MessageBox" method="get">
+           
+            @if (ViewBag.anonym == null)
+            {
+                @if (@User.Identity.Name == null)
+            {
+
+                    <div class="modal fade" id="modalRegisterForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header text-center">
+                                    <h4 style="color:black;" class=" modal-title w-100 font-weight-bold">Uppge ditt namn</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-5">
+                                        <h5 style="color:black;">För att kunna skriva till denna användare måste du ange ditt namn</h5>
+                                        <i class="fas fa-user prefix grey-text"></i>
+                                        <input type="text" name="anonym" id="orangeForm-name" class="form-control validate" placeholder="Ditt namn">
+                                    </div>
+
+
+                                </div>
+                                <div class="modal-footer d-flex justify-content-center">
+                                    <button class="btn btn-deep-orange">Okej</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                    <script>
+                        $(document).ready(function () {
+                        $("#modalRegisterForm").modal('show');
+                        });
+                    </script>
+                }
+
+            }
 
             <div id="search">
 
@@ -51,6 +93,7 @@
                     </ul>
                 </div>
             }
+            
             </form>
 
     </div>
@@ -89,8 +132,19 @@
 
             </ul>
         </div>
-
+         
+       
         <form asp-controller="Chat" asp-action="MessageBox" method="post">
+
+            @using (Html.BeginForm("MessageBox", "Chat", FormMethod.Post))
+            {
+                @Html.Hidden("clickedName", (string)ViewBag.ClickedName)
+                @Html.Hidden("getLogedOnUser", (string)ViewBag.getLogedOnUser)
+                @Html.Hidden("anonym", (string)ViewBag.anonym)
+
+          
+               
+
             <div class="message-input">
                 <div class="wrap">
                     <input type="hidden" name="ClickedName" value="@ViewBag.Clickedname" />
@@ -98,7 +152,10 @@
                     <button class="submit" type="submit" value="Skicka"><i class="fa fa-paper-plane" aria-hidden="true">Skicka</i></button>
                 </div>
             </div>
+            }
+            
         </form>
+        
 
     </div>
 

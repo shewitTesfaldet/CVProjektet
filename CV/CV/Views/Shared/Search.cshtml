@@ -9,6 +9,7 @@
             <td>Användarnamn </td>
             <td>Förnamn </td>
             <td>Efternamn</td>
+            <td>CV</td>
         </tr>
     </thead>
 
@@ -20,6 +21,33 @@
                 <td>@prod.Username</td>
                 <td>@prod.Firstname</td>
                 <td>@prod.Lastname</td>
+                @if(User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        <form method="post" asp-controller="CV_" asp-action="AddResume">
+                            <input type="hidden" name="UID" value="@prod.UID" />
+                            <button type="submit" class="btn-primary" style=" background-color: #567D8D; border-radius: 5%; border: 2px solid #4B6A78; color: aliceblue;">
+                                <a>CV</a>
+                            </button>
+                        </form>
+                    </td>
+                }
+                else
+                {
+                    if(prod.Privat == false)
+                    {
+                        <td>
+                            <form method="post" asp-controller="CV_" asp-action="AddResume">
+                                <input type="hidden" name="UID" value="@prod.UID" />
+                                <button type="submit" class="btn-primary" style=" background-color: #567D8D; border-radius: 5%; border: 2px solid #4B6A78; color: aliceblue;">
+                                    <a>CV</a>
+                                </button>
+                            </form>
+                        </td>
+                    }
+                }
+				
+               
             </tr>
 
         }
