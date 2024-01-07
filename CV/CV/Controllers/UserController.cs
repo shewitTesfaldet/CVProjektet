@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CV.Controllers
 {
@@ -13,13 +14,13 @@ namespace CV.Controllers
 
         public UserController(UserContext userContext)
         {
-            _userContext = userContext; 
+            _userContext = userContext;
         }
 
 
         public IActionResult Add()
         {
-         return View(new User());
+            return View(new User());
         }
 
         [HttpPost]
@@ -27,9 +28,9 @@ namespace CV.Controllers
         public IActionResult Add(User newUser)
         {
             if (ModelState.IsValid)
-            {  
-                
-               _userContext.Users.Add(newUser);
+            {
+
+                _userContext.Users.Add(newUser);
                 _userContext.SaveChanges();
                 ViewBag.Message = $"Registration successful! Welcome, {newUser.Firstname} {newUser.Lastname}.";
 
@@ -37,11 +38,14 @@ namespace CV.Controllers
             }
 
             else
-            { 
-                return View(newUser); }
+            {
+                return View(newUser);
+            }
 
 
         }
 
     }
 }
+
+

@@ -1,0 +1,83 @@
+﻿@model User
+
+<style>
+    .profile-picture {
+        max-width: 150px;
+        max-height: 150;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: block;
+        border: 2px solid black; /* Justera färgen efter behov */
+    }
+</style>
+
+<h2>@Model.Firstname @Model.Lastname's Profile</h2>
+
+@if (Model.Privat)
+{
+    <div class="alert alert-danger" role="alert">
+This profile is private.
+</div>
+
+}
+else
+{
+
+<img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
+
+<form asp-action="ViewProfile" method="post">
+    <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+        <tr>
+            <td>
+                <label asp-for="Username">Username:</label>
+            </td>
+            <td>
+                <span>@Model.Username</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label asp-for="Firstname">First Name:</label>
+            </td>
+            <td>
+                <span>@Model.Firstname</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Lastname">Last Name:</label>
+            </td>
+            <td>
+                <span>@Model.Lastname</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Epost">Email:</label>
+            </td>
+            <td>
+                <span>@Model.Epost</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label asp-for="Adress">Address:</label>
+            </td>
+            <td>
+                <span>@Model.Adress</span>
+            </td>
+        </tr>
+        <p>
+            Status: @(Model.Privat ? "Privat" : "Offentlig")
+        </p>
+            <div>
+                <form asp-controller="CV_" asp-action="AddResume" method="get">
+                    <input type="hidden" name="UID" value="@ViewBag.UID" />
+
+                    <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
+                </form>
+            </div>
+    </table>
+</form>
+}
