@@ -8,6 +8,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Security.Cryptography;
 using System.Net;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace CV.Controllers
 {
@@ -65,6 +66,82 @@ namespace CV.Controllers
 
         }
 
-        
-    }
+
+        [Authorize]
+        public IActionResult JoinProject(int PID)
+        {
+            // Get the current user's UID
+            var currentUsername = User.Identity.Name;
+            var currentUser = _userContext.Users.SingleOrDefault(u => u.Username == currentUsername);
+
+            if (currentUser != null)
+            {
+                // Check if the user is already part of the project
+                var existingUserProject = _userContext.UserProjects
+                    .SingleOrDefault(up => up.UID == currentUser.UID && up.PID == PID);
+
+                if (existingUserProject == null)
+                {
+                    // User is not part of the project, add them to UserProjects
+                    var newUserProject = new User_Project
+                    {
+                        UID = currentUser.UID,
+                        PID = PID
+                    };
+
+                    _userContext.UserProjects.Add(newUserProject);
+                    _userContext.SaveChanges();
+
+                    TempData["Message"] = "Du har gått med i projektet!";
+                    TempData["ErrorMessage"] = null;
+                }
+                else
+                {
+                    TempData["Message"] = null; 
+                    TempData["ErrorMessage"] = "Du är redan med i projektet!";
+                }
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }
+
+            // Redirect back to the project details or wherever you want
+            return RedirectToAction("Index", new { PID = PID });
+        }
+
+		public IActionResult MessageBox()
+		{
+			var currentUsername = User.Identity.Name;
+			var currentUser = _userContext.Users.SingleOrDefault(u => u.Username == currentUsername);
+
+			if (currentUser != null)
+			{
+				try
+				{
+					// Retrieve unread messages for the specific user where 'Read' is false
+					var hasUnreadMessages = _userContext.Chats
+						.Any(chat => chat.ReceiverID == currentUser.UID && chat.Read == false);
+
+					// Debugging output
+					Console.WriteLine($"HasUnreadMessages: {hasUnreadMessages}");
+
+					// Pass the information to the ViewBag
+					ViewBag.HasUnreadMessages = hasUnreadMessages;
+				}
+				catch (Exception ex)
+				{
+					// Log or print the exception details
+					Console.WriteLine($"Exception: {ex.Message}");
+				}
+			}
+
+			// Your existing logic for the MessageBox action
+			// ...
+
+			return View("Index");
+		}
+
+
+	}
 }

@@ -103,35 +103,49 @@
             <p>@ViewBag.ClickedName</p>
         </div>
 
+
         <div class="messages">
             <ul>
                 @if (Model != null)
                 {
                     @foreach (Chat chat in Model)
                     {
-                        if (chat.SenderID.Equals(ViewBag.LoggedInID))
-                        {
-                            <li class="sent">
-                                <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
-                                <p>@chat.Text</p>
-                            </li>
-                            <p style="font-size:0.5em;">@chat.Date</p>
-
-                        }
-                        else
+                        if (chat.ReceiverID.Equals(ViewBag.LoggedInID))
                         {
                             <li class="replies">
                                 <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
                                 <p>@chat.Text</p>
+                                <p style="font-size:0.5em;">@chat.Date</p>
+                                @if (!chat.Read.HasValue || !chat.Read.Value)
+                                {
+                                    <form asp-controller="Chat" asp-action="MarkMessageAsRead" method="post">
+                                        <input type="hidden" name="messageId" value="@chat.MID" />
+                                        <button type="submit">Markera som läst</button>
+                                    </form>
+                                }
                             </li>
-                            <p style="font-size:0.5em; margin-left:55em;">@chat.Date</p>
-
+                        }
+                        else
+                        {
+                            <li class="sent">
+                                <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                                <p>@chat.Text</p>
+                                <p style="font-size:0.5em;">@chat.Date</p>
+                                @if (!chat.Read.HasValue || !chat.Read.Value)
+                                {
+                                    <div style="background-color: #f5f5f5; padding: 5px; border-radius: 5px; margin-top: 5px;">Ej läst</div>
+                                }
+                                @if (chat.Read.HasValue && chat.Read.Value)
+                                {
+                                    <div style="background-color: #f5f5f5; padding: 5px; border-radius: 5px; margin-top: 5px;">Läst</div>
+                                }
+                            </li>
                         }
                     }
                 }
-
             </ul>
         </div>
+
          
        
         <form asp-controller="Chat" asp-action="MessageBox" method="post">
