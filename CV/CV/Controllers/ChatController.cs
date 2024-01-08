@@ -64,25 +64,9 @@ namespace CV.Controllers
             ViewBag.users = users;
             if (clickID == 0)
             {
-                if (Request.Cookies["clickID"] != null && !string.IsNullOrEmpty(Request.Cookies["clickID"]))
-                {
-                    if (int.TryParse(Request.Cookies["clickID"], out int parsedClickID))
-                    {
-                        clickID = parsedClickID;
-                    }
-                    else
-                    {
-                        // Felaktigt värde i cookien som inte kan konverteras till en int
-                        // Ta lämpliga åtgärder, t.ex. logga eller hantera felet på annat sätt
-                    }
-                }
-                else
-                {
-                    // Cookien finns inte eller är tom
-                    // Ta lämpliga åtgärder, t.ex. logga eller hantera felet på annat sätt
-                }
+                clickID = int.Parse(Request.Cookies["clickID"]);
             }
-
+         
             if (clickID != 0)
             {
 
@@ -201,27 +185,10 @@ namespace CV.Controllers
                 }
             }
 
-        }
-
-        [HttpPost]
-        public IActionResult MarkMessageAsRead(int messageId)
-        {
             
-            var message = _userContext.Chats.FirstOrDefault(m => m.MID == messageId);
-
-            if (message != null && !message.Read.HasValue || !message.Read.Value)
-            {
-                message.Read = true;
-                _userContext.SaveChanges();
-            }
-
-            return RedirectToAction("MessageBox");
+            
         }
-
-
-		
-
-	}
+    }
 }
 
 

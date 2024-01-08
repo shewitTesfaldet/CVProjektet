@@ -101,23 +101,23 @@ namespace CV.Controllers
                     ViewBag.ProfilePicture = profilePicture;
 
 
+
+
+                    string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + profilePicture + "";
+
+
+                    string FilePathExists = Path.Combine(filePath);
+
+                    if (!System.IO.File.Exists(FilePathExists))
+                    {
+                        ViewBag.noProfilePicture = "no_profile_picture.jpg";
+                    }
+
+
+
+
                 }
 
-
-
-            }
-
-            if (!pictureList.Contains(UID))
-            {
-                string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
-
-
-                string FilePathExists = Path.Combine(filePath);
-
-                if (!System.IO.File.Exists(FilePathExists))
-                {
-                    ViewBag.noProfilePicture = "no_profile_picture.jpg";
-                }
             }
 
             /*För- och efternamn*/
@@ -260,7 +260,7 @@ namespace CV.Controllers
 
                     int expIdList = userListExp.ElementAt(expid);
 
-                    if (UID == expIdList)
+                    if (UID == expid)
                     {
                         var experience = (from user in _userContext.Users
                                           where user.UID == UID
