@@ -1,23 +1,24 @@
 ﻿@model User
 
-<style>
-    .profile-picture {
-        max-width: 150px;
-        max-height: 150;
-        border-radius: 50%;
-        margin: 0 auto;
-        display: block;
-        border: 2px solid black; /* Justera färgen efter behov */
-    }
-</style>
 
-<form asp-action="UpdateProfile" method="post">
-    <div class="mb-3">
-        <label for="profilePicture" class="form-label">Profile Picture:</label>
-        <input type="file" id="profilePicture" name="ProfilePicture" class="form-control" />
-    </div>
+<form asp-action="UpdateProfile" method="post" enctype="multipart/form-data">
+
+
     <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
 
+        <div>
+            <div class="d-flex justify-content-center mb-4">
+                <img id="selectedAvatar" src="@ViewBag.ProfilePicture"
+                     class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="" />
+            </div>
+
+            <div class="d-flex justify-content-center">
+                <div class="btn btn-primary btn-rounded">
+                    <label class="form-label text-white m-1" for="customFile2">Välj en bild</label>
+                    <input type="file" name="CVBild" class="form-control d-none" id="customFile2" onchange="displaySelectedImage(event, 'selectedAvatar')" />
+                </div>
+            </div>
+        </div>
         <tr>
             <td>
                 <label asp-for="Username">Username:</label>
@@ -76,55 +77,54 @@
                 <input asp-for="Adress" type="text" class="form-control" value="@Model.Adress" />
             </td>
         </tr>
-<tr>
-        <tr>
-            <td>
-                <label for="Competence">Kompetenser:</label>
-            </td>
-            <td>
-                 
-
-                <input type="text" id="newCompetence" name="newCompetence" class="form-control" />
-            </td>
-        </tr>
-
-        <!-- Tidigare erfarenheter -->
-        <tr>
-            <td>
-                <label for="Experience">Tidigare erfarenheter:</label>
-            </td>
-            <td>
-                   
-
-                <input type="text" id="newExperience" name="newExperience" class="form-control" />
-            </td>
-        </tr>
-
-        <!-- Utbildningar -->
-        <tr>
-            <td>
-                <label for="Education">Utbildningar:</label>
-            </td>
-            <td>
-                 
-
-                <input type="text" id="newEducation" name="newEducation" class="form-control" />
-            </td>
-        </tr>
+        <div class="form-check mb-4">
+            <input asp-for="Privat" class="form-check-input" type="checkbox" id="form3Example5" />
+            <label class="form-check-label" for="form3Example5">Private</label>
+        </div>
 
         <tr>
             <td colspan="4" style="text-align: right;">
-                <input type="submit" value="Confirm changes" class="btn btn-primary" />
+                <button type="submit" class="btn btn-primary">Uppdatera profil</button>
+
             </td>
         </tr>
         <tr>
             <td colspan="4" style="text-align: left;">
-                <input type="submit" value="Go back to profile" class="btn btn-primary" />
+                <a class="btn btn-primary" asp-controller="Profile" asp-action="Profile">Gå tillbaka till profil</a>
             </td>
         </tr>
-    </table>
-
-
-
+    </table> 
 
 </form>
+
+
+
+ <script>
+    function displaySelectedImage(event, elementId) {
+        const selectedImage = document.getElementById(elementId);
+        const fileInput = event.target;
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                selectedImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+
+
+</script>
+
+<style>
+    .profile-picture {
+        max-width: 150px;
+        max-height: 150;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: block;
+        border: 2px solid black; /* Justera färgen efter behov */
+    }
+</style>
