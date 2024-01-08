@@ -142,22 +142,7 @@ namespace CV.Controllers
                     userToUpdate.Epost = updatedUser.Epost;
                     userToUpdate.Privat = updatedUser.Privat;
 
-                    Education education = new Education();
-                    education.Description = newEducation;
-                    education.EdID = result;
-
-                    Competence competence = new Competence();
-                    competence.Description = newCompetence;
-                    competence.CompID = result;
-
-                    Experience experience = new Experience();
-                    experience.Description = newExperience;
-                    experience.EID = result;
-
-                    _userContext.Education.Add(education);
-                    _userContext.Competence.Add(competence);
-                    _userContext.Experience.Add(experience);
-
+               
                     //Ändrar bild
 
 
