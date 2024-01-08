@@ -128,13 +128,7 @@ else
         <p>
             Status: @(Model.Privat ? "Privat" : "Offentlig")
         </p>
-            <div>
-                <form asp-controller="CV_" asp-action="AddResume" method="get">
-                    <input type="hidden" name="UID" value="@ViewBag.UID" />
-
-                    <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
-                </form>
-            </div>
+            
     </table>
 </form>
 }
