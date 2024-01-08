@@ -31,7 +31,7 @@ namespace CV.Controllers
         public IActionResult ResumeHistory(int UID)
         {
             List<CV_> cv = _userContext.CV_s.ToList();
-          
+
             var cvInfo = (from user in _userContext.Users
                           where user.UID == UID
                           select new { user.Firstname, user.Lastname, user.Epost, user.Privat });
@@ -66,31 +66,31 @@ namespace CV.Controllers
             return View("EditResume", cv);
         }
 
-		
+
 
 
         public IActionResult AddResume(int UID)
         {
-			if (UID == 0)
-			{
-				var currentUser = (from u in _userContext.Users
-								   where u.Firstname == User.Identity.Name
-								   select u.UID);
-				UID = currentUser.First();
-			}
+            if (UID == 0)
+            {
+                var currentUser = (from u in _userContext.Users
+                                   where u.Firstname == User.Identity.Name
+                                   select u.UID);
+                UID = currentUser.First();
+            }
 
-			/*            ProfilBild
+            /*            ProfilBild
 			*/
-			var pictureList = (from id in _userContext.CV_s
-                               select id.CID).ToList();
+            var pictureList = (from id in _userContext.CV_s
+                               select id.UID).ToList();
 
 
             for (int pid = 0; pid < pictureList.Count(); pid++)
             {
 
-                int expIdList = pictureList.ElementAt(pid);
+                int expId = pictureList.ElementAt(pid);
 
-                if (UID == expIdList)
+                if (UID == expId)
                 {
 
                     var profilePicture = (from cv in _userContext.CV_s
@@ -100,23 +100,23 @@ namespace CV.Controllers
                     ViewBag.ProfilePicture = profilePicture;
 
 
-
-
-                    string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + profilePicture + "";
-
-
-                    string FilePathExists = Path.Combine(filePath);
-
-                    if (!System.IO.File.Exists(FilePathExists))
-                    {
-                        ViewBag.noProfilePicture = "no_profile_picture.jpg";
-                    }
-
-
-
-
                 }
 
+              
+
+            }
+
+            if (!pictureList.Contains(UID))
+            {
+                string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
+
+
+                string FilePathExists = Path.Combine(filePath);
+
+                if (!System.IO.File.Exists(FilePathExists))
+                {
+                    ViewBag.noProfilePicture = "no_profile_picture.jpg";
+                }
             }
 
             /*För- och efternamn*/
@@ -257,9 +257,9 @@ namespace CV.Controllers
                 for (int expid = 0; expid < userListEdu.Count(); expid++)
                 {
 
-                    int expIdList = userListExp.ElementAt(expid);
+                    int expIdElement = userListExp.ElementAt(expid);
 
-                    if (UID == expid)
+                    if (UID == expIdElement)
                     {
                         var experience = (from user in _userContext.Users
                                           where user.UID == UID
