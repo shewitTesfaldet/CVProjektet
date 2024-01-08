@@ -12,12 +12,16 @@ namespace CV.Controllers
     {
         private UserContext _userContext;
 
+     
         public ProfileController(UserContext userContext)
         {
             _userContext = userContext;
         }
 
-        [Authorize]
+
+    
+
+    [Authorize]
         [HttpGet]
         public IActionResult Profile()
         {
@@ -138,6 +142,21 @@ namespace CV.Controllers
                     userToUpdate.Epost = updatedUser.Epost;
                     userToUpdate.Privat = updatedUser.Privat;
 
+                    Education education = new Education();
+                    education.Description = newEducation;
+                    education.EdID = result;
+
+                    Competence competence = new Competence();
+                    competence.Description = newCompetence;
+                    competence.CompID = result;
+
+                    Experience experience = new Experience();
+                    experience.Description = newExperience;
+                    experience.EID = result;
+
+                    _userContext.Education.Add(education);
+                    _userContext.Competence.Add(competence);
+                    _userContext.Experience.Add(experience);
 
                     //Ändrar bild
 
@@ -157,12 +176,6 @@ namespace CV.Controllers
 
             return View("Profile", updatedUser);
         }
-
-
-      /*  public async Task<string> GetPicture(IFormFile CVBild)
-        {
-            return (fullPath);
-		}*/
 
 
         [HttpGet]
@@ -185,6 +198,7 @@ namespace CV.Controllers
             // Användaren är inte privat, visa profilen
             return View(user);
         }
+
 
               
     }
