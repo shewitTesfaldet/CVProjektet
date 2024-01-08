@@ -51,7 +51,6 @@
                     </a>
                 }
 
-
 				@*Profilbild som ska leda till sin egna profil*@
 				<div class="dropdown">
 					<a class="navbar-brand" href="#" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -60,23 +59,19 @@
 							<path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
 						</svg>
 						<ul class="dropdown-menu" style="min-width: 5rem !important;">
-							<li><a class="dropdown-item" asp-controller="Profile" asp-action="Profile">Profil</a></li>
+							
 							@if (User.Identity.IsAuthenticated)
 							{
+								<li><a class="dropdown-item" asp-controller="Profile" asp-action="Profile">Profil</a></li>
+
 								<li>
 									<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
 
 								</li>
-
-
-							}
-							else
-							{
-								<li><a class="dropdown-item" href="#">CV</a></li>
-							<li><a class="dropdown-item" href="/Project/Projects">Project</a></li>
-							<form asp-controller="Account" asp-action="LogOut" method="post">
-								<button type="submit" class="dropdown-item">Logga ut</button>
-							</form>
+								<li><a class="dropdown-item" href="/Project/Projects">Projekt</a></li>
+								<form asp-controller="Account" asp-action="LogOut" method="post">
+									<button type="submit" class="dropdown-item">Logga ut</button>
+								</form>
 							}
 						</ul>
 				</div>
