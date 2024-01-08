@@ -68,63 +68,6 @@ else
                 <span>@Model.Adress</span>
             </td>
         </tr>
-            <!-- Kompetenser -->
-            <tr>
-                <td>
-                    <label>Kompetenser:</label>
-                </td>
-                <td>
-                    @if (ViewBag.Competence != null)
-                    {
-                        foreach (var Comp in ViewBag.Competence)
-                        {
-                            <p> - @Comp.Description</p>
-                        }
-                    }
-                    else
-                    {
-                        <p>Ingen information om kompetenser tillgänglig.</p>
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Utbildning:</label>
-                </td>
-                <td>
-                    @if (ViewBag.Education != null)
-                    {
-                        foreach (var education in ViewBag.Education)
-                        {
-                            <p> - @education.Description</p>
-                        }
-                    }
-                    else
-                    {
-                        <p>Ingen information om utbildningar tillgänglig.</p>
-                    }
-                </td>
-            </tr>
-
-            <!-- Erfarenheter -->
-            <tr>
-                <td>
-                    <label>Erfarenheter:</label>
-                </td>
-                <td>
-                    @if (ViewBag.Experience != null)
-                    {
-                        foreach (var experience in ViewBag.Experience)
-                        {
-                            <p> - @experience.Description</p>
-                        }
-                    }
-                    else
-                    {
-                        <p>Ingen information om tidigare erfarenheter tillgänglig.</p>
-                    }
-                </td>
-            </tr>
         <p>
             Status: @(Model.Privat ? "Privat" : "Offentlig")
         </p>

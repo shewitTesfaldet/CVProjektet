@@ -12,16 +12,12 @@ namespace CV.Controllers
     {
         private UserContext _userContext;
 
-     
         public ProfileController(UserContext userContext)
         {
             _userContext = userContext;
         }
 
-
-    
-
-    [Authorize]
+        [Authorize]
         [HttpGet]
         public IActionResult Profile()
         {
@@ -66,18 +62,9 @@ namespace CV.Controllers
 
 
         [HttpPost]
-        public IActionResult UpdateProfile(User updatedUser, string newEducation, string newCompetence, string newExperience)
+        public IActionResult UpdateProfile(User updatedUser)
         {
             string Name = User.Identity.Name;
-            int? LoggedInID = _userContext.Users
-                .Where(x => x.Username.Equals(Name))
-                .Select(x => x.UID)
-                .FirstOrDefault();
-
-            int result = _userContext.CV_s
-                .Where(cv => cv.UID == LoggedInID)
-                .Select(cv => cv.CID)
-                .FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -92,21 +79,6 @@ namespace CV.Controllers
                     userToUpdate.Epost = updatedUser.Epost;
                     userToUpdate.Privat = updatedUser.Privat;
 
-                    Education education = new Education();
-                    education.Description = newEducation;
-                    education.EdID = result;
-
-                    Competence competence = new Competence();
-                    competence.Description = newCompetence;
-                    competence.CompID = result;
-
-                    Experience experience = new Experience();
-                    experience.Description = newExperience;
-                    experience.EID = result;
-
-                    _userContext.Education.Add(education);
-                    _userContext.Competence.Add(competence);
-                    _userContext.Experience.Add(experience);
 
                     if (!string.IsNullOrEmpty(updatedUser.ConfirmPassword) && updatedUser.Password == updatedUser.ConfirmPassword)
                     {
@@ -122,7 +94,6 @@ namespace CV.Controllers
 
             return View("Profile", updatedUser);
         }
-
 
         [HttpGet]
         public IActionResult ViewProfile(string username)
@@ -144,8 +115,44 @@ namespace CV.Controllers
             // Användaren är inte privat, visa profilen
             return View(user);
         }
-        
-       
+        [HttpPost]
+        public IActionResult UpdateProfile(User updatedUser, IFormFile profilePicture)
+        {
+            string Name = User.Identity.Name;
+
+            if (ModelState.IsValid)
+            {
+                // Other updates here...
+
+                // Get the current user including the CV
+                var currentUser = _userContext.Users.Include(u => u.CV_).FirstOrDefault(x => x.Username.Equals(Name));
+
+                // Update user properties
+                currentUser.Firstname = updatedUser.Firstname;
+                currentUser.Lastname = updatedUser.Lastname;
+                // ... (other properties)
+
+                // Save the uploaded picture if it exists
+                if (profilePicture != null && profilePicture.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        profilePicture.CopyTo(memoryStream);
+                        if (currentUser.CV_ == null)
+                        {
+                            currentUser.CV_ = new CV_(); // Assuming CV_ is your CV model
+                        }
+                        currentUser.CV_.Picture = Convert.ToBase64String(memoryStream.ToArray());
+                    }
+                }
+
+                _userContext.SaveChanges();
+
+                return RedirectToAction("Profile");
+            }
+
+            return View(updatedUser);
+        }
 
     }
 }
