@@ -19,11 +19,9 @@
 				
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
+
 						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Startsida</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-controller="Account" asp-action="Register"> Registrera</a>
+							<a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register"> Registrera</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
@@ -91,18 +89,19 @@
 							
 							@if (User.Identity.IsAuthenticated)
 							{
-								<li><a class="dropdown-item" asp-controller="Profile" asp-action="Profile">Profil</a></li>
+								<li><a class="dropdown-item" style="margin-top: -2em" asp-controller="Profile" asp-action="Profile">Profil</a></li>
 
 								
 								<form asp-controller="Account" asp-action="LogOut" method="post">
 									<button type="submit" class="dropdown-item">Logga ut</button>
 								</form>
 							}
-							<li>
-								<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
+						
+@* 							Ta inte bort, Register kommer att bli fel*@
+								<a class="nav-link text-dark" hidden="hidden" href="/CV_/ResumeHistory"> CV</a>
+@* 							Ta inte bort, Register kommer att bli fel*@
 
-							</li>
-							<li><a class="dropdown-item" href="/Project/Projects">Projekt</a></li>
+
 
 						</ul>
 				</div>

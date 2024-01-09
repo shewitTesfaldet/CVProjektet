@@ -4,6 +4,26 @@
 
 
 <form asp-action="Profile" method="post">
+
+    <div class="d-flex justify-content-center mb-4">
+        @if (@ViewBag.noProfilePicture == null)
+        {
+           
+            <div>
+                <img id="selectedAvatar" src="https:\\localhost:7237\Pictures\@ViewBag.ProfilePicture" class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="Profilbild" class="Profilbild">
+
+            </div>
+         
+        }
+        else
+        {
+            <div>
+                <img src="https:\\localhost:7237\Pictures\@ViewBag.noProfilePicture" alt="Profilbild" class="Profilbild">
+
+            </div>
+        }
+       
+    </div>
     <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
         <tr>
             <td>
@@ -109,11 +129,7 @@
         <div>
             <a asp-controller="Profile" asp-action="UpdateProfile" class="btn btn-primary">Redigera Profil</a>
 
-            <form asp-controller="CV_" asp-action="AddResume" method="get">
-                <input type="hidden" name="UID" value="@Model.UID" />
-
-                <button class="btn btn-outline-dark" type="submit" style="font-size:0.8em;">CV</button>
-            </form>
+           
         </div>
     </table>
 </form>
