@@ -50,6 +50,21 @@ namespace CV.Controllers
             User user = new User();
             string Name = User.Identity.Name;
 
+            //Hämtar ID på den inloggade
+           int LogedInID = _userContext.Users
+                               .Where(x => x.Username.Equals(Name))
+                               .Select(x => x.UID)
+                               .FirstOrDefault();
+
+			//Hämtar bild på den inloggade
+			var profilePicture = (from cv in _userContext.CV_s
+								  where cv.UID == LogedInID
+								  select cv.Picture).FirstOrDefault();
+
+			ViewBag.ProfilePicture = profilePicture;
+
+            
+
             if (Name != null)
             {
                 user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
@@ -65,23 +80,58 @@ namespace CV.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult UpdateProfile(User updatedUser, string newEducation, string newCompetence, string newExperience)
+		[HttpPost]
+
+		public async Task<IActionResult> UpdateProfile(IFormFile CVBild, User updatedUser)
         {
-            string Name = User.Identity.Name;
-            int? LoggedInID = _userContext.Users
-                .Where(x => x.Username.Equals(Name))
-                .Select(x => x.UID)
-                .FirstOrDefault();
+			string Name = User.Identity.Name;
+            int LogedInID = _userContext.Users
+                              .Where(x => x.Username.Equals(Name))
+                              .Select(x => x.UID)
+                              .FirstOrDefault();
 
-            int result = _userContext.CV_s
-                .Where(cv => cv.UID == LoggedInID)
-                .Select(cv => cv.CID)
-                .FirstOrDefault();
-
+            
             if (ModelState.IsValid)
             {
-                var userToUpdate = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
+				/*				string fullpath = await GetPicture(CVBild);
+				 *				
+				*/
+
+				string fileName = CVBild.FileName;
+				string path = @"C:\Users\shewi\Documents\Team8\CVProjektet\CV\CV\wwwroot\Pictures";
+
+
+				// Kontrollera om filen är null
+				if (CVBild == null || CVBild.Length == 0)
+				{
+				}
+
+				string fullPath = Path.Combine(path, fileName);
+
+				// Skriv filen till sökvägen
+				using (var stream = new FileStream(fullPath, FileMode.Create))
+				{
+					await CVBild.CopyToAsync(stream);
+				}
+				CV_ LogedInCV = _userContext.CV_s.FirstOrDefault(x => x.UID.Equals(LogedInID));
+                if (LogedInCV == null)
+                {
+                    CV_ NewCV = new CV_();
+                    NewCV.UID = LogedInID;
+                    NewCV.Picture = fullPath;
+                    _userContext.CV_s.Add(NewCV);
+
+                }
+                else
+                {
+					LogedInCV.Picture = fullPath;
+
+				}
+
+				_userContext.SaveChanges();
+
+
+				var userToUpdate = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
 
                 if (userToUpdate != null)
                 {
@@ -92,21 +142,10 @@ namespace CV.Controllers
                     userToUpdate.Epost = updatedUser.Epost;
                     userToUpdate.Privat = updatedUser.Privat;
 
-                    Education education = new Education();
-                    education.Description = newEducation;
-                    education.EdID = result;
+               
+                    //Ändrar bild
 
-                    Competence competence = new Competence();
-                    competence.Description = newCompetence;
-                    competence.CompID = result;
 
-                    Experience experience = new Experience();
-                    experience.Description = newExperience;
-                    experience.EID = result;
-
-                    _userContext.Education.Add(education);
-                    _userContext.Competence.Add(competence);
-                    _userContext.Experience.Add(experience);
 
                     if (!string.IsNullOrEmpty(updatedUser.ConfirmPassword) && updatedUser.Password == updatedUser.ConfirmPassword)
                     {
@@ -144,8 +183,8 @@ namespace CV.Controllers
             // Användaren är inte privat, visa profilen
             return View(user);
         }
-        
-       
 
+
+              
     }
 }
