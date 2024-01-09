@@ -215,13 +215,48 @@ namespace CV.Controllers
                 _userContext.SaveChanges();
             }
 
+
             return RedirectToAction("MessageBox");
         }
 
 
-		
+        public  async Task<IActionResult> MessageShow()
+        {
+            var currentUsername = User.Identity.Name;
 
-	}
+
+            if (currentUsername != null)
+            {
+                try
+                {
+                     int LoggedInID = await _userContext.Users
+                     .Where(x => x.Username.Equals(currentUsername))
+                     .Select(x => x.UID)
+                     .FirstOrDefaultAsync();
+
+
+                    // Retrieve unread messages for the specific user where 'Read' is false
+                    bool hasUnreadMessages = await _userContext.Chats
+                        .AnyAsync(chat => chat.ReceiverID == LoggedInID && chat.Read == false);
+
+
+                    // Pass the information to the ViewBag
+                    ViewBag.HasUnreadMessages = hasUnreadMessages;
+                }
+                catch (Exception ex)
+                {
+                    // Log or print the exception details
+                    Console.WriteLine($"Exception: {ex.Message}");
+                }
+            }
+            return RedirectToAction("_Layout", "Shared");
+
+        }
+
+
+
+
+    }
 }
 
 
