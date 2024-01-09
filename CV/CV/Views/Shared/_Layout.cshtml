@@ -16,11 +16,30 @@
 			<div class="container-fluid">
 
 				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="https:\\localhost:7237\Pictures\logo.png" alt="Bild på logga" style="width:142px;height:72px;" /></a>
+				
+				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+					<ul class="navbar-nav flex-grow-1">
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Startsida</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-controller="Account" asp-action="Register"> Registrera</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-dark" href="/Project/Projects">Projekt</a>
+						</li>
+					</ul>
+				</div>
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
+
+				
 
 				
 				@*Sök container*@
@@ -74,15 +93,16 @@
 							{
 								<li><a class="dropdown-item" asp-controller="Profile" asp-action="Profile">Profil</a></li>
 
-								<li>
-									<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
-
-								</li>
-								<li><a class="dropdown-item" href="/Project/Projects">Projekt</a></li>
+								
 								<form asp-controller="Account" asp-action="LogOut" method="post">
 									<button type="submit" class="dropdown-item">Logga ut</button>
 								</form>
 							}
+							<li>
+								<a class="nav-link text-dark" href="/CV_/ResumeHistory"> CV</a>
+
+							</li>
+							<li><a class="dropdown-item" href="/Project/Projects">Projekt</a></li>
 
 						</ul>
 				</div>
