@@ -13,8 +13,22 @@
 
         <div>
             <div class="d-flex justify-content-center mb-4">
-                <img id="selectedAvatar" src="@ViewBag.ProfilePicture"
-                     class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="" />
+                    @if (@ViewBag.noProfilePicture == null)
+                    {
+
+                        <div>
+                            <img id="selectedAvatar" src="https:\\localhost:7237\Pictures\@ViewBag.ProfilePicture" class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="Profilbild" class="Profilbild">
+
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div>
+                            <img src="https:\\localhost:7237\Pictures\@ViewBag.noProfilePicture" alt="Profilbild" class="Profilbild">
+
+                        </div>
+                    }
             </div>
 
             <div class="d-flex justify-content-center">

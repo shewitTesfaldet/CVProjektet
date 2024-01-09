@@ -25,6 +25,8 @@ namespace CV.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
+          
+
             User user = new User();
             string Name = User.Identity.Name;
 
@@ -37,6 +39,50 @@ namespace CV.Controllers
                 return NotFound();
             }
             ViewBag.UID = user.UID;
+
+            /*            ProfilBild
+        */
+            int LogedInID = _userContext.Users
+                              .Where(x => x.Username.Equals(Name))
+                              .Select(x => x.UID)
+                              .FirstOrDefault();
+
+            var pictureList = (from id in _userContext.CV_s
+                               select id.CID).ToList();
+
+
+            for (int pid = 0; pid < pictureList.Count(); pid++)
+            {
+
+                int expIdList = pictureList.ElementAt(pid);
+
+                if (LogedInID == expIdList)
+                {
+
+                    var profilePicture = (from cv in _userContext.CV_s
+                                          where cv.UID == LogedInID
+                                          select cv.Picture).FirstOrDefault();
+
+                    ViewBag.ProfilePicture = profilePicture;
+
+                }
+
+
+
+            }
+
+            if (!pictureList.Contains(LogedInID))
+            {
+                string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
+
+
+                string FilePathExists = Path.Combine(filePath);
+
+                if (!System.IO.File.Exists(FilePathExists))
+                {
+                    ViewBag.noProfilePicture = "no_profile_picture.jpg";
+                }
+            }
 
             return View(user);
         }
@@ -98,12 +144,21 @@ namespace CV.Controllers
 				*/
 
 				string fileName = CVBild.FileName;
-				string path = @"C:\Users\shewi\Documents\Team8\CVProjektet\CV\CV\wwwroot\Pictures";
+                string path = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\";
 
 
 				// Kontrollera om filen är null
 				if (CVBild == null || CVBild.Length == 0)
 				{
+					string filePath = path + ViewBag.noProfilePicture + "";
+
+
+					string FilePathExists = Path.Combine(filePath);
+
+					if (!System.IO.File.Exists(FilePathExists))
+					{
+						ViewBag.noProfilePicture = "no_profile_picture.jpg";
+					}
 				}
 
 				string fullPath = Path.Combine(path, fileName);
@@ -118,13 +173,14 @@ namespace CV.Controllers
                 {
                     CV_ NewCV = new CV_();
                     NewCV.UID = LogedInID;
-                    NewCV.Picture = fullPath;
+                    NewCV.Picture = ViewBag.noProfilePicture;
                     _userContext.CV_s.Add(NewCV);
 
                 }
                 else
                 {
-					LogedInCV.Picture = fullPath;
+					LogedInCV.Picture = fileName;
+                    ViewBag.ProfilePicture = fileName;
 
 				}
 
