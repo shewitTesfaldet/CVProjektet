@@ -21,16 +21,15 @@
 
 				<div class="profile-container">
 					<div class="profile">
-						@* 						ProfilBild
-						*@						@if (@ViewBag.noProfilePicture == null)
+						@* 		ProfilBild*@						
+						@if (@ViewBag.noProfilePicture == null)
 						{
-							@* @foreach (var pp in ViewBag.ProfilePicture)
-						{ *@
+							
 							<div>
 								<img src="https:\\localhost:7237\Pictures\@ViewBag.ProfilePicture" alt="Profilbild" class="Profilbild">
 
 							</div>
-							@* } *@
+						
 						}
 						else
 						{

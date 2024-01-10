@@ -215,7 +215,7 @@ namespace CV.Controllers
                 }
             }
 
-            return View("Profile", updatedUser);
+            return View("Profile", "Profile");
         }
 
 
