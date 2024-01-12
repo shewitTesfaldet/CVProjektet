@@ -15,120 +15,122 @@
 
 @if (Model.Privat)
 {
-    <div class="alert alert-danger" role="alert">
-This profile is private.
-</div>
-
+    @if (@User.Identity.Name == null)
+    {
+        <div class="alert alert-danger" role="alert">
+            This profile is private.
+        </div>
+    }
 }
-else
-{
+    else
+    {
 
-<img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
+        <img src="https://www.radiofysik.org/wp-content/uploads/2022/07/lediga-jobb.jpeg" alt="Profile Picture" class="profile-picture" />
 
-<form asp-action="ViewProfile" method="post">
-    <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
-        <tr>
-            <td>
-                <label asp-for="Username">Username:</label>
-            </td>
-            <td>
-                <span>@Model.Username</span>
-            </td>
-        </tr>
+        <form asp-action="ViewProfile" method="post">
+            <table class="table-bordered" style="width: 60%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+                <tr>
+                    <td>
+                        <label asp-for="Username">Username:</label>
+                    </td>
+                    <td>
+                        <span>@Model.Username</span>
+                    </td>
+                </tr>
 
-        <tr>
-            <td>
-                <label asp-for="Firstname">First Name:</label>
-            </td>
-            <td>
-                <span>@Model.Firstname</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label asp-for="Lastname">Last Name:</label>
-            </td>
-            <td>
-                <span>@Model.Lastname</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label asp-for="Epost">Email:</label>
-            </td>
-            <td>
-                <span>@Model.Epost</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label asp-for="Adress">Address:</label>
-            </td>
-            <td>
-                <span>@Model.Adress</span>
-            </td>
-        </tr>
-            <!-- Kompetenser -->
-            <tr>
-                <td>
-                    <label>Kompetenser:</label>
-                </td>
-                <td>
-                    @if (ViewBag.Competence != null)
-                    {
-                        foreach (var Comp in ViewBag.Competence)
+                <tr>
+                    <td>
+                        <label asp-for="Firstname">First Name:</label>
+                    </td>
+                    <td>
+                        <span>@Model.Firstname</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label asp-for="Lastname">Last Name:</label>
+                    </td>
+                    <td>
+                        <span>@Model.Lastname</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label asp-for="Epost">Email:</label>
+                    </td>
+                    <td>
+                        <span>@Model.Epost</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label asp-for="Adress">Address:</label>
+                    </td>
+                    <td>
+                        <span>@Model.Adress</span>
+                    </td>
+                </tr>
+                <!-- Kompetenser -->
+                <tr>
+                    <td>
+                        <label>Kompetenser:</label>
+                    </td>
+                    <td>
+                        @if (ViewBag.Competence != null)
                         {
-                            <p> - @Comp.Description</p>
+                            foreach (var Comp in ViewBag.Competence)
+                            {
+                                <p> - @Comp.Description</p>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <p>Ingen information om kompetenser tillgänglig.</p>
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label>Utbildning:</label>
-                </td>
-                <td>
-                    @if (ViewBag.Education != null)
-                    {
-                        foreach (var education in ViewBag.Education)
+                        else
                         {
-                            <p> - @education.Description</p>
+                            <p>Ingen information om kompetenser tillgänglig.</p>
                         }
-                    }
-                    else
-                    {
-                        <p>Ingen information om utbildningar tillgänglig.</p>
-                    }
-                </td>
-            </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Utbildning:</label>
+                    </td>
+                    <td>
+                        @if (ViewBag.Education != null)
+                        {
+                            foreach (var education in ViewBag.Education)
+                            {
+                                <p> - @education.Description</p>
+                            }
+                        }
+                        else
+                        {
+                            <p>Ingen information om utbildningar tillgänglig.</p>
+                        }
+                    </td>
+                </tr>
 
-            <!-- Erfarenheter -->
-            <tr>
-                <td>
-                    <label>Erfarenheter:</label>
-                </td>
-                <td>
-                    @if (ViewBag.Experience != null)
-                    {
-                        foreach (var experience in ViewBag.Experience)
+                <!-- Erfarenheter -->
+                <tr>
+                    <td>
+                        <label>Erfarenheter:</label>
+                    </td>
+                    <td>
+                        @if (ViewBag.Experience != null)
                         {
-                            <p> - @experience.Description</p>
+                            foreach (var experience in ViewBag.Experience)
+                            {
+                                <p> - @experience.Description</p>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <p>Ingen information om tidigare erfarenheter tillgänglig.</p>
-                    }
-                </td>
-            </tr>
-        <p>
-            Status: @(Model.Privat ? "Privat" : "Offentlig")
-        </p>
-            
-    </table>
-</form>
-}
+                        else
+                        {
+                            <p>Ingen information om tidigare erfarenheter tillgänglig.</p>
+                        }
+                    </td>
+                </tr>
+                <p>
+                    Status: @(Model.Privat ? "Privat" : "Offentlig")
+                </p>
+
+            </table>
+        </form>
+    }
