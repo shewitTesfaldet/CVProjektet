@@ -1,10 +1,7 @@
-﻿using Models;
-using CV.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
+﻿using CV.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Models;
 
 namespace CV.Controllers
 {
@@ -97,6 +94,10 @@ namespace CV.Controllers
         [HttpGet]
         public IActionResult UpdateProfile()
         {
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
+
             User user = new User();
             string Name = User.Identity.Name;
 
@@ -133,7 +134,7 @@ namespace CV.Controllers
 		[HttpPost]
 
 		public async Task<IActionResult> UpdateProfile(IFormFile CVBild, User updatedUser)
-        {
+        { 
 			string Name = User.Identity.Name;
             int LogedInID = _userContext.Users
                               .Where(x => x.Username.Equals(Name))
@@ -226,6 +227,9 @@ namespace CV.Controllers
         [HttpGet]
         public IActionResult ViewProfile(string username)
         {
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
             var user = _userContext.Users.FirstOrDefault(x => x.Username.Equals(username));
 
             if (user == null)
