@@ -1,0 +1,40 @@
+﻿@model Experience
+
+@if (!string.IsNullOrEmpty(ViewBag.Meddelande))
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Meddelande
+    </div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.ErrorMessage
+    </div>
+}
+
+
+<form asp-controller="CV_" asp-action="EditExperience" method="post" asp-route-EID="@Model.EID">
+
+    <table class="table-bordered table" style="width: 70%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+        <tr>
+            <td colspan="2">
+                <label>Erfarenhet</label>
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Namnet på erfarenheten"></textarea>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Ändra" class="btn btn-primary" />
+            </td>
+        </tr>
+
+    </table>
+
+
+</form>
+
+<form method="get" asp-controller="CV_" asp-action="AddExperience">
+    <button class="btn btn-outline-success" type="submit" value="submit">Tillbaka</button>
+</form>

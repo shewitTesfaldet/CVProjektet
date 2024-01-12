@@ -100,43 +100,6 @@ namespace CV.Controllers
         }
 
 
-        //[HttpPost]
-        //public IActionResult AddProject(Project project)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        // Get the username of the currently logged-in user
-        //        var currentUsername = User.Identity.Name;
-
-        //        // Find the user in the database based on the username
-        //        var currentUser = _userContext.Users.SingleOrDefault(u => u.Username == currentUsername);
-
-        //        if (currentUser != null)
-        //        {
-        //            // Set the UserCreatedBy property
-        //            project.UserCreatedBy = currentUser.UID; // Assuming UID is the property representing the user's ID
-
-        //        }
-        //        else
-        //        {
-        //            // Handle the case where the user is not found
-        //            return RedirectToAction("Error");
-        //        }
-
-        //        // Add the project to the database
-        //        _userContext.Projects.Add(project);
-
-        //        _userContext.SaveChanges();
-
-        //        ViewBag.Meddelande = "Projektet har lagts till framgångsrikt";
-
-        //        return View(project);
-        //    }
-
-        //    return View(project);
-        //}
-
-
 
         [Authorize]
         [HttpGet]

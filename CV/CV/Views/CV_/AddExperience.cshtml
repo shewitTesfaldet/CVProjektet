@@ -1,0 +1,45 @@
+﻿@model Experience
+
+@if (@ViewBag.Experiences != null)
+{
+    <form asp-action="EditExperience">
+        <div class="project-container" style="margin-bottom: 1em; border: 1px solid black; padding: 10px">
+            @foreach (Experience i in @ViewBag.Experiences)
+            {
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <li class="list-group-item" style="flex-grow: 1;">@i.Description</li>
+                    <a class="btn btn-outline-success" asp-controller="CV_" asp-action="EditExperience" asp-route-EID="@i.EID">Uppdatera</a>
+                </div>
+            }
+        </div>
+    </form>
+
+}
+
+@if (ViewBag.Meddelande != null)
+{
+    <div class="alert alert-success" role="alert">
+        @ViewBag.Meddelande
+    </div>
+}
+<form asp-action="AddExperience" method="post">
+    <table class="table-bordered table" style="width: 70%; margin: auto; border-collapse: collapse; margin-top: 20px;">
+        <tr>
+            <td colspan="2">
+                <label>Erfarenhet</label>
+                <textarea asp-for="Description" rows="4" class="form-control" placeholder="Namnet på erfarenheten"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="Lägg Till" class="btn btn-primary" />
+            </td>
+        </tr>
+
+    </table>
+    <a class="btn btn-primary" asp-controller="Profile" asp-action="UpdateProfile">Tillbaka till profil</a>
+
+
+</form>
+
+
