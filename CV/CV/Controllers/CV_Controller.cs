@@ -257,7 +257,7 @@ namespace CV.Controllers
                                    select id.CID).ToList();
 
 
-                for (int expid = 0; expid < userListEdu.Count(); expid++)
+                for (int expid = 0; expid < userListExp.Count(); expid++)
                 {
 
                     int expIdList = userListExp.ElementAt(expid);

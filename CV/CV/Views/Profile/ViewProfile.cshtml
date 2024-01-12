@@ -13,14 +13,12 @@
 
 <h2>@Model.Firstname @Model.Lastname's Profile</h2>
 
-@if (Model.Privat)
+@if (Model.Privat && @User.Identity.Name == null)
 {
-    @if (@User.Identity.Name == null)
-    {
-        <div class="alert alert-danger" role="alert">
+      <div class="alert alert-danger" role="alert">
             This profile is private.
         </div>
-    }
+    
 }
     else
     {
