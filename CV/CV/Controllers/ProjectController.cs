@@ -11,20 +11,27 @@ namespace CV.Controllers
     public class ProjectController : Controller
     {
         private UserContext _userContext;
+        private MessageService  _messageService;
 
-        public ProjectController(UserContext userContext)
+        public ProjectController(UserContext userContext, MessageService messageService)
         {
             _userContext = userContext;
+            _messageService = messageService;
         }
 
         public IActionResult Index()
         {
+           
             return View();
+
         }
 
 
         public IActionResult Projects()
         {
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
             List<Project> projects = _userContext.Projects.ToList();
             return View(projects);
         }

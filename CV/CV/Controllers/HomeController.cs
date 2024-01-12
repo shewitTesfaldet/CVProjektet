@@ -15,9 +15,13 @@ namespace CV.Controllers
     public class HomeController : Controller
     {
         private UserContext _userContext;
-        public HomeController(UserContext usercontext)
+        private readonly MessageService _messageService;
+        public HomeController(UserContext usercontext, MessageService messageService)
+        
         {
             _userContext = usercontext;
+            _messageService = messageService;
+
         }
 
 
@@ -58,6 +62,9 @@ namespace CV.Controllers
 
             ViewBag.Presult = Presult;
 
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
 
             return View();
 
@@ -106,8 +113,39 @@ namespace CV.Controllers
             // Redirect back to the project details or wherever you want
             return RedirectToAction("Index", new { PID = PID });
         }
+        //public IActionResult MessageBox()
+        //{
+        //    var currentUsername = User.Identity.Name;
+        //    var currentUser = _userContext.Users.SingleOrDefault(u => u.Username == currentUsername);
 
+        //    if (currentUser != null)
+        //    {
+        //        try
+        //        {
+        //            // Retrieve unread messages for the specific user where 'Read' is false
+        //            var hasUnreadMessages = _userContext.Chats
+        //                .Any(chat => chat.ReceiverID == currentUser.UID && chat.Read == false);
 
-        
+        //            // Debugging output
+        //            Console.WriteLine($"HasUnreadMessages: {hasUnreadMessages}");
+
+        //            // Pass the information to the ViewBag
+        //            ViewBag.HasUnreadMessages = hasUnreadMessages;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Log or print the exception details
+        //            Console.WriteLine($"Exception: {ex.Message}");
+        //        }
+        //    }
+
+        //    // Your existing logic for the MessageBox action
+        //    // ...
+
+        //    return View("Index");
+        //}
     }
-}
+
+
+    }
+

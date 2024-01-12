@@ -1,5 +1,11 @@
 ﻿@model List<Chat>
 
+@if (ViewBag.HasUnreadMessages == true)
+{
+    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="transform: translate(-50%, 0%);">
+        <span class="visually-hidden">New messages</span>
+    </span>
+}
 <div id="frame">
     <div id="sidepanel">
         <div id="profile">
