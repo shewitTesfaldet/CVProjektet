@@ -102,12 +102,16 @@
 
 								<form asp-controller="Account" asp-action="LogOut" method="post">
 									<button type="submit" class="dropdown-item">Logga ut</button>
-								</form>
-							}
+                                </form>
+                            }
+                            else
+                            {
+                                <li><a class="dropdown-item" style="margin-top: -2em" asp-controller="Account" asp-action="LogIn">Logga in</a></li>
 
-							@* 							Ta inte bort, Register kommer att bli fel*@
-							<a class="nav-link text-dark" hidden="hidden" href="/CV_/ResumeHistory"> CV</a>
-							@* 							Ta inte bort, Register kommer att bli fel*@
+                            }
+                            @* 							Ta inte bort, Register kommer att bli fel*@
+@* 							<a class="nav-link text-dark" hidden="hidden" href="/CV_/ResumeHistory"> CV</a>
+ *@							@* 							Ta inte bort, Register kommer att bli fel*@
 
 
 

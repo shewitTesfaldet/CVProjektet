@@ -21,7 +21,6 @@ namespace CV.Controllers
         }
 
 
-      
         public  IActionResult Index()
         {
             //Hämtar alla användare med utbildning i en lista
