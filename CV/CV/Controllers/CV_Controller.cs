@@ -17,12 +17,13 @@ namespace CV.Controllers
         private UserContext _userContext;
 
         private Project _project;
+        private MessageService _messageService;
 
 
-        public CV_Controller(UserContext userContext)
+        public CV_Controller(UserContext userContext, MessageService messageService)
         {
             _userContext = userContext;
-
+            _messageService = messageService;   
         }
 
 
@@ -30,6 +31,9 @@ namespace CV.Controllers
 
         public IActionResult ResumeHistory(int UID)
         {
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
             List<CV_> cv = _userContext.CV_s.ToList();
           
             var cvInfo = (from user in _userContext.Users

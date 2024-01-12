@@ -11,11 +11,13 @@ namespace CV.Controllers
     public class ProfileController : Controller
     {
         private UserContext _userContext;
+        private MessageService _messageService;    
 
      
-        public ProfileController(UserContext userContext)
+        public ProfileController(UserContext userContext, MessageService messageService)
         {
             _userContext = userContext;
+            _messageService = messageService;
         }
 
 
@@ -25,8 +27,10 @@ namespace CV.Controllers
         [HttpGet]
         public IActionResult Profile()
         {
-          
 
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
             User user = new User();
             string Name = User.Identity.Name;
 
