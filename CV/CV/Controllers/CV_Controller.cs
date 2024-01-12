@@ -51,7 +51,7 @@ namespace CV.Controllers
 
 
         public IActionResult SearchCV(string söksträng)
-        {
+        {  
 
             ViewBag.Sök = "Resultatet för sökningen: '" + söksträng + "'";
             List<CV_> cv = new List<CV_>();
@@ -77,7 +77,10 @@ namespace CV.Controllers
 
         public IActionResult AddResume(int UID)
         {
-			if (UID == 0)
+            var currentUsername = User.Identity.Name;
+            var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
+            ViewBag.HasUnreadMessages = hasUnreadMessages;
+            if (UID == 0)
 			{
 				var currentUser = (from u in _userContext.Users
 								   where u.Firstname == User.Identity.Name
