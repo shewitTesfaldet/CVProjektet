@@ -19,7 +19,7 @@ namespace CV.Controllers
         {
             if (currentUsername != null)
             {
-                var currentUser = _userContext.Users.SingleOrDefault(u => u.Username == currentUsername);
+                var currentUser = _userContext.Users.FirstOrDefault(u => u.Username == currentUsername);
 
                 if (currentUser != null)
                 {

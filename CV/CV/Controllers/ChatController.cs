@@ -7,19 +7,23 @@ using System.Collections.Generic;
 using Models;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using System.IO;
 
 namespace CV.Controllers
 {
     public class ChatController : Controller
     {
         private UserContext _userContext;
-        private MessageService _messageService; 
+        private MessageService _messageService;
         private int LoggedInID;
+        private readonly IWebHostEnvironment _env;
 
-        public ChatController(UserContext context, MessageService messageService)
+
+        public ChatController(UserContext context, MessageService messageService, IWebHostEnvironment env)
         {
             _userContext = context;
-            _messageService = messageService;   
+            _messageService = messageService;
+            _env = env;
         }
 
 
@@ -35,54 +39,39 @@ namespace CV.Controllers
                              .Select(x => x.UID)
                              .FirstOrDefault();
 
-            var pictureList = (from id in _userContext.CV_s
-                               select id.CID).ToList();
 
 
-            for (int pid = 0; pid < pictureList.Count(); pid++)
+            var profilePicture = (from cv in _userContext.CV_s
+                                  where cv.UID == LogedInID
+                                  select cv.Picture).FirstOrDefault();
+
+            var ClickedProfilePicture = (from cv in _userContext.CV_s
+                                         where cv.UID == clickID
+                                         select cv.Picture).FirstOrDefault();
+
+            ViewBag.ProfilePicture = Path.Combine(_env.WebRootPath, "Pictures", profilePicture); 
+            if(ClickedProfilePicture == null)
             {
-
-                int expIdList = pictureList.ElementAt(pid);
-
-                if (LogedInID == expIdList)
-                {
-
-                    var profilePicture = (from cv in _userContext.CV_s
-                                          where cv.UID == LogedInID
-                                          select cv.Picture).FirstOrDefault();
-
-                    ViewBag.ProfilePicture = profilePicture;
-
-                }
-
-
-
+                ClickedProfilePicture = "no_profile_picture.jpg";
             }
-
-            if (!pictureList.Contains(LogedInID))
-            {
-                string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
+            ViewBag.ClickedProfilePicture = Path.Combine(_env.WebRootPath, "Pictures", ClickedProfilePicture);
 
 
-                string FilePathExists = Path.Combine(filePath);
 
-                if (!System.IO.File.Exists(FilePathExists))
-                {
-                    ViewBag.noProfilePicture = "no_profile_picture.jpg";
-                }
-            }
+
+
 
             getLogedOnUser = User.Identity.Name;
             if (getLogedOnUser != null)
             {
                 ViewBag.getLogedOnUser = getLogedOnUser;
             }
-            else 
+            else
             {
                 ViewBag.getLogedOnUser = anonym;
             }
 
-            if (anonym != null)            
+            if (anonym != null)
             {
                 ViewBag.anonym = anonym;
                 User anonymUser = new User();
@@ -100,6 +89,7 @@ namespace CV.Controllers
             List<Chat> AllMessages = new List<Chat>();
             //kod för att få ut vem man sökt på
             List<User> users = new List<User>();
+            List<string> userpictures = new List<string>();
             if (!string.IsNullOrEmpty(message))
             {
                 users = _userContext.Users
@@ -107,6 +97,9 @@ namespace CV.Controllers
                         .ToList();
             }
             ViewBag.users = users;
+
+
+
             if (clickID == 0)
             {
                 if (Request.Cookies["clickID"] != null && !string.IsNullOrEmpty(Request.Cookies["clickID"]))
@@ -134,7 +127,7 @@ namespace CV.Controllers
                 AllMessages = GetMessages(clickID, getLogedOnUser);
                 ViewBag.ClickedName = getClickedName(clickID);
             }
-            
+
             var currentUsername = User.Identity.Name;
             var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
             ViewBag.HasUnreadMessages = hasUnreadMessages;
@@ -147,7 +140,7 @@ namespace CV.Controllers
         public List<Chat> GetMessages(int clickID, string getLogedOnUser)
         {
             List<Chat> AllMessages = new List<Chat>();
-            if (getLogedOnUser == null) 
+            if (getLogedOnUser == null)
             {
                 getLogedOnUser = User.Identity.Name;
 
@@ -155,7 +148,7 @@ namespace CV.Controllers
 
             if (getLogedOnUser != null)
             {
-                
+
                 //Kod för att hämta meddelanden mellan inloggad och den man tryckt på 
                 int? LoggedInID = _userContext.Users
                       .Where(x => x.Username.Equals(getLogedOnUser))
@@ -181,12 +174,11 @@ namespace CV.Controllers
                                        .FirstOrDefault();
             return ClickedName;
         }
-            
+
         [HttpPost]
         public IActionResult MessageBox(string clickedName, string med, string getLogedOnUser)
         {
 
-           
             if (string.IsNullOrEmpty(getLogedOnUser))
             {
                 getLogedOnUser = User.Identity.Name;
@@ -207,28 +199,29 @@ namespace CV.Controllers
             {
                 SendMessageTo(ClickedUID, med, getLogedOnUser);
             }
-            List <Chat> AllMessages = new List <Chat>();
+            List<Chat> AllMessages = new List<Chat>();
             if (ClickedUID != 0)
             {
                 AllMessages = GetMessages(ClickedUID, getLogedOnUser);
-               ViewBag.ClickedName = getClickedName(ClickedUID);
+                ViewBag.ClickedName = getClickedName(ClickedUID);
                 ViewBag.anonym = getLogedOnUser;
 
             }
             return View(AllMessages);
         }
 
-        public void SendMessageTo(int ClickedUID, string med, string getLogedOnUser) {
+        public void SendMessageTo(int ClickedUID, string med, string getLogedOnUser)
+        {
 
-            if(getLogedOnUser != null)
-            {               
-                       LoggedInID = _userContext.Users
-                      .Where(x => x.Username.Equals(getLogedOnUser))
-                      .Select(x => x.UID)
-                      .FirstOrDefault();                           
+            if (getLogedOnUser != null)
+            {
+                LoggedInID = _userContext.Users
+               .Where(x => x.Username.Equals(getLogedOnUser))
+               .Select(x => x.UID)
+               .FirstOrDefault();
             }
 
-           
+
             //Transaction för att säkerställa att inget läggs in om det inte går igenom helt
             using (var dbContextTransaction = _userContext.Database.BeginTransaction())
             {
@@ -238,8 +231,8 @@ namespace CV.Controllers
                     chat.Text = med;
                     chat.Date = DateTime.Now;
                     chat.Read = false;
-                    chat.ReceiverID = ClickedUID;                 
-                    chat.SenderID = LoggedInID;                  
+                    chat.ReceiverID = ClickedUID;
+                    chat.SenderID = LoggedInID;
                     _userContext.Chats.Add(chat);
                     _userContext.SaveChanges();
                     dbContextTransaction.Commit();
@@ -256,7 +249,7 @@ namespace CV.Controllers
         [HttpPost]
         public IActionResult MarkMessageAsRead(int messageId)
         {
-            
+
             var message = _userContext.Chats.FirstOrDefault(m => m.MID == messageId);
 
             if (message != null && !message.Read.HasValue || !message.Read.Value)
@@ -270,7 +263,7 @@ namespace CV.Controllers
         }
 
 
-      
+
 
 
 

@@ -6,22 +6,14 @@
 <form asp-action="Profile" method="post">
 
     <div class="d-flex justify-content-center mb-4">
-        @if (@ViewBag.noProfilePicture == null)
-        {
-           
+        
             <div>
                 <img id="selectedAvatar" src="https:\\localhost:7237\Pictures\@ViewBag.ProfilePicture" class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover; padding: 15px; border-radius: 100%; background-color: #567D8D;" alt="Profilbild">
 
             </div>
          
-        }
-        else
-        {
-            <div>
-                <img src="https:\\localhost:7237\Pictures\@ViewBag.noProfilePicture" class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;" alt="Profilbild">
-
-            </div>
-        }
+        
+       
        
     </div>
 
@@ -78,63 +70,7 @@
                 <span>@Model.Adress</span>
             </td>
         </tr>
-        <tr>
-            <td>
-                <label>Kompetenser:</label>
-            </td>
-            <td>
-                @if (ViewBag.Competence != null)
-                {
-                    foreach (var Comp in ViewBag.Competence)
-                    {
-                        <p> - @Comp.Description</p>
-                    }
-                }
-                else
-                {
-                    <p>Ingen information om kompetenser tillgänglig.</p>
-                }
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <label>Utbildning:</label>
-            </td>
-            <td>
-                @if (ViewBag.Education != null)
-                {
-                    foreach (var education in ViewBag.Education)
-                    {
-                        <p> - @education.Description</p>
-                    }
-                }
-                else
-                {
-                    <p>Ingen information om utbildningar tillgänglig.</p>
-                }
-            </td>
-        </tr>
-
-        <!-- Erfarenheter -->
-        <tr>
-            <td>
-                <label>Erfarenheter:</label>
-            </td>
-            <td>
-                @if (ViewBag.Experience != null)
-                {
-                    foreach (var experience in ViewBag.Experience)
-                    {
-                        <p> - @experience.Description</p>
-                    }
-                }
-                else
-                {
-                    <p>Ingen information om tidigare erfarenheter tillgänglig.</p>
-                }
-            </td>
-        </tr>
-            
+    
        
     </table>
 </form>
@@ -146,6 +82,6 @@
         border-radius: 50%;
         margin: 0 auto;
         display: block;
-        border: 2px solid black; /* Justera färgen efter behov */
+        border: 2px solid black; 
     }
 </style>

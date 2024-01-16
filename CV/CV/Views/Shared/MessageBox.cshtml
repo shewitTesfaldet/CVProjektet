@@ -10,9 +10,8 @@
     <div id="sidepanel">
         <div id="profile">
             <div class="wrap">
-               @*  ProfilBild på inloggad *@
-             
-                <img id="profile-img" src="https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png" style="height:100%; width:20%;" class="online" alt="" />
+               @*  ProfilBild på inloggad *@           
+                <img id="profile-img" src="@ViewBag.ProfilePicture" style="height:100%; width:20%;" class="online" alt="Profilbild" />
                 <AuthorizeView>
                     <Authorized>
                         <p>@User.Identity.Name</p>
@@ -88,8 +87,10 @@
                                     <div class="wrap">
                                         <span class="contact-status online"></span>
                                         @* ProfilBild i Sökfält *@
+
                                             <img src="https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png" class="rounded-circle" alt="Bild på inloggad" />
-                                        <div class="meta">
+                                            
+                                            <div class="meta">
                                             <p class="name" style="color:white;">@user.Firstname @user.Lastname</p>
                                             <p class="name" style="color:white;">@user.Username</p>
                                         </div>
@@ -109,8 +110,8 @@
     <div class="content">
         <div class="contact-profile">
             @* ProfilBild i Chatt, replier*@
-@*             <img id="profile-img" src="https:\\localhost:7237\Pictures\noProfilePicture.png" class="rounded-circle" alt="">
- *@            <p>@ViewBag.ClickedName</p>
+
+            <p>@ViewBag.ClickedName</p>
 
             <img src="https://www.nicepng.com/png/detail/136-1366211_group-of-10-guys-login-user-icon-png.png" alt="" />
            
@@ -127,7 +128,7 @@
                         {
                             <li class="replies">
 
-                                <img src="http://emilcarlsson.se/assets/harveyspecter.png" alt="" />
+                                <img src="@ViewBag.ClickedProfilePicture" alt="" />
                                 <p>@chat.Text</p>
                                 <p style="font-size:0.5em;">@chat.Date</p>
                                 @if (!chat.Read.HasValue || !chat.Read.Value)
@@ -139,10 +140,11 @@
                                 }
                             </li>
                         }
+                    
                         else
                         {
                             <li class="sent">
-                                <img src="http://emilcarlsson.se/assets/mikeross.png" alt="" />
+                                <img src="@ViewBag.ProfilePicture" alt="" />
                                 <p>@chat.Text</p>
                                 <p style="font-size:0.5em;">@chat.Date</p>
                                 @if (!chat.Read.HasValue || !chat.Read.Value)
@@ -198,37 +200,5 @@
             $("#contacts").toggleClass("expanded");
         });
 
-        //Med hjälp av ajax uppdatteras sidan när man trycker submit
-        // $.ajax({
-        //     url: '/Chat/MessageBox',
-        //     type: 'POST',
-        //     data: { 'med': message },
-        //     success: function (data) {
-        //         // Uppdatera vyn med det nya meddelandet
-        //         $('.messages ul').append('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>');
-        //     }
-        // });
-
-        // function newMessage() {
-        //     message = $(".message-input input").val();
-        //     if ($.trim(message) == '') {
-        //         return false;
-        //     }
-        //     $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-        //     $('.message-input input').val(null);
-        //     $('.contact.active .preview').html('<span>You: </span>' + message);
-        //     $(".messages").animate({ scrollTop: $(document).height() }, "fast");
-        // };
-
-        // $('.submit').click(function () {
-        //     newMessage();
-        // });
-
-        // $(window).on('keydown', function (e) {
-        //     if (e.which == 13) {
-        //         newMessage();
-        //         return false;
-        //     }
-        // });
     </script>
 

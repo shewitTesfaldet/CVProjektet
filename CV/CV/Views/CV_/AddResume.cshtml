@@ -150,6 +150,12 @@
 							@foreach (var desc in ViewBag.Education)
 							{
 								<h2 class="section-title">@desc.Description</h2>
+								<p>Startdatum: </p>
+
+								<p>@desc.BeginDate</p>
+								<P>Slutdatum: </P>
+
+								<p>@desc.EndDate</p>
 							}
 						}
 						else
