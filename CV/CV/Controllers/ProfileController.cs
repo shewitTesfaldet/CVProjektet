@@ -48,17 +48,7 @@ namespace CV.Controllers
                               .Select(x => x.UID)
                               .FirstOrDefault();
 
-            var pictureList = (from id in _userContext.CV_s
-                               select id.CID).ToList();
-
-
-            for (int pid = 0; pid < pictureList.Count(); pid++)
-            {
-
-                int expIdList = pictureList.ElementAt(pid);
-
-                if (LogedInID == expIdList)
-                {
+            
 
                     var profilePicture = (from cv in _userContext.CV_s
                                           where cv.UID == LogedInID
@@ -66,24 +56,8 @@ namespace CV.Controllers
 
                     ViewBag.ProfilePicture = profilePicture;
 
-                }
 
 
-
-            }
-
-            if (!pictureList.Contains(LogedInID))
-            {
-                string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
-
-
-                string FilePathExists = Path.Combine(filePath);
-
-                if (!System.IO.File.Exists(FilePathExists))
-                {
-                    ViewBag.noProfilePicture = "no_profile_picture.jpg";
-                }
-            }
 
             return View(user);
         }
@@ -107,14 +81,14 @@ namespace CV.Controllers
                                .Select(x => x.UID)
                                .FirstOrDefault();
 
-			//Hämtar bild på den inloggade
-			var profilePicture = (from cv in _userContext.CV_s
-								  where cv.UID == LogedInID
-								  select cv.Picture).FirstOrDefault();
+            //Hämtar bild på den inloggade
+            var profilePicture = (from cv in _userContext.CV_s
+                                  where cv.UID == LogedInID
+                                  select cv.Picture).FirstOrDefault();
 
-			ViewBag.ProfilePicture = profilePicture;
+            ViewBag.ProfilePicture = profilePicture;
 
-            
+
 
             if (Name != null)
             {
@@ -131,66 +105,54 @@ namespace CV.Controllers
         }
 
 
-		[HttpPost]
+        [HttpPost]
 
-		public async Task<IActionResult> UpdateProfile(IFormFile CVBild, User updatedUser)
-        { 
-			string Name = User.Identity.Name;
+        public async Task<IActionResult> UpdateProfile(IFormFile CVBild, User updatedUser)
+        {
+            string Name = User.Identity.Name;
             int LogedInID = _userContext.Users
                               .Where(x => x.Username.Equals(Name))
                               .Select(x => x.UID)
                               .FirstOrDefault();
+            string fileName = (from cv in _userContext.CV_s
+                                                    where cv.UID == LogedInID
+                                                    select cv.Picture).FirstOrDefault(); 
 
+            string path = Directory.GetCurrentDirectory() + "\\wwwroot\\Pictures\\";
+
+            //om du har skickat in en bild hämtas filnamnet
+            if (CVBild != null)
+            {
+                fileName = CVBild.FileName;
+
+            }
+            // Om du inte skickat in något så ge
+
+            string fullPath = Path.Combine(path, fileName);
+
+            if (CVBild != null)
+            {
+                // Skriv filen till sökvägen endast om du skickat in en bild
+                using (var stream = new FileStream(fullPath, FileMode.Create))
+                {
+                    await CVBild.CopyToAsync(stream);
+                }
+
+                CV_ LogedInCV = _userContext.CV_s.FirstOrDefault(x => x.UID.Equals(LogedInID));
+                LogedInCV.Picture = fileName;
+
+            }
+           
+                ViewBag.ProfilePicture = fullPath;
             
+
+            _userContext.SaveChanges();
+
+
+            ModelState.Remove("CVBild");
+
             if (ModelState.IsValid)
             {
-				/*				string fullpath = await GetPicture(CVBild);
-				 *				
-				*/
-
-				string fileName = CVBild.FileName;
-                string path = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\";
-
-
-				// Kontrollera om filen är null
-				if (CVBild == null || CVBild.Length == 0)
-				{
-					string filePath = path + ViewBag.noProfilePicture + "";
-
-
-					string FilePathExists = Path.Combine(filePath);
-
-					if (!System.IO.File.Exists(FilePathExists))
-					{
-						ViewBag.noProfilePicture = "no_profile_picture.jpg";
-					}
-				}
-
-				string fullPath = Path.Combine(path, fileName);
-
-				// Skriv filen till sökvägen
-				using (var stream = new FileStream(fullPath, FileMode.Create))
-				{
-					await CVBild.CopyToAsync(stream);
-				}
-				CV_ LogedInCV = _userContext.CV_s.FirstOrDefault(x => x.UID.Equals(LogedInID));
-                if (LogedInCV == null)
-                {
-                    CV_ NewCV = new CV_();
-                    NewCV.UID = LogedInID;
-                    NewCV.Picture = ViewBag.noProfilePicture;
-                    _userContext.CV_s.Add(NewCV);
-
-                }
-                else
-                {
-					LogedInCV.Picture = fileName;
-                    ViewBag.ProfilePicture = fileName;
-
-				}
-
-				_userContext.SaveChanges();
-
 
 				var userToUpdate = _userContext.Users.FirstOrDefault(x => x.Username.Equals(Name));
 
@@ -218,6 +180,10 @@ namespace CV.Controllers
                     // Ladda om sidan med de nya värdena
                     return View("Profile", userToUpdate);
                 }
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(updatedUser);
             }
 
             return View("Profile", "Profile");

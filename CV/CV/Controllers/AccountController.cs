@@ -67,49 +67,7 @@ namespace CV.Controllers
 					return View(arm);
 				}
 
-                /*            ProfilBild
-     */
-               /* int LogedInID = _userContext.Users
-                                  .Where(x => x.Username.Equals(arm.UserName))
-                                  .Select(x => x.UID)
-                                  .FirstOrDefault();
-
-                var pictureList = (from id in _userContext.CV_s
-                                   select id.CID).ToList();
-
-
-                for (int pid = 0; pid < pictureList.Count(); pid++)
-                {
-
-                    int expIdList = pictureList.ElementAt(pid);
-
-                    if (LogedInID == expIdList)
-                    {
-
-                        var profilePicture = (from cv in _userContext.CV_s
-                                              where cv.UID == LogedInID
-                                              select cv.Picture).FirstOrDefault();
-
-                        ViewBag.ProfilePicture = profilePicture;
-
-                    }
-
-
-
-                }
-
-                if (!pictureList.Contains(LogedInID))
-                {
-                    string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
-
-
-                    string FilePathExists = Path.Combine(filePath);
-
-                    if (!System.IO.File.Exists(FilePathExists))
-                    {
-                        ViewBag.noProfilePicture = "no_profile_picture.jpg";
-                    }
-                }*/
+           
 
                 LogInUser user = new LogInUser();
 				user.UserName = arm.UserName;

@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Authorization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CV.Controllers
 {
@@ -25,7 +26,7 @@ namespace CV.Controllers
         public CV_Controller(UserContext userContext, MessageService messageService)
         {
             _userContext = userContext;
-            _messageService = messageService;   
+            _messageService = messageService;
         }
 
 
@@ -37,7 +38,7 @@ namespace CV.Controllers
             var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
             ViewBag.HasUnreadMessages = hasUnreadMessages;
             List<CV_> cv = _userContext.CV_s.ToList();
-          
+
             var cvInfo = (from user in _userContext.Users
                           where user.UID == UID
                           select new { user.Firstname, user.Lastname, user.Epost, user.Privat });
@@ -51,7 +52,7 @@ namespace CV.Controllers
 
 
         public IActionResult SearchCV(string söksträng)
-        {  
+        {
 
             ViewBag.Sök = "Resultatet för sökningen: '" + söksträng + "'";
             List<CV_> cv = new List<CV_>();
@@ -72,7 +73,6 @@ namespace CV.Controllers
             return View("EditResume", cv);
         }
 
-		
 
 
         public IActionResult AddResume(int UID)
@@ -80,54 +80,28 @@ namespace CV.Controllers
             var currentUsername = User.Identity.Name;
             var hasUnreadMessages = _messageService.HasUnreadMessages(currentUsername);
             ViewBag.HasUnreadMessages = hasUnreadMessages;
+            int CVID = _userContext.CV_s.Where(x => x.UID.Equals(UID)).Select(x => x.CID).FirstOrDefault();
+
             if (UID == 0)
-			{
-				var currentUser = (from u in _userContext.Users
-								   where u.Firstname == User.Identity.Name
-								   select u.UID);
-				UID = currentUser.First();
-			}
+            {
+                var currentUser = (from u in _userContext.Users
+                                   where u.Firstname == User.Identity.Name
+                                   select u.UID);
+                UID = currentUser.First();
+            }
 
             /*            ProfilBild
 			*/
             ViewBag.UID = UID;
-			var pictureList = (from id in _userContext.CV_s
-                               select id.CID).ToList();
+            var profilePicture = (from cv in _userContext.CV_s
+                                  where cv.UID == UID
+                                  select cv.Picture).FirstOrDefault();
 
-
-            for (int pid = 0; pid < pictureList.Count(); pid++)
-            {
-
-                int expIdList = pictureList.ElementAt(pid);
-
-                if (UID == expIdList)
-                {
-
-                    var profilePicture = (from cv in _userContext.CV_s
-                                          where cv.UID == UID
-                                          select cv.Picture).FirstOrDefault();
-
-                    ViewBag.ProfilePicture = profilePicture;
-
-
-                }
+            ViewBag.ProfilePicture = profilePicture;
 
 
 
-            }
 
-            if (!pictureList.Contains(UID))
-            {
-                string filePath = "C:\\Users\\Admin\\OneDrive\\Dokument\\Webbsystem(.NET)\\CVProjekt\\CV\\CV\\wwwroot\\Pictures\\" + ViewBag.noProfilePicture + "";
-
-
-                string FilePathExists = Path.Combine(filePath);
-
-                if (!System.IO.File.Exists(FilePathExists))
-                {
-                    ViewBag.noProfilePicture = "no_profile_picture.jpg";
-                }
-            }
 
             /*För- och efternamn*/
             var userFullnameList = (from id in _userContext.Users
@@ -150,40 +124,27 @@ namespace CV.Controllers
                 }
             }
             /*Utbildning*/
-            var userListEdu = (from id in _userContext.CV_Educations
-                               select id.CID).ToList();
 
-
-            for (int eid = 0; eid < userListEdu.Count(); eid++)
+            List<int> educationID = _userContext.CV_Educations.Where(x => x.CID.Equals(CVID)).Select(x => x.EdID).ToList();
+            List<Education> educationList = new List<Education>();
+            if (educationID.Count != 0)
             {
-
-                int eduid = userListEdu.ElementAt(eid);
-
-                if (UID == eduid)
+                foreach (int i in educationID)
                 {
-
-                    var data = (from user in _userContext.Users
-                                where user.UID == UID
-                                join cv in _userContext.CV_s on user.UID equals cv.UID into cvGroup
-                                from cv in cvGroup.DefaultIfEmpty()
-
-                                join cvEdu in _userContext.CV_Educations on cv.CID equals cvEdu.CID into cvEduGroup
-                                from cvEdu in cvEduGroup.DefaultIfEmpty()
-
-                                join edu in _userContext.Education on cvEdu.EdID equals edu.EdID into eduGroup
-                                from edu in eduGroup.DefaultIfEmpty()
-
-                                select new { user.UID, user.Firstname, user.Lastname, user.Username, user.Privat, Description = (edu == null ? null : edu.Description) }).ToList();
-
-                    ViewBag.Education = data;
+                    Education oneEducation = _userContext.Education.Where(x => x.EdID.Equals(i)).FirstOrDefault();
+                    educationList.Add(oneEducation);
                 }
-                else
-                {
-                    ViewBag.EducationMessage = "Saknar Utbildning";
-                }
+                ViewBag.Education = educationList;
+
+            }
+            else
+            {
+                ViewBag.EducationMessage = "Saknar Utbildning";
             }
 
+
             /*            Kontaktinformation*/
+
             var userContactList = (from id in _userContext.Users
                                    select id.UID).ToList();
 
@@ -199,96 +160,73 @@ namespace CV.Controllers
 
                     ViewBag.Kontaktinfo = contactinfo;
 
-                    var competence = (from user in _userContext.CV_s
-                                      where user.UID == UID
-                                      join cv in _userContext.CV_s on user.UID equals cv.UID into cvGroup
-                                      from cv in cvGroup.DefaultIfEmpty()
+                }
+            }
+            List<int> CompID = _userContext.CV_Competences.Where(x => x.CID.Equals(CVID)).Select(x => x.CompID).ToList();
+            List<Competence> competenceList = new List<Competence>();
+            if (CompID.Count != 0)
+            {
+                foreach (int i in CompID)
+                {
+                    Competence oneCompetence = _userContext.Competence.Where(x => x.CompID.Equals(i)).FirstOrDefault();
+                    competenceList.Add(oneCompetence);
+                }
+                ViewBag.Competence = competenceList;
 
-                                      join comp in _userContext.CV_Competences on cv.CID equals comp.CompID into cvCompGroup
-                                      from comp in cvCompGroup.DefaultIfEmpty()
+            }
+            else
+            {
 
-                                      join cvC in _userContext.Competence on cv.CID equals cvC.CompID into CompGroup
-                                      from cvC in CompGroup.DefaultIfEmpty()
+                ViewBag.CompetenceMessage = "Saknar kompetenser";
 
-                                      select new { cvC.Description }).ToList();
+            }
 
-                    ViewBag.Competence = competence;
+
+            /*Projekt*/
+
+            var userList = (from id in _userContext.UserProjects
+                            select id.UID).ToList();
+
+            for (int i = 0; i < userList.Count(); i++)
+            {
+                int proj = userList.ElementAt(i);
+                if (UID == proj)
+                {
+                    var project = (from user in _userContext.Users
+                                   where user.UID == UID
+                                   join u in _userContext.UserProjects on user.UID equals u.UID into userProjectGroup
+                                   from u in userProjectGroup.DefaultIfEmpty()
+
+                                   join p in _userContext.Projects on u.PID equals p.PID into projectGroup
+                                   from p in projectGroup.DefaultIfEmpty()
+
+                                   select new
+                                   {
+                                       Title = p == null ? null : p.Title,
+                                       Description = p == null ? null : p.Description,
+                                       p.BeginDate,
+                                       p.EndDate
+                                   }).ToList();
+
+                    ViewBag.Project = project;
                 }
                 else
                 {
-
-                    ViewBag.CompetenceMessage = "Saknar kompetenser";
-
+                    ViewBag.ProjectMessage = "Saknar Projekt";
                 }
+            }
 
 
-                /*Projekt*/
+            //Erfarenheter
+            List<Experience> ExperienceList = _userContext.Experience.Where(x => x.CID.Equals(CVID)).ToList();
+            if (ExperienceList.Count != 0)
+            {
+                ViewBag.Experience = ExperienceList;
 
-                var userList = (from id in _userContext.UserProjects
-                                select id.UID).ToList();
-
-                for (int i = 0; i < userList.Count(); i++)
-                {
-                    int proj = userList.ElementAt(i);
-                    if (UID == proj)
-                    {
-                        //funkar
-                        var project = (from user in _userContext.Users
-                                       where user.UID == UID
-                                       join u in _userContext.UserProjects on user.UID equals u.UID into userProjectGroup
-                                       from u in userProjectGroup.DefaultIfEmpty()
-
-                                       join p in _userContext.Projects on u.PID equals p.PID into projectGroup
-                                       from p in projectGroup.DefaultIfEmpty()
-
-                                       select new
-                                       {
-                                           Title = p == null ? null : p.Title,
-                                           Description = p == null ? null : p.Description,
-                                           p.BeginDate,
-                                           p.EndDate
-                                       }).ToList();
-
-                        ViewBag.Project = project;
-                    }
-                    else
-                    {
-                        ViewBag.ProjectMessage = "Saknar Projekt";
-                    }
-                }
-
-
-                //Erfarenheter
-
-                var userListExp = (from id in _userContext.Experience
-                                   select id.CID).ToList();
-
-
-                for (int expid = 0; expid < userListExp.Count(); expid++)
-                {
-
-                    int expIdList = userListExp.ElementAt(expid);
-
-                    if (UID == expIdList)
-                    {
-                        var experience = (from user in _userContext.Users
-                                          where user.UID == UID
-                                          join cv in _userContext.CV_s on user.UID equals cv.UID into cvUser
-                                          from cv in cvUser.DefaultIfEmpty()
-
-                                          join exp in _userContext.Experience on cv.CID equals exp.CID into expCV
-                                          from exp in expCV.DefaultIfEmpty()
-                                          select new { exp.Description });
-
-                        ViewBag.Experience = experience;
-
-
-                    }
-                    else
-                    {
-                        ViewBag.ExperienceMessage = "Saknar Erfarenheter";
-                    }
-                }
+            }
+            else
+            {
+                ViewBag.ExperienceMessage = "Saknar Erfarenheter";
             }
 
             return View(new CV_());
@@ -432,9 +370,9 @@ namespace CV.Controllers
         }
 
         [HttpPost]
-        public async Task <IActionResult> AddEducation(Education newEducation)
+        public async Task<IActionResult> AddEducation(Education newEducation)
         {
-           
+
             if (ModelState.IsValid)
             {
                 string Name = User.Identity.Name;
@@ -525,12 +463,12 @@ namespace CV.Controllers
                              .FirstOrDefault();
             int CVID = _userContext.CV_s.Where(x => x.UID.Equals(LogedInID)).Select(x => x.CID).FirstOrDefault();
 
-            List<int> ComptenceID  = _userContext.CV_Competences.Where(x => x.CID.Equals(CVID)).Select(x => x.CompID).ToList();
+            List<int> ComptenceID = _userContext.CV_Competences.Where(x => x.CID.Equals(CVID)).Select(x => x.CompID).ToList();
             List<Competence> Competences = new List<Competence>();
             foreach (int ID in ComptenceID)
             {
                 Competence oneCompetence = _userContext.Competence.Where(x => x.CompID.Equals(ID)).FirstOrDefault();
-                if(oneCompetence != null) 
+                if (oneCompetence != null)
                 {
                     Competences.Add(oneCompetence);
 
@@ -541,7 +479,7 @@ namespace CV.Controllers
 
             return View(new Competence());
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> AddCompetence(Competence newCompetence)
         {
@@ -582,7 +520,7 @@ namespace CV.Controllers
             return RedirectToAction("AddCompetence", "CV_");
         }
 
-       
+
 
 
         [Authorize]
@@ -605,19 +543,19 @@ namespace CV.Controllers
 
                 if (existingCompetence != null)
                 {
-                     //Uppdatera beskrivningen av den befintliga kompetensen
+                    //Uppdatera beskrivningen av den befintliga kompetensen
                     existingCompetence.Description = model.Description;
 
-                     //Spara ändringarna till databasen
+                    //Spara ändringarna till databasen
                     _userContext.SaveChanges();
 
-                     //Skicka ett meddelande till vyn för att informera användaren om att ändringarna har sparats
+                    //Skicka ett meddelande till vyn för att informera användaren om att ändringarna har sparats
                     ViewBag.Meddelande = "Kompetensen har uppdaterats framgångsrikt.";
                     return View(existingCompetence);
                 }
                 else
                 {
-                     //Om kompetensen inte hittades, skicka ett felmeddelande till vyn
+                    //Om kompetensen inte hittades, skicka ett felmeddelande till vyn
                     ViewBag.Meddelande = "Kompetensen kunde inte hittas.";
                 }
             }
